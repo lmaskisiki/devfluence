@@ -1,5 +1,7 @@
-﻿ using MachineInformationApp.Interfaces;
- using Nancy;
+﻿using MachineInformationApp.Interfaces;
+using MachineInformationApp;
+using Nancy;
+using Nancy.TinyIoc;
 
 namespace TerminatorWebApi
 {
@@ -13,5 +15,6 @@ namespace TerminatorWebApi
                     .WithModel(hostnameGenerator.GetHostName());
 
         }
+
     }
 }

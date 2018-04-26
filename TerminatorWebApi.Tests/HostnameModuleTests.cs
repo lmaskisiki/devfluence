@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;
@@ -20,7 +22,7 @@ namespace TerminatorWebApi.Tests
         public void GetHostname_WhenCalled_ShouldReturnStatusCodeOk()
         {
             //Arrange
-            IHostnameGenerator hostnameGenerator = Substitute.For<IHostnameGenerator>();
+            var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             new HostnameModule(hostnameGenerator);
             var browser = new Browser(with =>
             {

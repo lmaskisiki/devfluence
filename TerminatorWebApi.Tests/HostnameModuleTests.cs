@@ -42,7 +42,6 @@ namespace TerminatorWebApi.Tests
         [TestCase("Devfluence-10")]
         [TestCase("Devfluence-11")]
         [TestCase("Devfluence-12")]
-
         public void GetHostname_WhenCalled_ShouldReturnStatusMachineHostName(string givenHostName)
         {
             //Arrange

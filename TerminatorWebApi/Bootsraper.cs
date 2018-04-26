@@ -16,7 +16,11 @@ namespace TerminatorWebApi
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
-            container.AutoRegister();
+            container.Register<IIpAddressGenerator, IpAddressGenerator>();
+            container.Register<IHostnameGenerator, HostnameGenerator>();
+            container.Register<IOSGenerator, OSGenerator>();
+            container.Register<IScriptExecutor, ScriptExecutor>();
+
         }
     }
 }

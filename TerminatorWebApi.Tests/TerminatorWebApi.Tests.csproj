@@ -77,6 +77,8 @@
   <ItemGroup>
     <Compile Include="ApiTests.cs" />
     <Compile Include="HostnameModuleTests.cs" />
+    <Compile Include="IpTest.cs" />
+    <Compile Include="OSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

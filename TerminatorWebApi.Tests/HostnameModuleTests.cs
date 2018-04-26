@@ -23,7 +23,6 @@ namespace TerminatorWebApi.Tests
         {
             //Arrange
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
-            new HostnameModule(hostnameGenerator);
             var browser = new Browser(with =>
             {
                 with.Dependencies<IHostnameGenerator>(hostnameGenerator);

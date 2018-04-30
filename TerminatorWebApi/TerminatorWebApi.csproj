@@ -60,13 +60,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootsraper.cs" />
-    <Compile Include="HealthModule.cs" />
-    <Compile Include="HostnameModule.cs" />
-    <Compile Include="IpEndPointModule.cs" />
-    <Compile Include="OsEndPointModule.cs" />
+    <Compile Include="Modules\HealthModule.cs" />
+    <Compile Include="Modules\HostnameModule.cs" />
+    <Compile Include="Modules\IpEndPointModule.cs" />
+    <Compile Include="Modules\OsEndPointModule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScriptExecutorModule.cs" />
+    <Compile Include="Modules\ScriptExecutorModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -16,9 +16,11 @@ namespace TerminatorWebApi.Tests
         public void GetHostname_WhenCalled_ShouldReturnStatusCodeOk()
         {
             // ---- Arrange ----
+            var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
             {
+                with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                 with.Dependencies<IHostnameGenerator>(hostnameGenerator);
                 with.Module<HostnameModule>();
             });
@@ -40,10 +42,12 @@ namespace TerminatorWebApi.Tests
         public void GetHostname_WhenCalled_ShouldReturnStatusMachineHostName(string givenHostName)
         {
             // ---- Arrange ----
+            var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
            {
                with.Dependencies<IHostnameGenerator>(hostnameGenerator);
+               with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                with.Module<HostnameModule>();
            });
 
@@ -66,12 +70,14 @@ namespace TerminatorWebApi.Tests
         public void GetHostName_WhenExecutionFails_ShouldReturnStatusCode500()
         {
             // ---- Arrange ----
+            var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             hostnameGenerator.GetHostName().Throws(new Exception("invalid execution"));
 
             var browser = new Browser(with =>
             {
                 with.Dependency<IHostnameGenerator>(hostnameGenerator);
+                with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                 with.Module<HostnameModule>();
             });
 
@@ -86,21 +92,26 @@ namespace TerminatorWebApi.Tests
         }
 
         [Test]
-        public void GetHostName_WhenCalled_ShouldReturnFullyQualifiedHostName()
+        public void GetFullQualifiedHostName_WhenCalled_ShouldReturnStatusCode200AndFullyQualifiedHostName()
         {
             // ---- Arrange ----
             var fullyQualified = "Devfluence - 10-PC01";
-            var hostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
+             var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
+            var hostnameGenerator = Substitute.For<IHostnameGenerator>();
+
             var browser = new Browser(with =>
             {
-                with.Dependencies<IFullqualifiedHostnameGenerator>(hostnameGenerator);
+                with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
+                with.Dependencies<IHostnameGenerator>(hostnameGenerator);
+
                 with.Module<HostnameModule>();
             });
-            hostnameGenerator.GetFullQualifiedHostName().Returns(fullyQualified);
+            fullyQualifiedHostnameGenerator.GetFullQualifiedHostName().Returns(fullyQualified);
             
             // ---- Act ----
-            var response = browser.Get("/hostname-f", with =>
+            var response = browser.Get("/hostname", with =>
             {
+                with.Query("fully-qualified", "true");
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
             });

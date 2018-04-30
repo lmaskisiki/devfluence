@@ -11,9 +11,11 @@ namespace TerminatorWebApi
         {
             base.ConfigureApplicationContainer(container);
             container.Register<IIpAddressGenerator, IpAddressGenerator>();
+            container.Register<IFullqualifiedHostnameGenerator, FullqualifiedHostnameGenerator>();
             container.Register<IHostnameGenerator, HostnameGenerator>();
             container.Register<IOSGenerator, OSGenerator>();
             container.Register<IScriptExecutor, ScriptExecutor>();
+
         }
     }
 }

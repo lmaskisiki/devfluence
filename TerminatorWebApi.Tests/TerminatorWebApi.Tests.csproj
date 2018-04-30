@@ -75,12 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HealthTests.cs" />
-    <Compile Include="HostnameTests.cs" />
-    <Compile Include="IpTest.cs" />
-    <Compile Include="OSTest.cs" />
+    <Compile Include="Tests\HealthTests.cs" />
+    <Compile Include="Tests\HostnameTests.cs" />
+    <Compile Include="Tests\IpTest.cs" />
+    <Compile Include="Tests\OSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SciptModuleTests.cs" />
+    <Compile Include="Tests\SciptModuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -30,7 +32,7 @@ namespace TerminatorWebApi.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\helloWorldScript.ps1";
+            var filePath = GetScriptPath("helloWorldScript");
             scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "Hello World", StatusCode = 0 });
 
             //Act
@@ -56,7 +58,7 @@ namespace TerminatorWebApi.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\invalidScript1.ps1";
+            var filePath = GetScriptPath("invalidScript1");
             scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "", StatusCode = 1 });
 
             //Act
@@ -80,9 +82,9 @@ namespace TerminatorWebApi.Tests
             {
                 with.Dependencies<IScriptExecutor>(scriptExecutor);
                 with.Module<ScriptExecutorModule>();
-            });  
+            });
 
-            var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\helloWorldScript.ps1";
+            var filePath = GetScriptPath("helloWorldScript");
             scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
 
             //Act
@@ -108,8 +110,8 @@ namespace TerminatorWebApi.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\emptyScript.ps1";
- 
+            var filePath = GetScriptPath("emptyScript");
+
             //Act
             var result = browser.Post("/script", with =>
             {
@@ -120,6 +122,13 @@ namespace TerminatorWebApi.Tests
 
             //Assert  
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        private string GetScriptPath(string fileName)
+        {
+            var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            var iconPath = Path.Combine(outPutDirectory, "..", "..", $@"scripts\{fileName}.ps1");
+            return new Uri(iconPath).LocalPath;
         }
     }
 }

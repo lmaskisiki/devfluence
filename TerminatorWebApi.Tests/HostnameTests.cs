@@ -15,7 +15,7 @@ namespace TerminatorWebApi.Tests
         [Test]
         public void GetHostname_WhenCalled_ShouldReturnStatusCodeOk()
         {
-           // ---- Arrange ----
+            // ---- Arrange ----
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
             {
@@ -63,7 +63,7 @@ namespace TerminatorWebApi.Tests
         }
 
         [Test]
-        public void getHostName_WhenExecutionFails_ShouldReturnStatusCode500()
+        public void GetHostName_WhenExecutionFails_ShouldReturnStatusCode500()
         {
             // ---- Arrange ----
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
@@ -83,6 +83,32 @@ namespace TerminatorWebApi.Tests
 
             // ---- Assert ----
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
+        }
+
+        [Test]
+        public void GetHostName_WhenCalled_ShouldReturnFullyQualifiedHostName()
+        {
+            // ---- Arrange ----
+            var fullyQualified = "Devfluence - 10-PC01";
+            var hostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IFullqualifiedHostnameGenerator>(hostnameGenerator);
+                with.Module<HostnameModule>();
+            });
+            hostnameGenerator.GetFullQualifiedHostName().Returns(fullyQualified);
+            
+            // ---- Act ----
+            var response = browser.Get("/hostname-f", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.HttpRequest();
+            });
+            
+            // ---- Assert ----
+            var expectedResponseBody = fullyQualified;
+            var actualResponseBody = JsonConvert.DeserializeObject(response.Body.AsString());
+            Assert.AreEqual(expectedResponseBody, actualResponseBody);
         }
     }
 }

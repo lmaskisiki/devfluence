@@ -58,6 +58,5 @@ namespace TerminatorWebApi.Tests
             // ---- Assert ----
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
-
     }
 }

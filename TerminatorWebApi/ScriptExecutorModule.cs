@@ -14,11 +14,18 @@ namespace TerminatorWebApi
         {
             Post["/script"] = _ =>
             {
-                var filePath = this.Request.Body.AsString();
-                var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
-                return Negotiate
-                    .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
-                    .WithModel(scriptOutput.Message);
+                try
+                {
+                    var filePath = this.Request.Body.AsString();
+                    var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
+                    return Negotiate
+                        .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
+                        .WithModel(scriptOutput.Message);
+                }
+                catch (Exception e)
+                {
+                    return HttpStatusCode.InternalServerError;
+                }
             };
         }
     }

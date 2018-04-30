@@ -55,6 +55,7 @@ namespace TerminatorWebApi.Tests
                 with.Dependencies<IScriptExecutor>(scriptExecutor);
                 with.Module<ScriptExecutorModule>();
             });
+
             var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\invalidScript1.ps1";
             scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "", StatusCode = 1 });
 
@@ -80,6 +81,7 @@ namespace TerminatorWebApi.Tests
                 with.Dependencies<IScriptExecutor>(scriptExecutor);
                 with.Module<ScriptExecutorModule>();
             });
+
             var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\helloWorldScript.ps1";
             scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
 

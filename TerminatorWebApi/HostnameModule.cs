@@ -11,8 +11,8 @@ namespace TerminatorWebApi
         {
             Get["/hostname"] = _ =>
           Negotiate
-                    .WithStatusCode(HttpStatusCode.OK)
-                    .WithModel(hostnameGenerator.GetHostName());
+              .WithStatusCode(HttpStatusCode.OK)
+              .WithModel(hostnameGenerator.GetHostName());
 
         }
 

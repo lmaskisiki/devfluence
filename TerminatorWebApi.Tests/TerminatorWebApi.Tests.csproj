@@ -80,6 +80,7 @@
     <Compile Include="IpTest.cs" />
     <Compile Include="OSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SciptModuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

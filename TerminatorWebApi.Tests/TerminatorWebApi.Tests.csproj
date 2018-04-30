@@ -80,9 +80,17 @@
     <Compile Include="IpTest.cs" />
     <Compile Include="OSTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SciptModuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="scripts\emptyScript.ps1" />
+    <None Include="scripts\goodDayScript.ps1" />
+    <None Include="scripts\helloBobScript.ps1" />
+    <None Include="scripts\helloWorldScript.ps1" />
+    <None Include="scripts\invalidScript1.ps1" />
+    <None Include="scripts\invalidScript2.ps1" />
+    <None Include="scripts\systemExceptionScript.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

@@ -109,8 +109,7 @@ namespace TerminatorWebApi.Tests
             });
 
             var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\emptyScript.ps1";
-            scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
-
+ 
             //Act
             var result = browser.Post("/script", with =>
             {

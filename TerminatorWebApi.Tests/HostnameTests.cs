@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using MachineInformationApp;
-using MachineInformationApp.Interfaces;
+﻿using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;
 using Newtonsoft.Json;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using TerminatorWebApi;
+using System;
 
 namespace TerminatorWebApi.Tests
 {
     [TestFixture]
-    public class HostnameModuleTests
+    public class HostnameTests
     {
         [Test]
         public void GetHostname_WhenCalled_ShouldReturnStatusCodeOk()
         {
-            //Arrange
+           // ---- Arrange ----
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
             {
@@ -29,14 +23,14 @@ namespace TerminatorWebApi.Tests
                 with.Module<HostnameModule>();
             });
 
-            //Act
+            // ---- Act ----
             var response = browser.Get("/hostname", with =>
             {
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
             });
 
-            //Assert
+            // ---- Assert ----
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -45,7 +39,7 @@ namespace TerminatorWebApi.Tests
         [TestCase("Devfluence-12")]
         public void GetHostname_WhenCalled_ShouldReturnStatusMachineHostName(string givenHostName)
         {
-            //Arrange
+            // ---- Arrange ----
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
            {
@@ -55,17 +49,40 @@ namespace TerminatorWebApi.Tests
 
             hostnameGenerator.GetHostName().Returns(givenHostName);
 
-            //Act
+            // ---- Act ----
             var response = browser.Get("/hostname", with =>
             {
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
             });
 
-            //Assert
+            // ---- Assert ----
             var expectedResponseBody = givenHostName;
             var actualResponseBody = JsonConvert.DeserializeObject(response.Body.AsString());
             Assert.AreEqual(expectedResponseBody, actualResponseBody);
+        }
+
+        [Test]
+        public void getHostName_WhenExecutionFails_ShouldReturnStatusCode500()
+        {
+            // ---- Arrange ----
+            var hostnameGenerator = Substitute.For<IHostnameGenerator>();
+            hostnameGenerator.GetHostName().Throws(new Exception("invalid execution"));
+
+            var browser = new Browser(with =>
+            {
+                with.Dependency<IHostnameGenerator>(hostnameGenerator);
+                with.Module<HostnameModule>();
+            });
+
+            // ---- Act ----
+            var result = browser.Get("/hostname", with =>
+            {
+                with.HttpRequest();
+            });
+
+            // ---- Assert ----
+            Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
     }
 }

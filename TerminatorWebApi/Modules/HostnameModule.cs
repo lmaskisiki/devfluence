@@ -8,7 +8,7 @@ namespace TerminatorWebApi
     {
         public HostnameModule(IHostnameGenerator hostnameGenerator, IFullqualifiedHostnameGenerator fullqualifiedHostnameGenerator)
         {
-            Get["/hostname"] = param =>
+            Get["/api/hostname"] = param =>
             {
                 try
                 {

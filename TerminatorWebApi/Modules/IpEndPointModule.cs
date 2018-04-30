@@ -8,7 +8,7 @@ namespace TerminatorWebApi
     {
         public IpendpointModule(IIpAddressGenerator ipAddressGenerator)
         {
-            Get["/ip"] = _ =>
+            Get["/api/ip"] = _ =>
             {
                 try
                 {

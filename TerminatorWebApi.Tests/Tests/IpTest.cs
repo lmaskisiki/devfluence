@@ -24,7 +24,7 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Act ----
-            var result = browser.Get("/ip", with =>
+            var result = browser.Get("/api/ip", with =>
             {
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
@@ -50,7 +50,7 @@ namespace TerminatorWebApi.Tests
             ipAddressGenerator.GetIpAddress().Returns(hostIpAddress);
 
             // ---- Act ----
-            var result = browser.Get("/ip", with =>
+            var result = browser.Get("/api/ip", with =>
             {
                 with.HttpRequest();
                 with.Header("Accept", "application/json");
@@ -75,7 +75,7 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Act ----
-            var result = browser.Get("/ip", with =>
+            var result = browser.Get("/api/ip", with =>
             {
                 with.HttpRequest();
             });

@@ -36,7 +36,7 @@ namespace TerminatorWebApi.Tests
             scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "Hello World", StatusCode = 0 });
 
             //Act
-            var result = browser.Post("/script", with =>
+            var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
                 with.Body(filePath);
@@ -62,7 +62,7 @@ namespace TerminatorWebApi.Tests
             scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "", StatusCode = 1 });
 
             //Act
-            var result = browser.Post("/script", with =>
+            var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
                 with.Body(filePath);
@@ -88,7 +88,7 @@ namespace TerminatorWebApi.Tests
             scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
 
             //Act
-            var result = browser.Post("/script", with =>
+            var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
                 with.Body(filePath);
@@ -113,7 +113,7 @@ namespace TerminatorWebApi.Tests
             var filePath = GetScriptPath("emptyScript");
 
             //Act
-            var result = browser.Post("/script", with =>
+            var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
                 with.Body(filePath);

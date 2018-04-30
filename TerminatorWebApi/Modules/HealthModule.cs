@@ -6,7 +6,7 @@ namespace TerminatorWebApi
     {
         public HealthModule()
         {
-            Get["/health"] = p => HttpStatusCode.OK;
+            Get["/api/health"] = p => HttpStatusCode.OK;
         }
     }
 }

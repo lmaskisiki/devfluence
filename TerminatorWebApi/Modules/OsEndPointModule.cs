@@ -7,7 +7,7 @@ namespace TerminatorWebApi
     {
         public OSEndpointModule(IOSGenerator osGenerator)
         {
-            Get["/os"] = _ =>
+            Get["/api/os"] = _ =>
             {
                 try
                 {

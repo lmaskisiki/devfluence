@@ -14,7 +14,7 @@ namespace TerminatorWebApi.Tests
             var browser = new Browser(with => with.Module(new HealthModule()));
 
             // ---- Act ----
-            var result = browser.Get("/health", with => { with.HttpRequest(); });
+            var result = browser.Get("/api/health", with => { with.HttpRequest(); });
 
             // ---- Assert ----       
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);

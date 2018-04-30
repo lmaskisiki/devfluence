@@ -26,7 +26,7 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Act ----
-            var response = browser.Get("/hostname", with =>
+            var response = browser.Get("/api/hostname", with =>
             {
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
@@ -54,7 +54,7 @@ namespace TerminatorWebApi.Tests
             hostnameGenerator.GetHostName().Returns(givenHostName);
 
             // ---- Act ----
-            var response = browser.Get("/hostname", with =>
+            var response = browser.Get("/api/hostname", with =>
             {
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
@@ -82,7 +82,7 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Act ----
-            var result = browser.Get("/hostname", with =>
+            var result = browser.Get("/api/hostname", with =>
             {
                 with.HttpRequest();
             });
@@ -109,7 +109,7 @@ namespace TerminatorWebApi.Tests
             fullyQualifiedHostnameGenerator.GetFullQualifiedHostName().Returns(fullyQualified);
             
             // ---- Act ----
-            var response = browser.Get("/hostname", with =>
+            var response = browser.Get("/api/hostname", with =>
             {
                 with.Query("fully-qualified", "true");
                 with.Header("Accept", "application/json");

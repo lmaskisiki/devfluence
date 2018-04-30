@@ -26,7 +26,7 @@ namespace TerminatorWebApi.Tests
             osGenerator.GetOsVersion().Returns("Microsoft Windows NT 10.0.16299.0");
 
             // ---- Act ----
-            var result = browser.Get("/os", with =>
+            var result = browser.Get("/api/os", with =>
             {
                 with.HttpRequest();
                 with.Header("Accept", "application/json");
@@ -50,7 +50,7 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Act ----
-            var result = browser.Get("/os", with =>
+            var result = browser.Get("/api/os", with =>
             {
                 with.HttpRequest();
             });

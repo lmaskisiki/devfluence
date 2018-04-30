@@ -10,7 +10,7 @@ namespace TerminatorWebApi
 
         public ScriptExecutorModule(IScriptExecutor scriptExecutor)
         {
-            Post["/script"] = _ =>
+            Post["/api/script"] = _ =>
             {
                 try
                 {

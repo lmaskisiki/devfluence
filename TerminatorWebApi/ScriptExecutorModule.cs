@@ -17,6 +17,8 @@ namespace TerminatorWebApi
                 try
                 {
                     var filePath = this.Request.Body.AsString();
+                    if (EmptyScript(filePath))
+                        return HttpStatusCode.BadRequest;
                     var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
                     return Negotiate
                         .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
@@ -27,6 +29,11 @@ namespace TerminatorWebApi
                     return HttpStatusCode.InternalServerError;
                 }
             };
+        }
+
+        private bool EmptyScript(string filePath)
+        {
+            return string.IsNullOrWhiteSpace(System.IO.File.ReadAllText(filePath));
         }
     }
 }

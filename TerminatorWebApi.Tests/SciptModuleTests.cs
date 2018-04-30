@@ -80,7 +80,7 @@ namespace TerminatorWebApi.Tests
             {
                 with.Dependencies<IScriptExecutor>(scriptExecutor);
                 with.Module<ScriptExecutorModule>();
-            });
+            });  
 
             var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\helloWorldScript.ps1";
             scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
@@ -95,6 +95,32 @@ namespace TerminatorWebApi.Tests
 
             //Assert  
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
+        }
+
+        [Test]
+        public void ExecuteScript_GivenEmptyScript_ShouldReturnStatusCode400()
+        {
+            //Arrange
+            var scriptExecutor = Substitute.For<IScriptExecutor>();
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IScriptExecutor>(scriptExecutor);
+                with.Module<ScriptExecutorModule>();
+            });
+
+            var filePath = @"C:\Dev\TerminatorApp\MachineInformationApp\MachineinformationApp.Tests\scripts\emptyScript.ps1";
+            scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
+
+            //Act
+            var result = browser.Post("/script", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.Body(filePath);
+                with.HttpRequest();
+            });
+
+            //Assert  
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
         }
     }
 }

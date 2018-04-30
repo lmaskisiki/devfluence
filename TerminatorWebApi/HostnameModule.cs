@@ -1,7 +1,6 @@
 ﻿using MachineInformationApp.Interfaces;
-using MachineInformationApp;
 using Nancy;
-using Nancy.TinyIoc;
+using System;
 
 namespace TerminatorWebApi
 {
@@ -10,11 +9,18 @@ namespace TerminatorWebApi
         public HostnameModule(IHostnameGenerator hostnameGenerator)
         {
             Get["/hostname"] = _ =>
-          Negotiate
-              .WithStatusCode(HttpStatusCode.OK)
-              .WithModel(hostnameGenerator.GetHostName());
-
+            {
+                try
+                {
+                    return Negotiate
+                   .WithStatusCode(HttpStatusCode.OK)
+                   .WithModel(hostnameGenerator.GetHostName());
+                }
+                catch (Exception)
+                {
+                    return HttpStatusCode.InternalServerError;
+                }
+            };
         }
-
     }
 }

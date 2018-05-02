@@ -15,10 +15,12 @@ namespace TerminatorWebApi
                     if (!FullyQualifiedHostnameRequest(this.Request))
                         return Negotiate
                             .WithStatusCode(HttpStatusCode.OK)
+                            .WithContentType("xml")
                             .WithModel(hostnameGenerator.GetHostName());
 
                     return Negotiate
                         .WithStatusCode(HttpStatusCode.OK)
+                        .WithContentType("xml")
                         .WithModel(fullqualifiedHostnameGenerator.GetFullQualifiedHostName());
                 }
                 catch (Exception)

@@ -20,6 +20,7 @@ namespace TerminatorWebApi
                     var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
                     return Negotiate
                         .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
+                        .WithContentType("application/json")
                         .WithModel(scriptOutput.Message);
                 }
                 catch (Exception)

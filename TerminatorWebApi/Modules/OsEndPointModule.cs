@@ -13,6 +13,7 @@ namespace TerminatorWebApi
                 {
                     return Negotiate
                     .WithStatusCode(HttpStatusCode.OK)
+                    .WithContentType("application/json")
                     .WithModel(osGenerator.GetOsVersion());
                 }
                 catch

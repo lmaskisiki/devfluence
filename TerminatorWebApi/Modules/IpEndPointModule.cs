@@ -13,9 +13,10 @@ namespace TerminatorWebApi
                 try
                 {
                     return Negotiate.WithStatusCode(HttpStatusCode.OK)
-                   .WithModel(ipAddressGenerator.GetIpAddress());
+                    .WithContentType("application/json")
+                    .WithModel(ipAddressGenerator.GetIpAddress());
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     return HttpStatusCode.InternalServerError;
                 }

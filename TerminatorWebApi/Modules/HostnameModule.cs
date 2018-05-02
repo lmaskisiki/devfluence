@@ -8,31 +8,31 @@ namespace TerminatorWebApi
     {
         public HostnameModule(IHostnameGenerator hostnameGenerator, IFullqualifiedHostnameGenerator fullqualifiedHostnameGenerator)
         {
-            Get["/api/hostname"] = param =>
+            Get["/api/hostname"] = _ =>
             {
                 try
                 {
-                    if (this.Request.Query["fully-qualified"])
-                    {
-                        var fullyQualified = false;
-                        Boolean.TryParse(this.Request.Query["fully-qualified"], out fullyQualified);
-                        if (fullyQualified)
-                        {
-                            var result = fullqualifiedHostnameGenerator.GetFullQualifiedHostName();
-                            return Negotiate
+                    if (!FullyQualifiedHostnameRequest(this.Request))
+                        return Negotiate
                             .WithStatusCode(HttpStatusCode.OK)
-                            .WithModel(result);
-                        }
-                    }
+                            .WithModel(hostnameGenerator.GetHostName());
+
                     return Negotiate
-                   .WithStatusCode(HttpStatusCode.OK)
-                   .WithModel(hostnameGenerator.GetHostName());
+                        .WithStatusCode(HttpStatusCode.OK)
+                        .WithModel(fullqualifiedHostnameGenerator.GetFullQualifiedHostName());
                 }
                 catch (Exception)
                 {
                     return HttpStatusCode.InternalServerError;
                 }
             };
+        }
+
+        private static bool FullyQualifiedHostnameRequest(Request request)
+        {
+            if (!request.Query["fully-qualified"]) return false;
+            bool.TryParse(request.Query["fully-qualified"], out bool fullyQualified);
+            return fullyQualified;
         }
     }
 }

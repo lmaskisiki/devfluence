@@ -79,6 +79,7 @@ namespace TerminatorWebApi.Tests
                 with.Dependency<IHostnameGenerator>(hostnameGenerator);
                 with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                 with.Module<HostnameModule>();
+
             });
 
             // ---- Act ----

@@ -39,6 +39,7 @@ namespace TerminatorWebApi.Tests
 
             //Assert  
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+           // Assert.AreEqual(ScriptOutput.Message ,  )
         }
 
         [Test]

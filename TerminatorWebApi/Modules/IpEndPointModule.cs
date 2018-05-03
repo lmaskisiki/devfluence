@@ -1,6 +1,7 @@
 ﻿using MachineInformationApp.Interfaces;
 using Nancy;
 using System;
+using System.IO;
 
 namespace TerminatorWebApi
 {
@@ -10,16 +11,11 @@ namespace TerminatorWebApi
         {
             Get["/api/ip"] = _ =>
             {
-                try
-                {
-                    return Negotiate.WithStatusCode(HttpStatusCode.OK)
-                    .WithContentType("application/json")
-                    .WithModel(ipAddressGenerator.GetIpAddress());
-                }
-                catch (Exception)
-                {
-                    return HttpStatusCode.InternalServerError;
-                }
+                return Negotiate.WithStatusCode(HttpStatusCode.OK)
+                       .WithContentType("application/json")
+                       .WithModel(ipAddressGenerator.GetIpAddress());
+
+
             };
         }
     }

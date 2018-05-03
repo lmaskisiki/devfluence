@@ -39,7 +39,7 @@ namespace TerminatorWebApi.Tests
 
             //Assert  
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-           // Assert.AreEqual(ScriptOutput.Message ,  )
+            // Assert.AreEqual(ScriptOutput.Message ,  )
         }
 
         [Test]
@@ -77,6 +77,7 @@ namespace TerminatorWebApi.Tests
             {
                 with.Dependencies<IScriptExecutor>(scriptExecutor);
                 with.Module<ScriptExecutorModule>();
+                with.ApplicationStartupTask<ApplicationStartup>();
             });
 
             var filePath = GetScriptPath("helloWorldScript");
@@ -91,7 +92,9 @@ namespace TerminatorWebApi.Tests
             });
 
             //Assert  
+
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
+            Assert.AreEqual("Somthing went wrong", result.Body.AsString());
         }
 
         [Test]

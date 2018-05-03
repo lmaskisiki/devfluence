@@ -7,26 +7,18 @@ namespace TerminatorWebApi
 {
     public class ScriptExecutorModule : NancyModule
     {
-
         public ScriptExecutorModule(IScriptExecutor scriptExecutor)
         {
             Post["/api/script"] = _ =>
             {
-                try
-                {
-                    var filePath = this.Request.Body.AsString();
-                    if (EmptyScript(filePath))
-                        return HttpStatusCode.BadRequest;
-                    var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
-                    return Negotiate
-                        .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
-                        .WithContentType("application/json")
-                        .WithModel(scriptOutput.Message);
-                }
-                catch (Exception)
-                {
-                    return HttpStatusCode.InternalServerError;
-                }
+                var filePath = this.Request.Body.AsString();
+                if (EmptyScript(filePath))
+                    return HttpStatusCode.BadRequest;
+                var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
+                return Negotiate
+                    .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
+                    .WithContentType("application/json")
+                    .WithModel(scriptOutput.Message);
             };
         }
 

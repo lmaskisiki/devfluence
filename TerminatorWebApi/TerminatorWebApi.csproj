@@ -59,6 +59,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationStartup.cs" />
     <Compile Include="Bootsraper.cs" />
     <Compile Include="Modules\HealthModule.cs" />
     <Compile Include="Modules\HostnameModule.cs" />

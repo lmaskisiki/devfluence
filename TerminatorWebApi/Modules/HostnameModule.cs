@@ -10,23 +10,16 @@ namespace TerminatorWebApi
         {
             Get["/api/hostname"] = _ =>
             {
-                try
-                {
-                    if (!FullyQualifiedHostnameRequest(this.Request))
-                        return Negotiate
-                            .WithStatusCode(HttpStatusCode.OK)
-                            .WithContentType("application/json")
-                            .WithModel(hostnameGenerator.GetHostName());
-
+                if (!FullyQualifiedHostnameRequest(this.Request))
                     return Negotiate
                         .WithStatusCode(HttpStatusCode.OK)
                         .WithContentType("application/json")
-                        .WithModel(fullqualifiedHostnameGenerator.GetFullQualifiedHostName());
-                }
-                catch (Exception)
-                {
-                    return HttpStatusCode.InternalServerError;
-                }
+                        .WithModel(hostnameGenerator.GetHostName());
+
+                return Negotiate
+                    .WithStatusCode(HttpStatusCode.OK)
+                    .WithContentType("application/json")
+                    .WithModel(fullqualifiedHostnameGenerator.GetFullQualifiedHostName());
             };
         }
 

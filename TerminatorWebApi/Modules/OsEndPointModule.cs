@@ -1,5 +1,6 @@
 ﻿using MachineInformationApp;
 using Nancy;
+using System;
 
 namespace TerminatorWebApi
 {
@@ -7,20 +8,10 @@ namespace TerminatorWebApi
     {
         public OSEndpointModule(IOSGenerator osGenerator)
         {
-            Get["/api/os"] = _ =>
-            {
-                try
-                {
-                    return Negotiate
-                    .WithStatusCode(HttpStatusCode.OK)
-                    .WithContentType("application/json")
-                    .WithModel(osGenerator.GetOsVersion());
-                }
-                catch
-                {
-                    return HttpStatusCode.InternalServerError;
-                }
-            };
+            Get["/api/os"] = _ => Negotiate
+                .WithStatusCode(HttpStatusCode.OK)
+                .WithContentType("application/json")
+                .WithModel(osGenerator.GetOsVersion());
         }
     }
 }

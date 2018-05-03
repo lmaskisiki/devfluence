@@ -9,14 +9,10 @@ namespace TerminatorWebApi
     {
         public IpendpointModule(IIpAddressGenerator ipAddressGenerator)
         {
-            Get["/api/ip"] = _ =>
-            {
-                return Negotiate.WithStatusCode(HttpStatusCode.OK)
-                       .WithContentType("application/json")
-                       .WithModel(ipAddressGenerator.GetIpAddress());
-
-
-            };
+            Get["/api/ip"] = _ => Negotiate
+                .WithStatusCode(HttpStatusCode.OK)
+                .WithContentType("application/json")
+                .WithModel(ipAddressGenerator.GetIpAddress());
         }
     }
 }

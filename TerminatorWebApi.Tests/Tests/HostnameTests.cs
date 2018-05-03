@@ -85,10 +85,13 @@ namespace TerminatorWebApi.Tests
             // ---- Act ----
             var result = browser.Get("/api/hostname", with =>
             {
+                with.Header("Accept","application/json");
                 with.HttpRequest();
             });
 
             // ---- Assert ----
+            var expected = "invalid execution";
+            Assert.AreEqual(expected, JsonConvert.DeserializeObject(result.Body.AsString()));
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
 

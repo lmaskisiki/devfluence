@@ -5,6 +5,7 @@ using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;
+using Newtonsoft.Json;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
@@ -28,7 +29,7 @@ namespace TerminatorWebApi.Tests
 
             var filePath = GetScriptPath("helloWorldScript");
             scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "Hello World", StatusCode = 0 });
-
+           
             //Act
             var result = browser.Post("/api/script", with =>
             {
@@ -37,9 +38,17 @@ namespace TerminatorWebApi.Tests
                 with.HttpRequest();
             });
 
+<<<<<<< HEAD
             //Assert  
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             // Assert.AreEqual(ScriptOutput.Message ,  )
+=======
+            //Assert 
+            var expectedScriptResult = "Hello World";
+            var actual = JsonConvert.DeserializeObject(result.Body.AsString());
+            Assert.AreEqual(expectedScriptResult,actual);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);  
+>>>>>>> 411c370a4fa971e5cb0d9ecbe1a929699e1f7197
         }
 
         [Test]
@@ -54,7 +63,7 @@ namespace TerminatorWebApi.Tests
             });
 
             var filePath = GetScriptPath("invalidScript1");
-            scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "", StatusCode = 1 });
+            scriptExecutor.ExecutePowershell(filePath).Returns(new ScriptOutput { Message = "Invalid powershell script", StatusCode = 1 });
 
             //Act
             var result = browser.Post("/api/script", with =>
@@ -65,6 +74,9 @@ namespace TerminatorWebApi.Tests
             });
 
             //Assert  
+            var expected = "Invalid powershell script";
+            var actual = JsonConvert.DeserializeObject(result.Body.AsString());
+            Assert.AreEqual(expected, actual);
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
 
@@ -81,7 +93,7 @@ namespace TerminatorWebApi.Tests
             });
 
             var filePath = GetScriptPath("helloWorldScript");
-            scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Somthing went wrong"));
+            scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Something went wrong"));
 
             //Act
             var result = browser.Post("/api/script", with =>
@@ -92,7 +104,13 @@ namespace TerminatorWebApi.Tests
             });
 
             //Assert  
+<<<<<<< HEAD
 
+=======
+            var expected = "Something went wrong";
+            var actual = JsonConvert.DeserializeObject(result.Body.AsString());
+            Assert.AreEqual(expected,actual);
+>>>>>>> 411c370a4fa971e5cb0d9ecbe1a929699e1f7197
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
             Assert.AreEqual("Somthing went wrong", result.Body.AsString());
         }
@@ -109,7 +127,7 @@ namespace TerminatorWebApi.Tests
             });
 
             var filePath = GetScriptPath("emptyScript");
-
+            
             //Act
             var result = browser.Post("/api/script", with =>
             {

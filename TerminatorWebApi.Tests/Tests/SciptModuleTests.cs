@@ -74,8 +74,10 @@ namespace TerminatorWebApi.Tests
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
 
-        [Test]
-        public void ExecuteScript_GivenValidPowershellScriptAndSomethingGoesWrong_ShouldReturnStatusCode500()
+        [TestCase("echo 'Hello World'")]
+        [TestCase("Write-Output 'Hello World'")]
+        [TestCase("dir")]
+        public void ExecuteScript_GivenValidPowershellScriptAndSomethingGoesWrong_ShouldReturnStatusCode500(string scriptText)
         {
             //Arrange
             var scriptExecutor = Substitute.For<IScriptExecutor>();
@@ -86,14 +88,13 @@ namespace TerminatorWebApi.Tests
                 with.ApplicationStartupTask<ApplicationStartup>();
             });
 
-            var filePath = GetScriptPath("helloWorldScript");
-            scriptExecutor.ExecutePowershell(filePath).Throws(new Exception("Something went wrong"));
+            scriptExecutor.ExecutePowershell(scriptText).Throws(new Exception("Something went wrong"));
 
             //Act
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.Body(filePath);
+                with.Body(scriptText);
                 with.HttpRequest();
             });
 
@@ -104,8 +105,11 @@ namespace TerminatorWebApi.Tests
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
 
-        [Test]
-        public void ExecuteScript_GivenEmptyScript_ShouldReturnStatusCode400()
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("\n")]
+        [TestCase("\t")]
+        public void ExecuteScript_GivenEmptyScript_ShouldReturnStatusCode400(string scriptText)
         {
             //Arrange
             var scriptExecutor = Substitute.For<IScriptExecutor>();
@@ -115,13 +119,11 @@ namespace TerminatorWebApi.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            var filePath = GetScriptPath("emptyScript");
-
             //Act
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.Body(filePath);
+                with.Body(scriptText);
                 with.HttpRequest();
             });
 

@@ -11,11 +11,11 @@ namespace TerminatorWebApi
         {
             Post["/api/script"] = _ =>
             {
-                var filePath = this.Request.Body.AsString();
-                if (EmptyScript(filePath))
+                var scriptText = this.Request.Body.AsString();
+                if (EmptyScript(scriptText))
                     return HttpStatusCode.BadRequest;
 
-                var scriptOutput = scriptExecutor.ExecutePowershell(filePath);
+                var scriptOutput = scriptExecutor.ExecutePowershell(scriptText);
                 return Negotiate
                     .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
                     .WithContentType("application/json")
@@ -24,9 +24,9 @@ namespace TerminatorWebApi
             };
         }
 
-        private bool EmptyScript(string filePath)
+        private bool EmptyScript(string scriptText)
         {
-            return string.IsNullOrWhiteSpace(System.IO.File.ReadAllText(filePath));
+            return string.IsNullOrWhiteSpace(scriptText);
         }
     }
 }

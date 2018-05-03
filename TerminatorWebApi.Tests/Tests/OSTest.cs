@@ -58,7 +58,7 @@ namespace TerminatorWebApi.Tests
 
             // ---- Assert ----
             var expected = "Execution failed";
-            Assert.AreEqual(expected, JsonConvert.DeserializeObject(result.Body.AsString()));
+            Assert.AreEqual(expected, result.Body.AsString());
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
     }

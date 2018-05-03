@@ -23,7 +23,7 @@ namespace TerminatorWebApi.Tests
                 with.Dependencies<IOSGenerator>(osGenerator);
                 with.Module<OSEndpointModule>();
             });
-            osGenerator.GetOsVersion().Returns("Microsoft Windows NT 10.0.16299.0");
+            osGenerator.GetOsVersion().Returns(new ExecutionOutput{Output = "Microsoft Windows NT 10.0.16299.0" });
 
             // ---- Act ----
             var result = browser.Get("/api/os", with =>
@@ -33,7 +33,8 @@ namespace TerminatorWebApi.Tests
             });
             // ---- Assert ---- 
             var expected = "Microsoft Windows NT 10.0.16299.0";
-            Assert.AreEqual(expected,JsonConvert.DeserializeObject(result.Body.AsString()));
+            var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(result.Body.AsString());
+            Assert.AreEqual(expected, actualResponseBody.Output);
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace TerminatorWebApi.Tests
 
             // ---- Assert ----
             var expected = "Execution failed";
-            Assert.AreEqual(expected, JsonConvert.DeserializeObject(result.Body.AsString()));
+            Assert.AreEqual(expected, result.Body.AsString());
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
     }

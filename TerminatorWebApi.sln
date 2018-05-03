@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminatorWebApi", "Termina
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminatorWebApi.Tests", "TerminatorWebApi.Tests\TerminatorWebApi.Tests.csproj", "{DF22BBE3-28A9-4DAB-A45D-42A959A3EE3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineInformationApp.Interfaces", "..\TerminatorApp\MachineInformationApp\MachineInformationApp.Interfaces\MachineInformationApp.Interfaces.csproj", "{3B37A81F-2679-47E0-890D-9DA4E4D4AC08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineInformationApp", "..\TerminatorApp\MachineInformationApp\MachineInformationApp\MachineInformationApp.csproj", "{1AE1435D-CE08-4CC1-874E-8D4466FB5590}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{DF22BBE3-28A9-4DAB-A45D-42A959A3EE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF22BBE3-28A9-4DAB-A45D-42A959A3EE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF22BBE3-28A9-4DAB-A45D-42A959A3EE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B37A81F-2679-47E0-890D-9DA4E4D4AC08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B37A81F-2679-47E0-890D-9DA4E4D4AC08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B37A81F-2679-47E0-890D-9DA4E4D4AC08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B37A81F-2679-47E0-890D-9DA4E4D4AC08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AE1435D-CE08-4CC1-874E-8D4466FB5590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE1435D-CE08-4CC1-874E-8D4466FB5590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE1435D-CE08-4CC1-874E-8D4466FB5590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE1435D-CE08-4CC1-874E-8D4466FB5590}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

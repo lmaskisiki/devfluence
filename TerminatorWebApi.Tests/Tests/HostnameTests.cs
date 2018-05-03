@@ -6,6 +6,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using System;
+using MachineInformationApp;
 
 namespace TerminatorWebApi.Tests
 {
@@ -16,11 +17,10 @@ namespace TerminatorWebApi.Tests
         public void GetHostname_WhenCalled_ShouldReturnStatusCodeOk()
         {
             // ---- Arrange ----
-            var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
+
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
             {
-                with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                 with.Dependencies<IHostnameGenerator>(hostnameGenerator);
                 with.Module<HostnameModule>();
             });
@@ -42,16 +42,14 @@ namespace TerminatorWebApi.Tests
         public void GetHostname_WhenCalled_ShouldReturnStatusMachineHostName(string givenHostName)
         {
             // ---- Arrange ----
-            var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             var browser = new Browser(with =>
            {
                with.Dependencies<IHostnameGenerator>(hostnameGenerator);
-               with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                with.Module<HostnameModule>();
            });
 
-            hostnameGenerator.GetHostName().Returns(givenHostName);
+            hostnameGenerator.GetHostName().Returns(new ExecutionOutput { Output = givenHostName });
 
             // ---- Act ----
             var response = browser.Get("/api/hostname", with =>
@@ -62,22 +60,20 @@ namespace TerminatorWebApi.Tests
 
             // ---- Assert ----
             var expectedResponseBody = givenHostName;
-            var actualResponseBody = JsonConvert.DeserializeObject(response.Body.AsString());
-            Assert.AreEqual(expectedResponseBody, actualResponseBody);
+            var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(response.Body.AsString());
+            Assert.AreEqual(expectedResponseBody, actualResponseBody.Output);
         }
 
         [Test]
         public void GetHostName_WhenExecutionFails_ShouldReturnStatusCode500()
         {
             // ---- Arrange ----
-            var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
             hostnameGenerator.GetHostName().Throws(new Exception("invalid execution"));
 
             var browser = new Browser(with =>
             {
                 with.Dependency<IHostnameGenerator>(hostnameGenerator);
-                with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                 with.Module<HostnameModule>();
 
             });
@@ -85,13 +81,13 @@ namespace TerminatorWebApi.Tests
             // ---- Act ----
             var result = browser.Get("/api/hostname", with =>
             {
-                with.Header("Accept","application/json");
+                with.Header("Accept", "application/json");
                 with.HttpRequest();
             });
 
             // ---- Assert ----
             var expected = "invalid execution";
-            Assert.AreEqual(expected, JsonConvert.DeserializeObject(result.Body.AsString()));
+            Assert.AreEqual(expected, result.Body.AsString());
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
 
@@ -100,18 +96,16 @@ namespace TerminatorWebApi.Tests
         {
             // ---- Arrange ----
             var fullyQualified = "Devfluence - 10-PC01";
-             var fullyQualifiedHostnameGenerator = Substitute.For<IFullqualifiedHostnameGenerator>();
             var hostnameGenerator = Substitute.For<IHostnameGenerator>();
 
             var browser = new Browser(with =>
             {
-                with.Dependencies<IFullqualifiedHostnameGenerator>(fullyQualifiedHostnameGenerator);
                 with.Dependencies<IHostnameGenerator>(hostnameGenerator);
 
                 with.Module<HostnameModule>();
             });
-            fullyQualifiedHostnameGenerator.GetFullQualifiedHostName().Returns(fullyQualified);
-            
+            hostnameGenerator.GetFullQualifiedHostName().Returns(new ExecutionOutput { Output = fullyQualified });
+
             // ---- Act ----
             var response = browser.Get("/api/hostname", with =>
             {
@@ -119,11 +113,11 @@ namespace TerminatorWebApi.Tests
                 with.Header("Accept", "application/json");
                 with.HttpRequest();
             });
-            
+
             // ---- Assert ----
             var expectedResponseBody = fullyQualified;
-            var actualResponseBody = JsonConvert.DeserializeObject(response.Body.AsString());
-            Assert.AreEqual(expectedResponseBody, actualResponseBody);
+            var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(response.Body.AsString());
+            Assert.AreEqual(expectedResponseBody, actualResponseBody.Output);
         }
     }
 }

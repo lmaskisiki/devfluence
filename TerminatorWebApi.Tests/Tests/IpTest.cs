@@ -6,6 +6,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using System;
+using MachineInformationApp;
 
 namespace TerminatorWebApi.Tests
 {
@@ -47,7 +48,7 @@ namespace TerminatorWebApi.Tests
                 with.Module<IpendpointModule>();
             });
 
-            ipAddressGenerator.GetIpAddress().Returns(hostIpAddress);
+            ipAddressGenerator.GetIpAddress().Returns(new ExecutionOutput{Output = hostIpAddress });
 
             // ---- Act ----
             var result = browser.Get("/api/ip", with =>
@@ -58,7 +59,8 @@ namespace TerminatorWebApi.Tests
 
             // ---- Assert ----   
             var expected = hostIpAddress;
-            Assert.AreEqual(expected, JsonConvert.DeserializeObject(result.Body.AsString()));
+            var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(result.Body.AsString());
+            Assert.AreEqual(expected, actualResponseBody.Output);
         }
 
         [Test]

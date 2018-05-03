@@ -15,7 +15,7 @@ namespace TerminatorWebApi.Tests
 
             // ---- Act ----
             var result = browser.Get("/api/health", with => { with.HttpRequest(); });
-
+            
             // ---- Assert ----       
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }

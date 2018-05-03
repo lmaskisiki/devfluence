@@ -6,7 +6,7 @@ namespace TerminatorWebApi
 {
     public class HostnameModule : NancyModule
     {
-        public HostnameModule(IHostnameGenerator hostnameGenerator, IFullqualifiedHostnameGenerator fullqualifiedHostnameGenerator)
+        public HostnameModule(IHostnameGenerator hostnameGenerator)
         {
             Get["/api/hostname"] = _ =>
             {
@@ -19,7 +19,7 @@ namespace TerminatorWebApi
                 return Negotiate
                     .WithStatusCode(HttpStatusCode.OK)
                     .WithContentType("application/json")
-                    .WithModel(fullqualifiedHostnameGenerator.GetFullQualifiedHostName());
+                    .WithModel(hostnameGenerator.GetFullQualifiedHostName());
             };
         }
 

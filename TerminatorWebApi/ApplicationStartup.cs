@@ -19,7 +19,6 @@ namespace TerminatorWebApi
 
         private Func<NancyContext, Exception, dynamic> PipelinesOnError()
         {
-
             return (ctx, ex) =>
             {
                 return new Response

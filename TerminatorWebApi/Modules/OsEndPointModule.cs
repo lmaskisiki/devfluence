@@ -1,5 +1,6 @@
 ﻿using MachineInformationApp;
 using Nancy;
+using System;
 
 namespace TerminatorWebApi
 {
@@ -16,9 +17,11 @@ namespace TerminatorWebApi
                     .WithContentType("application/json")
                     .WithModel(osGenerator.GetOsVersion());
                 }
-                catch
+                catch(Exception e)
                 {
-                    return HttpStatusCode.InternalServerError;
+                    return Negotiate
+                    .WithStatusCode(HttpStatusCode.InternalServerError)
+                    .WithModel(e.Message);     
                 }
             };
         }

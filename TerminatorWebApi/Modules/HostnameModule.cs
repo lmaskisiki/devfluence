@@ -23,9 +23,12 @@ namespace TerminatorWebApi
                         .WithContentType("application/json")
                         .WithModel(fullqualifiedHostnameGenerator.GetFullQualifiedHostName());
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    return HttpStatusCode.InternalServerError;
+                    return Negotiate
+                         .WithStatusCode(HttpStatusCode.InternalServerError)
+                         .WithContentType("application/json")
+                         .WithModel(e.Message);
                 }
             };
         }

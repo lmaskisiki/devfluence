@@ -41,7 +41,7 @@ namespace TerminatorWebApi.Tests
         {
             // ---- Arrange ----
             var osGenerator = Substitute.For<IOSGenerator>();
-            osGenerator.GetOsVersion().Throws(new Exception("Invalid Execution"));
+            osGenerator.GetOsVersion().Throws(new Exception("Execution failed"));
 
             var browser = new Browser(with =>
             {
@@ -53,9 +53,12 @@ namespace TerminatorWebApi.Tests
             var result = browser.Get("/api/os", with =>
             {
                 with.HttpRequest();
+                with.Header("Accept", "application/json");
             });
 
             // ---- Assert ----
+            var expected = "Execution failed";
+            Assert.AreEqual(expected, JsonConvert.DeserializeObject(result.Body.AsString()));
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
     }

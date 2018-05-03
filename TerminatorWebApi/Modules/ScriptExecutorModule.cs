@@ -2,6 +2,8 @@
 using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Extensions;
+using Nancy.ModelBinding;
+using Newtonsoft.Json;
 
 namespace TerminatorWebApi
 {
@@ -11,22 +13,28 @@ namespace TerminatorWebApi
         {
             Post["/api/script"] = _ =>
             {
-                var scriptText = this.Request.Body.AsString();
-                if (EmptyScript(scriptText))
-                    return HttpStatusCode.BadRequest;
+                var scriptQuery = this.Bind<ScriptQuery>();
+                if (EmptyScript(scriptQuery))
+                    return Negotiate
+                        .WithStatusCode(HttpStatusCode.BadRequest)
+                        .WithModel("Invalid powershell script");
 
-                var scriptOutput = scriptExecutor.ExecutePowershell(scriptText);
+                var scriptOutput = scriptExecutor.ExecutePowershell(scriptQuery.Text);
                 return Negotiate
                     .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
                     .WithContentType("application/json")
-                    .WithModel(scriptOutput.Message);
- 
+                    .WithModel(scriptOutput);
             };
         }
 
-        private bool EmptyScript(string scriptText)
+        private bool EmptyScript(ScriptQuery scriptQuery)
         {
-            return string.IsNullOrWhiteSpace(scriptText);
+            if (scriptQuery != null)
+            {
+                return string.IsNullOrWhiteSpace(scriptQuery.Text);
+            }
+
+            return true;
         }
     }
 }

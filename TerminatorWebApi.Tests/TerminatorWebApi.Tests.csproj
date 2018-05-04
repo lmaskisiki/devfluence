@@ -90,9 +90,13 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\TerminatorApp\MachineInformationApp\MachineInformationApp.Interfaces\MachineInformationApp.Interfaces.csproj">
+    <ProjectReference Include="..\MachineInformationApp.Interfaces\MachineInformationApp.Interfaces.csproj">
       <Project>{3b37a81f-2679-47e0-890d-9da4e4d4ac08}</Project>
       <Name>MachineInformationApp.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MachineInformationApp\MachineInformationApp.csproj">
+      <Project>{1ae1435d-ce08-4cc1-874e-8d4466fb5590}</Project>
+      <Name>MachineInformationApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\TerminatorWebApi\TerminatorWebApi.csproj">
       <Project>{8caa5af3-5822-4108-88f8-43fb2d2b77d6}</Project>

@@ -19,7 +19,7 @@ namespace TerminatorWebApi
                         .WithStatusCode(HttpStatusCode.BadRequest)
                         .WithModel("Invalid powershell script");
 
-                var scriptOutput = scriptExecutor.ExecutePowershell(scriptQuery.Text);
+                var scriptOutput = scriptExecutor.ExecutePowershell(scriptQuery.Script);
                 return Negotiate
                     .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
                     .WithContentType("application/json")
@@ -31,7 +31,7 @@ namespace TerminatorWebApi
         {
             if (scriptQuery != null)
             {
-                return string.IsNullOrWhiteSpace(scriptQuery.Text);
+                return string.IsNullOrWhiteSpace(scriptQuery.Script);
             }
 
             return true;

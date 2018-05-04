@@ -16,7 +16,7 @@ namespace TerminatorWebApi.Tests
     {
         [TestCase("echo 'Hello World'", "Hello World")]
         [TestCase("Write-Output 'Hello Bob'", "Hello Bob")]
-        public void ExecuteScript_GivenValidPowershellScript_ShouldReturnStatusCodeOK(string scriptText, string expectedOutput)
+        public void ExecuteScript_GivenValidPowershellScript_ShouldReturnStatusCode200AndOutput(string scriptText, string expectedOutput)
         {
             //Arrange
             var scriptExecutor = Substitute.For<IScriptExecutor>();
@@ -32,11 +32,12 @@ namespace TerminatorWebApi.Tests
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new ScriptQuery { Text = scriptText });
+                with.JsonBody(new ScriptQuery { Script = scriptText });
                 with.HttpRequest();
             });
 
             //Assert 
+            scriptExecutor.Received(1).ExecutePowershell(scriptText);
             var actual = JsonConvert.DeserializeObject<ScriptOutput>(result.Body.AsString());
             Assert.AreEqual(expectedOutput, actual.Message);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -44,7 +45,6 @@ namespace TerminatorWebApi.Tests
 
         [TestCase("echo 'Hello World'")]
         [TestCase("Write-Output 'Hello World'")]
-        [TestCase("dir")]
         public void ExecuteScript_GivenValidPowershellScriptAndSomethingGoesWrong_ShouldReturnStatusCode500(string scriptText)
         {
             //Arrange
@@ -61,13 +61,14 @@ namespace TerminatorWebApi.Tests
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new { Text = scriptText });
+                with.JsonBody(new ScriptQuery { Script = scriptText });
                 with.HttpRequest();
             });
 
             //Assert  
             var expected = "Something went wrong";
             var actual = result.Body.AsString();
+            scriptExecutor.Received(1).ExecutePowershell(scriptText);
             Assert.AreEqual(expected, actual);
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
         }
@@ -95,6 +96,7 @@ namespace TerminatorWebApi.Tests
             });
 
             //Assert  
+            scriptExecutor.DidNotReceiveWithAnyArgs().ExecutePowershell(Arg.Any<string>());
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
         }
     }

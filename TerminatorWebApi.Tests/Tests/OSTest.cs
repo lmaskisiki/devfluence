@@ -17,13 +17,13 @@ namespace TerminatorWebApi.Tests
         {
             // ---- Arrange ----
             var osGenerator = Substitute.For<IOSGenerator>();
-         
+
             var browser = new Browser(with =>
             {
                 with.Dependencies<IOSGenerator>(osGenerator);
                 with.Module<OSEndpointModule>();
             });
-            osGenerator.GetOsVersion().Returns(new ExecutionOutput{Output = "Microsoft Windows NT 10.0.16299.0" });
+            osGenerator.GetOsVersion().Returns(new ExecutionOutput { Output = "Microsoft Windows NT 10.0.16299.0" });
 
             // ---- Act ----
             var result = browser.Get("/api/os", with =>
@@ -31,7 +31,8 @@ namespace TerminatorWebApi.Tests
                 with.HttpRequest();
                 with.Header("Accept", "application/json");
             });
-            // ---- Assert ---- 
+            // ---- Assert ----
+            osGenerator.Received(1).GetOsVersion();
             var expected = "Microsoft Windows NT 10.0.16299.0";
             var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(result.Body.AsString());
             Assert.AreEqual(expected, actualResponseBody.Output);
@@ -58,6 +59,7 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Assert ----
+            osGenerator.Received(1).GetOsVersion();
             var expected = "Execution failed";
             Assert.AreEqual(expected, result.Body.AsString());
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);

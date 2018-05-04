@@ -13,32 +13,10 @@ namespace TerminatorWebApi.Tests
     [TestFixture]
     public class IpTest
     {
-        [Test]
-        public void GetIpadddress_WhenRequestingip_ShouldReturnStatuscode200()
-        {
-            // ---- Arrange ----
-            var ipAddressGenerator = Substitute.For<IIpAddressGenerator>();
-            var browser = new Browser(with =>
-            {
-                with.Dependencies<IIpAddressGenerator>(ipAddressGenerator);
-                with.Module<IpendpointModule>();
-            });
-
-            // ---- Act ----
-            var result = browser.Get("/api/ip", with =>
-            {
-                with.Header("Accept", "application/json");
-                with.HttpRequest();
-            });
-
-            // ---- Assert ----  
-            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-        }
-
         [TestCase("192.168.140.1")]
         [TestCase("192.168.140.2")]
         [TestCase("192.168.140.3")]
-        public void GetIpadddress_WhenRequested_ShouldReturnIP(string hostIpAddress)
+        public void GetIpadddress_WhenRequested_ShouldReturnStatusCode200AndIPAddress(string hostIpAddress)
         {
             // ---- Arrange ----
             var ipAddressGenerator = Substitute.For<IIpAddressGenerator>();
@@ -48,7 +26,7 @@ namespace TerminatorWebApi.Tests
                 with.Module<IpendpointModule>();
             });
 
-            ipAddressGenerator.GetIpAddress().Returns(new ExecutionOutput{Output = hostIpAddress });
+            ipAddressGenerator.GetIpAddress().Returns(new ExecutionOutput { Output = hostIpAddress });
 
             // ---- Act ----
             var result = browser.Get("/api/ip", with =>
@@ -58,11 +36,12 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Assert ----   
-            var expected = hostIpAddress;
-            var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(result.Body.AsString());
-            Assert.AreEqual(expected, actualResponseBody.Output);
+            var actualResponseBody = GetResponseBody(result);
+            ipAddressGenerator.Received(1).GetIpAddress();
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            Assert.AreEqual(hostIpAddress, actualResponseBody.Output);
         }
-
+        
         [Test]
         public void GetIpAddress_WhenExecutionFails_ShouldReturnStatusError500()
         {
@@ -83,7 +62,13 @@ namespace TerminatorWebApi.Tests
             });
 
             // ---- Assert ----
+            ipAddressGenerator.Received(1).GetIpAddress();
             Assert.AreEqual(HttpStatusCode.InternalServerError, result.StatusCode);
+        }
+
+        private static ExecutionOutput GetResponseBody(BrowserResponse result)
+        {
+            return JsonConvert.DeserializeObject<ExecutionOutput>(result.Body.AsString());
         }
     }
 }

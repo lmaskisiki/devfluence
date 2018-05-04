@@ -1,4 +1,5 @@
 ﻿using System;
+using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;

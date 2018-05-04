@@ -1,14 +1,14 @@
-﻿using MachineInformationApp.Interfaces;
+﻿using System;
+using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;
 using Newtonsoft.Json;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using System;
-using MachineInformationApp;
+using TerminatorWebApi.Modules;
 
-namespace TerminatorWebApi.Tests
+namespace TerminatorWebApi.Tests.Tests
 {
     [TestFixture]
     public class IpTest

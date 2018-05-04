@@ -1,12 +1,11 @@
-﻿using MachineInformationApp;
+﻿using MachineInformationApp.Interfaces;
 using Nancy;
-using System;
 
-namespace TerminatorWebApi
+namespace TerminatorWebApi.Modules
 {
-    public class OSEndpointModule : NancyModule
+    public class OsEndpointModule : NancyModule
     {
-        public OSEndpointModule(IOSGenerator osGenerator)
+        public OsEndpointModule(IOsGenerator osGenerator)
         {
             Get["/api/os"] = _ => Negotiate
                 .WithStatusCode(HttpStatusCode.OK)

@@ -1,6 +1,6 @@
 ﻿using Nancy;
 
-namespace TerminatorWebApi
+namespace TerminatorWebApi.Modules
 {
     public class HealthModule : NancyModule
     {

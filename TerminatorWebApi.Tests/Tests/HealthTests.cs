@@ -1,8 +1,9 @@
 ﻿using Nancy;
 using Nancy.Testing;
 using NUnit.Framework;
+using TerminatorWebApi.Modules;
 
-namespace TerminatorWebApi.Tests
+namespace TerminatorWebApi.Tests.Tests
 {
     [TestFixture]
      class HealthTests

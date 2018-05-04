@@ -1,8 +1,7 @@
 ﻿using MachineInformationApp.Interfaces;
 using Nancy;
-using System;
 
-namespace TerminatorWebApi
+namespace TerminatorWebApi.Modules
 {
     public class HostnameModule : NancyModule
     {

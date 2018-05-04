@@ -1,5 +1,4 @@
 ﻿using System;
-using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;
@@ -7,9 +6,9 @@ using Newtonsoft.Json;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+using TerminatorWebApi.Modules;
 
-namespace TerminatorWebApi.Tests
+namespace TerminatorWebApi.Tests.Tests
 {
     [TestFixture]
     public class SciptModuleTests
@@ -26,7 +25,7 @@ namespace TerminatorWebApi.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expectedOutput, StatusCode = 0 });
+            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expectedOutput, ExitCode = 0 });
 
             //Act
             var result = browser.Post("/api/script", with =>
@@ -91,13 +90,75 @@ namespace TerminatorWebApi.Tests
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new { Text = scriptText });
+                with.JsonBody(new { Script = scriptText });
                 with.HttpRequest();
             });
 
             //Assert  
             scriptExecutor.DidNotReceiveWithAnyArgs().ExecutePowershell(Arg.Any<string>());
             Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [Test]
+        public void ExecuteScript_GivenInvalidPowershellCommand_ShouldReturnStatusCode200AndPowershellErrorMessage()
+        {
+            //Arrange
+            var scriptExecutor = Substitute.For<IScriptExecutor>();
+            var expected = "The term 'Sindy' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again";
+            var scriptText = "Sindy";
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IScriptExecutor>(scriptExecutor);
+                with.Module<ScriptExecutorModule>();
+            });
+
+            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expected, ExitCode = 1 });
+            //Act
+            var result = browser.Post("/api/script", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.JsonBody(new { Script = scriptText });
+                with.HttpRequest();
+            });
+
+            //Assert  
+            var executionOutput = GetResponseBody(result);
+            scriptExecutor.Received().ExecutePowershell(Arg.Any<string>());
+            Assert.AreEqual(expected, executionOutput.Message);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+        }
+        [Test]
+        public void ExecuteScript_GivenInvalidPowershellCommand_ShouldReturnStatusCode200AndSystemPowershellErrorMessage()
+        {
+            //Arrange
+            var scriptExecutor = Substitute.For<IScriptExecutor>();
+            var scriptText = "'hello' World";
+            var expected = "At line:1 char:9\r\n + 'hello' World\r\n + ~~~~~\nUnexpected token 'World' in expression or statement";
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IScriptExecutor>(scriptExecutor);
+                with.Module<ScriptExecutorModule>();
+            });
+            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expected, ExitCode = 1 });
+
+            //Act
+            var result = browser.Post("/api/script", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.JsonBody(new { Script = scriptText });
+                with.HttpRequest();
+            });
+
+            //Assert  
+            var executionOutput = GetResponseBody(result);
+            scriptExecutor.Received().ExecutePowershell(Arg.Any<string>());
+            Assert.AreEqual(expected, executionOutput.Message);
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+        }
+
+        private static ScriptOutput GetResponseBody(BrowserResponse result)
+        {
+            return JsonConvert.DeserializeObject<ScriptOutput>(result.Body.AsString());
         }
     }
 }

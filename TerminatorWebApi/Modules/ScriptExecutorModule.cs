@@ -1,11 +1,8 @@
-﻿using System;
-using MachineInformationApp.Interfaces;
+﻿using MachineInformationApp.Interfaces;
 using Nancy;
-using Nancy.Extensions;
 using Nancy.ModelBinding;
-using Newtonsoft.Json;
 
-namespace TerminatorWebApi
+namespace TerminatorWebApi.Modules
 {
     public class ScriptExecutorModule : NancyModule
     {
@@ -21,7 +18,7 @@ namespace TerminatorWebApi
 
                 var scriptOutput = scriptExecutor.ExecutePowershell(scriptQuery.Script);
                 return Negotiate
-                    .WithStatusCode(scriptOutput.StatusCode == 0 ? HttpStatusCode.OK : HttpStatusCode.InternalServerError)
+                    .WithStatusCode(HttpStatusCode.OK)
                     .WithContentType("application/json")
                     .WithModel(scriptOutput);
             };
@@ -29,12 +26,7 @@ namespace TerminatorWebApi
 
         private bool EmptyScript(ScriptQuery scriptQuery)
         {
-            if (scriptQuery != null)
-            {
-                return string.IsNullOrWhiteSpace(scriptQuery.Script);
-            }
-
-            return true;
+            return string.IsNullOrWhiteSpace(scriptQuery?.Script);
         }
     }
 }

@@ -1,15 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using MachineInformationApp;
+﻿using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
-using Nancy.Bootstrapper;
 using Nancy.TinyIoc;
-using System;
-using System.IO;
-using System.Net;
-using System.Text;
 
 namespace TerminatorWebApi
 {
@@ -20,7 +12,7 @@ namespace TerminatorWebApi
             base.ConfigureApplicationContainer(container);
             container.Register<IIpAddressGenerator, IpAddressGenerator>();
              container.Register<IHostnameGenerator, HostnameGenerator>();
-            container.Register<IOSGenerator, OSGenerator>();
+            container.Register<IOsGenerator, OsGenerator>();
             container.Register<IScriptExecutor, ScriptExecutor>();
         }
     }

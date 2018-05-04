@@ -1,9 +1,7 @@
 ﻿using MachineInformationApp.Interfaces;
 using Nancy;
-using System;
-using System.IO;
 
-namespace TerminatorWebApi
+namespace TerminatorWebApi.Modules
 {
     public class IpendpointModule : NancyModule
     {

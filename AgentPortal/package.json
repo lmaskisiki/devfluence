@@ -1,0 +1,11 @@
+{
+  "name": "agentportal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "author": "Zinhle",
+  "license": "ISC"
+}

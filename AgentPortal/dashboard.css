@@ -1,0 +1,60 @@
+body {
+    background: lightblue;
+    margin: 10px;
+   
+  }
+
+ /* Div */
+  #divHeader{
+    background: black;
+    height: 5px;
+    width: 350px;
+    margin: 30px;
+    font-size: 40px;
+  }
+  #divError{
+      background: red;
+  }
+
+div {
+    border-radius: 15px 50px;
+    /* border: 2px solid #73AD21; */
+    background: green;
+    height: 350px;
+    width: 350px;
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    font-size: 50px;
+    margin: 10px;
+    position: relative;
+}
+
+/* menu bar  */
+
+  ul {
+    list-style-type: none;
+    margin: 15px;
+    padding: 10px;
+    overflow: hidden;
+    background-color: grey;
+}
+
+li {
+float: right;
+}
+#ulExecuteCommand{
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none; 
+}
+
+li a:hover {
+    background-color: black;
+}

@@ -12,7 +12,7 @@ namespace TerminatorWebApi
             base.ConfigureApplicationContainer(container);
             container.Register<IIpAddressGenerator, IpAddressGenerator>();
              container.Register<IHostnameGenerator, HostnameGenerator>();
-            container.Register<IOsGenerator, OsGenerator>();
+            container.Register<IOSGenerator, OSGenerator>();
             container.Register<IScriptExecutor, ScriptExecutor>();
         }
     }

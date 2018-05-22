@@ -1,4 +1,5 @@
 ﻿using System;
+using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
 using Nancy.Testing;
@@ -17,11 +18,11 @@ namespace TerminatorWebApi.Tests.Tests
         public void GetOperatingSystem_WhenRequested_ShouldReturnOS()
         {
             // ---- Arrange ----
-            var osGenerator = Substitute.For<IOsGenerator>();
+            var osGenerator = Substitute.For<IOSGenerator>();
 
             var browser = new Browser(with =>
             {
-                with.Dependencies<IOsGenerator>(osGenerator);
+                with.Dependencies<IOSGenerator>(osGenerator);
                 with.Module<OsEndpointModule>();
             });
             osGenerator.GetOsVersion().Returns(new ExecutionOutput { Output = "Microsoft Windows NT 10.0.16299.0" });
@@ -43,12 +44,12 @@ namespace TerminatorWebApi.Tests.Tests
         public void GetOperatingSystem_WhenExecutionFails_ShouldReturnStatusCode500()
         {
             // ---- Arrange ----
-            var osGenerator = Substitute.For<IOsGenerator>();
+            var osGenerator = Substitute.For<IOSGenerator>();
             osGenerator.GetOsVersion().Throws(new Exception("Execution failed"));
 
             var browser = new Browser(with =>
             {
-                with.Dependencies<IOsGenerator>(osGenerator);
+                with.Dependencies<IOSGenerator>(osGenerator);
                 with.Module<OsEndpointModule>();
             });
 

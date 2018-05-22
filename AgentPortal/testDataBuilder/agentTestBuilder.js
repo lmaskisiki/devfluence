@@ -12,6 +12,7 @@ function agentTestBuilder() {
         this._ipAddress = ipAddress;
         return this;
     }
+    
     function withPort(portNumber) {
         this._port = portNumber;
         return this;

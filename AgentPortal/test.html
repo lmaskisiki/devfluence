@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+
+<body>
+
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+
+
+    <p>First name:
+        <input data-bind="value: firstName" />
+    </p>
+    <p>Last name:
+        <input data-bind="value: lastName" />
+    </p>
+
+    <script>
+        function AppViewModel() {
+            this.firstName = ko.observable("Bert");
+            this.lastName = ko.observable("Bertington");
+        }
+
+        ko.applyBindings(new AppViewModel());
+
+    </script>
+
+
+</body>
+
+</html>

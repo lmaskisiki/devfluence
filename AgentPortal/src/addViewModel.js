@@ -1,5 +1,18 @@
 
 function addViewModel() {
+    let self= this;
+  
+    this.name = ko.observable("namedd");
+    this.ipAddress= ko.observable("ip addres");
+    this.port= ko.observable(0);
+    
+    self.save = function() {
+         let agent = {};
+         agent.name = this.name();
+         agent.ipAddress = this.ipAddress();
+         agent.port = this.port();
+         this.addAgent(agent);
+    }
 
     this.addAgent = function (agent) {
         const agentService = this.getAgentService();

@@ -1,0 +1,65 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+section{
+    border: 4px;
+    background: #008080;
+    border-radius: 8px;
+}
+form {
+    border: 8px solid #c6c7cc;
+    background: #008080;
+    border-radius: 18px;
+    font: 30px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    width: 500px;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    border-radius: 5px;
+    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0;
+}
+
+.agent-info {
+    padding: 20px 20px 0 20px;
+}
+
+.agent-info label {
+    color: #000000;
+    display: inline-block;
+    font-weight: lighter;
+    margin-inline-start: 6px;
+}
+
+.agent-info input {
+    background: #fff;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1);
+    color: #636466;
+    display: inline-block;
+    padding: 6px;
+    margin-inline-start: 6px;
+    width: 100%;
+}
+
+.agent-action {
+    background: #f0f0f2;
+    padding: 20px;
+}
+
+.agent-action .btn {
+    background: linear-gradient(#008080);
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    float: left;
+    padding: 8px 16px;
+}

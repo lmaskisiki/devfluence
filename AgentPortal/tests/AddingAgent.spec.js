@@ -73,7 +73,7 @@ describe("addViewModel", () => {
                 });
 
 
-                fit("Should save agent to using storage service", () => {
+                it("Should save agent to using storage service", () => {
                     //Arrange
                     let storage = new storageService();
                     let service = new agentService(storage);
@@ -84,8 +84,7 @@ describe("addViewModel", () => {
                         .withPort(8282)
                         .build();
 
-                    let c = service.ping(agent);
-                     console.log(c);
+                    
                 });
             });
         });

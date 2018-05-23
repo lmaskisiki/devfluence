@@ -10,35 +10,73 @@
 </head>
 
 <body>
-    <div id="divHeader">
+    <section>
+
         <h1>SkyNet Portal</h1>
-    </div>
 
-    <ul>
-        <li id="ulExecuteCommand">
-            <a href="#command">Execute Command</a>
-        </li>
-        <li>
-            <a href="#add">Remove Agent</a>
-        </li>
-        <li>
-            <a href="#edit">Edit Agent</a>
-        </li>
-        <li>
-            <a href="#remove">Add Agent</a>
-        </li>
-    </ul>
+        <ul>
+            <li id="ulExecuteCommand">
+                <a href="#command">Execute Command</a>
+            </li>
+            <li>
+                <a href="#remove">Remove Agent</a>
+            </li>
+            <li>
+                <a href="#edit">Edit Agent</a>
+            </li>
+            <li>
+                <a href="#add">Add Agent</a>
+            </li>
+        </ul>
 
-    <div>Agent 1</div>
-    <div>Agent 2</div>
-    <div>Agent 3</div>
-    <div>Agent 4</div>
-    <div>Agent 5</div>
-    <div>Agent 6</div>
-    <div id="divError">Agent 7</div>
-    <div>Agent 8</div>
-    <div>Agent 9</div>
-    <div>Agent 10</div>
+        <div data-bind="visible: agents.length > 0"></div>
+        <div data-bind="foreach: agents" class="gridwrapper">
+            <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
+                 <h6 data-bind="text: $data.name"></h6>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <form data-bind="submit: save" class="newagentform" >
+            <fieldset class="agent-action">
+        <label>
+            Agent Name :
+            <input type="text" name="name">
+        </label>
+        <br>
+        <br>
+        <label>
+            IP Address :
+            <input type="text" name="ipAddress">
+        </label>
+        <br>
+        <br>
+        <label>
+            Port :
+            <input type="text" name="port">
+        </label>
+        <br>
+        <br>
+            <input type="button" name="cancel" value="Cancel">
+            <input type="submit" name="submit" value="Save">
+        </fieldset>
+    </form>
+
+
+
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+    <script type="text/javascript" src="src/agentService.js"></script>
+    <script type="text/javascript" src="src/serviceStorage.js"></script>
+    <script type="text/javascript" src="src/agent.js"></script>
+    <script type="text/javascript" src="src/addViewModel.js"></script>
+
+    <script>
+        let persistence = new storageService();
+        let service = new agentService(persistence);
+        let viewModel = new addViewModel(service);
+        ko.applyBindings(viewModel);
+    </script>
 
 </body>
 

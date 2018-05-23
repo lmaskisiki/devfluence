@@ -6,13 +6,17 @@ function agentService(storageService) {
         return storageService.getAgents().includes(agent) ? "SUCCESS" : "ERROR";
     }
 
+    function getAgents() {
+        return storageService.getAgents();
+    }
+
     function ping(agent) {
-         return doGet(agent.ipAddress, agent.port, "health");
+        return doGet(agent.ipAddress, agent.port, "health");
     }
 
     async function doGet(ip, port, endpoint) {
-       let resp = await handleHttp("GET", `http://${ip}:${port}/api/${endpoint}`);
-       return Promise.resolve(resp);
+        let resp = await handleHttp("GET", `http://${ip}:${port}/api/${endpoint}`);
+        return Promise.resolve(resp);
     }
 
 
@@ -30,7 +34,9 @@ function agentService(storageService) {
     return {
         addAgent: addAgent,
         ping: ping,
-        doGet, doGet
+        doGet, doGet,
+        getAgents: getAgents,
+        ping: ping
     }
 
 

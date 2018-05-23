@@ -1,20 +1,27 @@
 
 function addViewModel(service) {
+    self.agents = ko.observableArray();
 
     self.save = function (formElement) {
         let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
         this.addAgent(agentModel);
+        self.agents.removeAll();
+        ko.utils.arrayPushAll(self.agents, service.getAgents());
     }
+
 
     this.addAgent = function (agent) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
         service.ping(agent).then(function (result) {
             if (result.statusCode === 200) {
+                agent.active = true;
                 service.addAgent(agent);
-                return "SUCCESS";
-            }
-        }).catch(e=>console.log("error", e));
+            } 
+        }).catch(e => {
+            agent.active = false;
+            service.addAgent(agent);
+        });
     }
 
 
@@ -30,10 +37,12 @@ function agent(name, ipAddress, port) {
     let _name = name;
     let _ipAddress = ipAddress;
     let _port = port;
+    let _active=false;
     return {
         name: _name,
         ipAddress: _ipAddress,
-        port: _port
+        port: _port,
+        active:_active
     }
 }
 

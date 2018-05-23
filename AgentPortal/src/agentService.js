@@ -2,37 +2,40 @@
 function agentService(storageService) {
 
     function addAgent(agent) {
-       storageService.addAgent(agent);
-       return storageService.getAgents().includes(agent) ? "SUCCESS": "ERROR";
+        storageService.addAgent(agent);
+        return storageService.getAgents().includes(agent) ? "SUCCESS" : "ERROR";
     }
 
-    function getAgents(){
-      return  storageService.getAgents();
+    function getAgents() {
+        return storageService.getAgents();
     }
 
     function ping(agent) {
-        return "SUCCESS";
+        return doGet(agent.ipAddress, agent.port, "health");
     }
 
-    let doPost = () => {
-        // var xhttp = new XMLHttpRequest();
-        // xhttp.onreadystatechange = function () {
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         console.log("done", xhttp.responseText, this.statusText);
-        //         return xhttp.statusText;
-        //     }
+    async function doGet(ip, port, endpoint) {
+        let resp = await handleHttp("GET", `http://${ip}:${port}/api/${endpoint}`);
+        return Promise.resolve(resp);
+    }
 
-        // };
-        // xhttp.open("GET", "http://ff:1234/api/health", true);
-        // xhttp.setRequestHeader("Content-Type", "application/json");
-        // xhttp.setRequestHeader("Accept", "application/json");
-        // xhttp.send();
+
+    function handleHttp(method, url) {
+        console.log(url);
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, url);
+            xhr.onload = () => resolve({ statusCode: xhr.status, data: xhr.responseText });
+            xhr.onerror = () => reject({ statusCode: xhr.status, data: xhr.responseText });
+            xhr.send();
+        });
     }
 
     return {
         addAgent: addAgent,
+        ping: ping,
+        doGet, doGet,
         getAgents: getAgents,
-        doPost: doPost,
         ping: ping
     }
 

@@ -21,9 +21,11 @@
             <button class="buttonFloatRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
         </ul>
 
-        <div data-bind="visible: agents().length > 0"></div>
+        <div data-bind="visible: agents.length > 0"></div>
         <div data-bind="foreach: agents" class="gridwrapper">
-            <div data-bind="text: $data.name" class="grid"></div>
+            <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
+                 <h6 data-bind="text: $data.name"></h6>
+            </div>
         </div>
         </div>
     </section>

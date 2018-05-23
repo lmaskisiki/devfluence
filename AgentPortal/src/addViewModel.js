@@ -9,11 +9,12 @@ function addViewModel(service) {
     this.addAgent = function (agent) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
-        let pingResult = service.ping(agent);
-        if (pingResult === "SUCCESS") {
-            return service.addAgent(agent);
-        }
-        return pingResult;
+        service.ping(agent).then(function (result) {
+            if (result.statusCode === 200) {
+                service.addAgent(agent);
+                return "SUCCESS";
+            }
+        }).catch(e=>console.log("error", e));
     }
 
 

@@ -11,23 +11,22 @@
 
 <body>
 
-    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
-
-
-    <p>First name:
-        <input data-bind="value: firstName" />
-    </p>
-    <p>Last name:
-        <input data-bind="value: lastName" />
-    </p>
-
     <script>
-        function AppViewModel() {
-            this.firstName = ko.observable("Bert");
-            this.lastName = ko.observable("Bertington");
+        function myAsyncFunction() {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.open("GET", "http://localhost:1234/api/oss");
+                xhr.onload = () => resolve(xhr.responseText);
+                xhr.onerror = () => reject(xhr.statusText);
+                xhr.send();
+
+            });
         }
 
-        ko.applyBindings(new AppViewModel());
+        let x = myAsyncFunction();
+        // x.then((text) => {
+        //     console.log(text);
+        // });
 
     </script>
 

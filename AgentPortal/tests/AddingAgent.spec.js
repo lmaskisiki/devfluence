@@ -71,9 +71,23 @@ describe("addViewModel", () => {
                     expect(service.addAgent).toHaveBeenCalledWith(agent);
                     expect(result).toBe("SUCCESS");
                 });
+
+
+                fit("Should save agent to using storage service", () => {
+                    //Arrange
+                    let storage = new storageService();
+                    let service = new agentService(storage);
+                    let viewModel = new addViewModel(service);
+                    let agent = new agentTestBuilder()
+                        .withName("Agent 1")
+                        .withIpAddress("192.168.11.101")
+                        .withPort(8282)
+                        .build();
+
+                    let c = service.ping(agent);
+                     console.log(c);
+                });
             });
-
-
         });
     });
 });

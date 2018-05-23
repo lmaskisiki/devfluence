@@ -2,6 +2,7 @@ function storageService() {
 
     let agents = [];
     function addAgent(agent) {
+         console.log("adding",agent);
          agents.push(agent);
     }
 

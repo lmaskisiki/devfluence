@@ -11,9 +11,8 @@
 
 <body>
     <section>
-        <div id="divHeader">
-            <h1>SkyNet Portal</h1>
-        </div>
+
+        <h1>SkyNet Portal</h1>
 
         <ul>
             <li id="ulExecuteCommand">
@@ -26,43 +25,37 @@
                 <a href="#edit">Edit Agent</a>
             </li>
             <li>
-                <a href="addAgent.html">Add Agent</a>
+                <a href="#add">Add Agent</a>
             </li>
         </ul>
 
-        <div data-bind="visible: agents().length > 0">
-            <div  class="agent" data-bind="foreach: agents">
-                <div data-bind="text: $data.name"></div>
-            </div>
+        <div data-bind="visible: agents().length > 0"></div>
+        <div data-bind="foreach: agents" class="gridwrapper">
+            <div data-bind="text: $data.name" class="grid"></div>
+        </div>
         </div>
     </section>
 
-
-    <form data-bind="submit: save">
-        <section class="heading">
-            <h1>SkyNetPortal</h1>
-        </section>
-
-        <fieldset class="agent-action">
-            <input type="submit" name="add" value="Add Agent">
-        </fieldset>
-
-        <fieldset class="agent-info">
-            <label>
-                Agent Name
-                <input type="text" name="name">
-            </label>
-            <label>
-                IP Address
-                <input type="text" name="ipAddress">
-            </label>
-            <label>
-                Port
-                <input type="text" name="port">
-            </label>
-        </fieldset>
-
-        <fieldset class="agent-action">
+    <form data-bind="submit: save" class="newagentform" >
+            <fieldset class="agent-action">
+        <label>
+            Agent Name :
+            <input type="text" name="name">
+        </label>
+        <br>
+        <br>
+        <label>
+            IP Address :
+            <input type="text" name="ipAddress">
+        </label>
+        <br>
+        <br>
+        <label>
+            Port :
+            <input type="text" name="port">
+        </label>
+        <br>
+        <br>
             <input type="button" name="cancel" value="Cancel">
             <input type="submit" name="submit" value="Save">
         </fieldset>

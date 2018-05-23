@@ -3,36 +3,49 @@ body {
     margin: 10px;
    
   }
-
+h1{
+    font-size: 30pt;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
  /* Div */
-  #divHeader{
-    background: black;
-    height: 5px;
-    width: 350px;
-    margin: 30px;
-    font-size: 40px;
-  }
+  
   #divError{
       background: red;
   }
 
-div {
-    border-radius: 15px 50px;
-    /* border: 2px solid #73AD21; */
-    background: green;
+/* div {
+      border-radius: 15px 50px;
+      border: 2px solid #73AD21;  
+     background: green;
     height: 250px;
     width: 250px;
     display: inline-block;
     text-align: center;
     line-height: 50px;
     font-size: 50px;
-    margin: 10px;
-    position: relative;
-    align-items: baseline;
-}
+    margin: 10px;   
+ 
+} */
 
 /* menu bar  */
-
+.newagentform{
+    clear: both;
+}
+.gridwrapper{
+   
+}
+.grid{
+    width: 250px;
+    height: 250px;
+    border:  2px solid black;
+    border-radius: 12px;
+    text-align:  center;
+    font-size: 16pt;
+    font-weight: bold;
+    padding: 5px;
+    margin: 2px;
+    float: left;
+}
   ul {
     list-style-type: none;
     margin: 15px;

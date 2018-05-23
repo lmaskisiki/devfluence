@@ -16,6 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'lib/knockout-3.4.2.js',
+      'lib/mock-ajax.js',
       'testDataBuilder/*.js',
       'src/*/*.js',
       'src/*.js',

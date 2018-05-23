@@ -30,20 +30,21 @@ describe("addViewModel", () => {
                     //Arrange
                     let storage = new storageService();
                     let service = new agentService(storage);
-                    let viewModel = new addViewModel();
+                    let viewModel = new addViewModel(service);
                     let agent = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
                         .withPort(8282)
                         .build();
 
-                    spyOn(viewModel, 'getAgentService').and.returnValue(service);
-                    spyOn(service, 'addAgent').and.returnValue('NOT_FOUND');
+                    spyOn(service, 'ping').and.returnValue("NOT_FOUND");
+                    spyOn(storage, 'addAgent');
 
                     //Act
                     const result = viewModel.addAgent(agent);
                     //Assert
-                    expect(service.addAgent).toHaveBeenCalledWith(agent);
+                    expect(service.ping).toHaveBeenCalledWith(agent);
+                    expect(storage.addAgent).not.toHaveBeenCalled();
                     expect(result).toBe("NOT_FOUND");
                 });
             });
@@ -53,20 +54,22 @@ describe("addViewModel", () => {
                     //Arrange
                     let storage = new storageService();
                     let service = new agentService(storage);
-                    let viewModel = new addViewModel();
+                    let viewModel = new addViewModel(service);
                     let agent = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
                         .withPort(8282)
                         .build();
 
-                    spyOn(viewModel, 'getAgentService').and.returnValue(service);
+                    spyOn(service, 'ping').and.returnValue("SUCCESS")
                     spyOn(service, 'addAgent').and.callThrough();
 
                     //Act
-                    viewModel.addAgent(agent);
+                    let result = viewModel.addAgent(agent);
                     //Assert
-                    expect(storage.getAgents()).toContain(agent);
+                    expect(service.ping).toHaveBeenCalledWith(agent);
+                    expect(service.addAgent).toHaveBeenCalledWith(agent);
+                    expect(result).toBe("SUCCESS");
                 });
             });
 

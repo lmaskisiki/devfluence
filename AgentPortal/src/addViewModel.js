@@ -1,29 +1,21 @@
 
-function addViewModel() {
-    let self= this;
-  
-    this.name = ko.observable("namedd");
-    this.ipAddress= ko.observable("ip addres");
-    this.port= ko.observable(0);
-    
-    self.save = function() {
-         let agent = {};
-         agent.name = this.name();
-         agent.ipAddress = this.ipAddress();
-         agent.port = this.port();
-         this.addAgent(agent);
+function addViewModel(service) {
+
+    self.save = function (formElement) {
+        let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
+        this.addAgent(agentModel);
     }
 
     this.addAgent = function (agent) {
-        const agentService = this.getAgentService();
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
-        return agentService.addAgent(agent);
+        let pingResult = service.ping(agent);
+        if (pingResult === "SUCCESS") {
+            return service.addAgent(agent);
+        }
+        return pingResult;
     }
 
-    this.getAgentService = function () {
-        return new agentService(new storageService());
-    }
 
     let emptyObject = (agent) => {
         if (agent.name.length === 0 | agent.ipAddress.length == 0 | agent.port === undefined) {
@@ -33,5 +25,15 @@ function addViewModel() {
     }
 }
 
-var viewModel = new addViewModel();
-ko.applyBindings(viewModel);
+function agent(name, ipAddress, port) {
+    let _name = name;
+    let _ipAddress = ipAddress;
+    let _port = port;
+    return {
+        name: _name,
+        ipAddress: _ipAddress,
+        port: _port
+    }
+}
+
+

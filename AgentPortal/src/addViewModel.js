@@ -1,11 +1,14 @@
 
 function addViewModel(service) {
-
+    self.agents = ko.observableArray([]);
+  
     self.save = function (formElement) {
         let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
+        self.agents.push(agentModel);
         this.addAgent(agentModel);
     }
 
+  
     this.addAgent = function (agent) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";

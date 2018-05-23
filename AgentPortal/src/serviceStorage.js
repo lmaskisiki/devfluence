@@ -1,7 +1,8 @@
 function storageService() {
 
-    let agents = [];
+    let agents = ["ddd"];
     function addAgent(agent) {
+         console.log("all agent", agents, agents.length);
          agents.push(agent);
     }
 

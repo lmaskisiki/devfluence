@@ -6,6 +6,10 @@ function agentService(storageService) {
        return storageService.getAgents().includes(agent) ? "SUCCESS": "ERROR";
     }
 
+    function getAgents(){
+      return  storageService.getAgents();
+    }
+
     function ping(agent) {
         return "SUCCESS";
     }
@@ -27,6 +31,7 @@ function agentService(storageService) {
 
     return {
         addAgent: addAgent,
+        getAgents: getAgents,
         doPost: doPost,
         ping: ping
     }

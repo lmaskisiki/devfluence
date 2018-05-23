@@ -10,35 +10,78 @@
 </head>
 
 <body>
-    <div id="divHeader">
-        <h1>SkyNet Portal</h1>
-    </div>
+    <section>
+        <div id="divHeader">
+            <h1>SkyNet Portal</h1>
+        </div>
 
-    <ul>
-        <li id="ulExecuteCommand">
-            <a href="#command">Execute Command</a>
-        </li>
-        <li>
-            <a href="#add">Remove Agent</a>
-        </li>
-        <li>
-            <a href="#edit">Edit Agent</a>
-        </li>
-        <li>
-            <a href="#remove">Add Agent</a>
-        </li>
-    </ul>
+        <ul>
+            <li id="ulExecuteCommand">
+                <a href="#command">Execute Command</a>
+            </li>
+            <li>
+                <a href="#remove">Remove Agent</a>
+            </li>
+            <li>
+                <a href="#edit">Edit Agent</a>
+            </li>
+            <li>
+                <a href="addAgent.html">Add Agent</a>
+            </li>
+        </ul>
 
-    <div>Agent 1</div>
-    <div>Agent 2</div>
-    <div>Agent 3</div>
-    <div>Agent 4</div>
-    <div>Agent 5</div>
-    <div>Agent 6</div>
-    <div id="divError">Agent 7</div>
-    <div>Agent 8</div>
-    <div>Agent 9</div>
-    <div>Agent 10</div>
+        <div data-bind="visible: agents().length > 0">
+            <div  class="agent" data-bind="foreach: agents">
+                <div data-bind="text: $data.name"></div>
+            </div>
+        </div>
+    </section>
+
+
+    <form data-bind="submit: save">
+        <section class="heading">
+            <h1>SkyNetPortal</h1>
+        </section>
+
+        <fieldset class="agent-action">
+            <input type="submit" name="add" value="Add Agent">
+        </fieldset>
+
+        <fieldset class="agent-info">
+            <label>
+                Agent Name
+                <input type="text" name="name">
+            </label>
+            <label>
+                IP Address
+                <input type="text" name="ipAddress">
+            </label>
+            <label>
+                Port
+                <input type="text" name="port">
+            </label>
+        </fieldset>
+
+        <fieldset class="agent-action">
+            <input type="button" name="cancel" value="Cancel">
+            <input type="submit" name="submit" value="Save">
+        </fieldset>
+    </form>
+
+
+
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+    <script type="text/javascript" src="src/agentService.js"></script>
+    <script type="text/javascript" src="src/serviceStorage.js"></script>
+    <script type="text/javascript" src="src/agent.js"></script>
+    <script type="text/javascript" src="src/addViewModel.js"></script>
+
+    <script>
+        let persistence = new storageService();
+        let service = new agentService(persistence);
+        let viewModel = new addViewModel(service);
+        ko.applyBindings(viewModel);
+    </script>
 
 </body>
 

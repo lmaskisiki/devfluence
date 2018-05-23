@@ -15,18 +15,10 @@
         <h1>SkyNet Portal</h1>
 
         <ul>
-            <li id="ulExecuteCommand">
-                <a href="#command">Execute Command</a>
-            </li>
-            <li>
-                <a href="#remove">Remove Agent</a>
-            </li>
-            <li>
-                <a href="#edit">Edit Agent</a>
-            </li>
-            <li>
-                <a href="#add">Add Agent</a>
-            </li>
+            <button class="btnExecuteCommand" data-bind="click: ShowExecuteAgentForm.bind(this, true)" >Execute Command</button>
+            <button class="buttonFloatRight" data-bind='enable: agents().length > 0'>Remove Agent</button>
+            <button class="buttonFloatRight"  data-bind="click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
+            <button class="buttonFloatRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
         </ul>
 
         <div data-bind="visible: agents().length > 0"></div>
@@ -36,32 +28,93 @@
         </div>
     </section>
 
-    <form data-bind="submit: save" class="newagentform" >
-            <fieldset class="agent-action">
-        <label>
-            Agent Name :
-            <input type="text" name="name">
-        </label>
-        <br>
-        <br>
-        <label>
-            IP Address :
-            <input type="text" name="ipAddress">
-        </label>
-        <br>
-        <br>
-        <label>
-            Port :
-            <input type="text" name="port">
-        </label>
-        <br>
-        <br>
-            <input type="button" name="cancel" value="Cancel">
+    <!-- Add Form -->
+
+    <form data-bind="submit: save" class="newagentform">
+        <fieldset class="agent-action" data-bind="visible: ShowAddAgent">
+            <label>
+                Agent Name :
+                <input type="text" name="name">
+            </label>
+            <br>
+            <br>
+            <label>
+                IP Address :
+                <input type="text" name="ipAddress">
+            </label>
+            <br>
+            <br>
+            <label>
+                Port :
+                <input type="text" name="port">
+            </label>
+            <br>
+            <br>
+            <input type="button" name="cancel" value="Cancel" data-bind="click: ShowAddAgentForm.bind(this,false)">
             <input type="submit" name="submit" value="Save">
         </fieldset>
     </form>
 
+    <!-- Update -->
+    <form>
+        <fieldset class="agent-action" data-bind="visible: ShowUpdateAgent">
+            <label>
+                Agent Name :
+                <input type="text" name="name">
+            </label>
+            <br>
+            <br>
+            <label>
+                IP Address :
+                <input type="text" name="ipAddress">
+            </label>
+            <br>
+            <br>
+            <label>
+                Port :
+                <input type="text" name="port">
+            </label>
+            <br>
+            <br>
+            <input type="button" name="cancel" value="Cancel" data-bind="click: ShowUpdateAgentForm.bind(this,false)">
+            <input type="submit" name="submit" value="Update">
+        </fieldset>
+    </form>
 
+    <!-- Execute form -->
+    <form >
+        <fieldset data-bind="visible: showExecuteAgent">
+        <label>Agent Name :
+            <select>
+                <!-- Needs to be static -->
+                <option value="test">Agent 1</option>
+                <option value="test">Agent 2</option>
+                <option value="test">Agent 3</option>
+                <option value="test">Agent 4</option>
+            </select>
+        </label>
+        <br>
+        <br>
+        <label>Command :
+            <select>
+                <option value="test">Get IP</option>
+                <option value="test">Get OS</option>
+                <option value="test">Get hostname</option>
+                <option value="test">Get Fully qualified hostname</option>
+                <option value="test">Execute powershell script</option>
+            </select>
+        </label>
+        <br>
+        <br>
+        <label>Script :
+            <textarea rows="4" cols="50"></textarea>
+        </label>
+        <br>
+        <br>
+        <input type="button" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false")>
+        <input type="submit" value="Execute">
+    </form>
+</fieldset>
 
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="src/agentService.js"></script>

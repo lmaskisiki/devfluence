@@ -1,5 +1,3 @@
-
-
 describe("addViewModel", () => {
     describe("addAgent", () => {
         describe("When agent name, ip and port are empty", () => {
@@ -70,6 +68,33 @@ describe("addViewModel", () => {
                     expect(service.ping).toHaveBeenCalledWith(agent);
                     expect(service.addAgent).toHaveBeenCalledWith(agent);
                     expect(result).toBe("SUCCESS");
+                });
+            });
+
+            describe("ShowAddAgentForm", function(){
+                describe("If set to false", function(){
+                    it("Should hide add agent form", function(){
+                        //Arrange
+                        let viewModel = new addViewModel();
+
+                        //act
+                        viewModel.ShowAddAgentForm(false);
+
+                        //assert
+                        expect(viewModel.ShowAddAgentForm()).toBe(false)
+                    });
+                });
+                describe("If set to true",function(){
+                    it("should show agent form",function(){
+                        //Arrange
+                        let viewModel = new addViewModel();
+
+                        //Act
+                        viewModel.ShowAddAgentForm(true);
+
+                        //Assert
+                        expect(viewModel.ShowAddAgentForm()).toBe(true);
+                    });
                 });
             });
 

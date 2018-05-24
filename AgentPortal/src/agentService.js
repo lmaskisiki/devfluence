@@ -32,9 +32,28 @@ function agentService(storageService) {
 
 
     function runCommand(command, agent, doneFn) {
+        if(command =="script"){
+            handlePost("",`http://${agent.ip}:${agent.port}/api/script`, doneFn);
+        }
+
         doGet2(agent.ipAddress, agent.port, command, doneFn)
     }
-    
+
+    function handlePost(data, url, doneFn) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                doneFn(JSON.parse(xhttp.responseText))
+            } else if (this.readyState == 4) {
+                doneFn();
+            }
+        };
+        console.log(url);
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send(data);
+    }
+
     function handleHttp2(method, url, doneFn) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {

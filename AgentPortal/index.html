@@ -40,13 +40,12 @@
 
         <!-- Displays Agents -->
         <!-- <div data-bind=> -->
-        <div data-bind="foreach: agents" class="gridwrapper">
+        <div data-bind="foreach: agents">
             <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
                 <h1 data-bind="text: $data.name"></h1>
                 <div>
-                    <h4 data-bind="text: $data.execution">hello</h4>
+                    <h4 data-bind="text: $data.execution[0]"></h4>
                 </div>
-
             </div>
         </div>
         <!-- </div> -->
@@ -129,13 +128,10 @@
                 <label>Command :
                 </label>
                 <br>
-                <select>
-                    <option value="test">Get IP</option>
-                    <option value="test">Get OS</option>
-                    <option value="test">Get hostname</option>
-                    <option value="test">Get Fully qualified hostname</option>
-                    <option value="test">Execute powershell script</option>
-                </select>
+                <!-- commandToRun -->
+                <select data-bind="options: ['ip','os','hostname','script'],
+                                         value: commandToRun,
+                                        optionsCaption: 'Choose...'"></select>
                 </label>
                 <br>
                 <br>
@@ -165,9 +161,9 @@
         ko.applyBindings(viewModel);
     </script>
 
-    <div class="footer">
+    <!-- <div class="footer">
         <p>#DevLife</p>
-    </div>
+    </div> -->
 
 </body>
 

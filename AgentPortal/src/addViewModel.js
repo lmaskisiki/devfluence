@@ -9,7 +9,8 @@ function addViewModel(service) {
     self.ShowUpdateAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
     self.histories = ko.observableArray([]);
-    self.activeAgent = ko.observable(new agent());
+    self.activeAgent = ko.observable();
+    self.commandToRun = ko.observable();
 
     self.ShowAddAgentForm = function (show) {
         self.ShowAddAgent(show);
@@ -27,23 +28,21 @@ function addViewModel(service) {
         self.showAgents(show);
     }
 
-
-
     self.save = function (formElement) {
         let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
         this.addAgent(agentModel);
         self.ShowAddAgentForm(false);
     }
 
-    self.runCommand = function (command, agent) {
-        let a = new agentTestBuilder()
-            .withName("Agent Meeee")
-            .withIpAddress("localhost")
-            .withPort(1234)
-            .build();
-        service.runCommand("ip", self.activeAgent(), function (resp) {
-            self.activeAgent.execution.push(resp.output);
-            alert(self.agents()[0].executionResult);
+    self.runCommand = function () {
+        service.runCommand(self.commandToRun(), self.activeAgent(), function (resp) {
+            let selected = self.agents().find(a => a.name == self.activeAgent().name);
+            let index = self.agents().indexOf(selected);
+            self.activeAgent().execution.push(resp.output);
+            alert(JSON.stringify(self.activeAgent()));
+            self.agents()[index].execution.push(resp.output);
+            self.agents(self.agents())
+            //self.addAgentToList(self.activeAgent());
         });
     }
 
@@ -60,7 +59,8 @@ function addViewModel(service) {
     }
 
     self.addAgentToList = function (agent) {
-        self.agents.push(agent);
+        self.agents().push(agent);
+        self.agents(self.agents())
     }
 
     let emptyObject = (agent) => {

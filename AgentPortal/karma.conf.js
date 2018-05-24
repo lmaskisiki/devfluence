@@ -19,6 +19,8 @@ module.exports = function(config) {
       'testDataBuilder/*.js',
       'src/*/*.js',
       'src/*.js',
+      'src/**/jasmine.js',
+      'src/**/knockout/ajax.js',
       'tests/*spec.js'
     ],
 

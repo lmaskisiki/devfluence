@@ -8,16 +8,14 @@
 </head>
 
 <body>
-<div>
-    <input data-bind="text" name="" >
-</div>
     <form>
         <section class="heading">
                 <h1>SkyNetPortal</h1>
             </section>
 
             <fieldset class="agent-action">
-                    <input type="submit" name="add" value="Add Agent">
+                    <button data-bind="click: addAgent">Add Agent</button>
+                    <button data-bind="click: removeAgent" disabled>Remove Agent</button>
                 </fieldset>
 
         <fieldset class="agent-info">
@@ -45,6 +43,7 @@
     <script type="text/javascript" src="src/agentService.js"></script>  
     <script type="text/javascript" src="src/serviceStorage.js"></script>  
     <script type="text/javascript" src="src/addViewModel.js"></script>  
+     
 
 
 </body>

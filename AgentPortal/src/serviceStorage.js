@@ -10,8 +10,20 @@ function storageService() {
         return agents;
     }
 
+    function updateAgent(agent){
+        console.log("updating", agent);
+        agents.push(agent);
+    }
+
+    function removeAgent(agent){
+        
+         agents.splice(agent);
+    }
+
     return {
         addAgent: addAgent,
-        getAgents: getAgents
+        getAgents: getAgents,
+        updateAgent:updateAgent,
+        removeAgent:removeAgent
     }
 }

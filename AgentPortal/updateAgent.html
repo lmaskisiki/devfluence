@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <form data-bind="foreach: agents">
+        <section class="heading">
+            <h1>SkyNetPortal</h1>
+        </section>
+
+        <fieldset class="agent-info">
+                <label>
+                    Agent Name
+                    <input type="text" name="Agent Name"   data-bind="value: name">
+                </label>
+                <label>
+                    IP Address
+                    <input type="text" name="IP Address" data-bind="value: ipAddress">
+                </label>
+                <label>
+                    Port
+                    <input type="text" name="Port" data-bind="value: port">
+                </label>
+            </fieldset>
+    
+            <fieldset class="agent-action">
+                    <button >Cancel</button>
+                <button data-bind="click : UpdateAgent">Update</button>
+            </fieldset>
+        </form>
+</body>
+
+</html>

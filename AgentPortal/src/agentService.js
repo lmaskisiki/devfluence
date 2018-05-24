@@ -34,22 +34,7 @@ function agentService(storageService) {
     function runCommand(command, agent, doneFn) {
         doGet2(agent.ipAddress, agent.port, command, doneFn)
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
     function handleHttp2(method, url, doneFn) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {

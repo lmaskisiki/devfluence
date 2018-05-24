@@ -1,37 +1,27 @@
 body {
-    background: lightblue;
+    background: #293f50;
+  color: #888; 
     margin: 10px;
    
   }
 
- /* Div */
-  #divHeader{
-    background: black;
-    height: 5px;
-    width: 350px;
-    margin: 30px;
-    font-size: 40px;
-  }
-  #divError{
-      background: red;
-  }
-
-div {
-    border-radius: 15px 50px;
-    /* border: 2px solid #73AD21; */
-    background: green;
-    height: 350px;
-    width: 350px;
-    display: inline-block;
-    text-align: center;
-    line-height: 50px;
-    font-size: 50px;
-    margin: 10px;
-    position: relative;
+/* menu bar  */
+.newagentform{
+    clear: both;
 }
 
-/* menu bar  */
-
+.grid{
+    width: 250px;
+    height: 250px;
+    border:  2px solid black;
+    border-radius: 12px;
+    text-align:  center;
+    font-size: 16pt;
+    font-weight: bold;
+    padding: 5px;
+    margin: 2px;
+    float: left;
+}
   ul {
     list-style-type: none;
     margin: 15px;
@@ -40,21 +30,142 @@ div {
     background-color: grey;
 }
 
-li {
-float: right;
-}
-#ulExecuteCommand{
-    float: left;
+/* ============Main Heading ================== */
+div.heading{
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .letter{
+    display: inline-block;
+    font-weight: 900;
+    font-size: 4em;
+    margin: 0.2em;
+    position: relative;
+    color: #00B4F1;
+    transform-style: preserve-3d;
+    perspective: 400;
+    z-index: 1;
+  }
+  .letter:before, .letter:after{
+    position:absolute;
+    content: attr(data-letter);
+    transform-origin: top left;
+    top:0;
+    left:0;
+  }
+  .letter, .letter:before, .letter:after{
+    transition: all 0.3s ease-in-out;
+  }
+  .letter:before{
+    color: #fff;
+    text-shadow: 
+      -1px 0px 1px rgba(255,255,255,.8),
+      1px 0px 1px rgba(0,0,0,.8);
+    z-index: 3;
+    transform:
+      rotateX(0deg)
+      rotateY(-15deg)
+      rotateZ(0deg);
+  }
+  .letter:after{
+    color: rgba(0,0,0,.11);
+    z-index:2;
+    transform:
+      scale(1.08,1)
+      rotateX(0deg)
+      rotateY(0deg)
+      rotateZ(0deg)
+      skew(0deg,1deg);
+  }
+  .letter:hover:before{
+    color: #fafafa;
+    transform:
+      rotateX(0deg)
+      rotateY(-40deg)
+      rotateZ(0deg);
+  }
+  .letter:hover:after{
+    transform:
+      scale(1.08,1)
+      rotateX(0deg)
+      rotateY(40deg)
+      rotateZ(0deg)
+      skew(0deg,22deg);
+  }
+
+.btnMenuRight{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    float: right;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
 }
 
-li a {
-    display: block;
+.btnMenuLeft{
+     background-color: #4CAF50; 
+    border: none;
+    float: left;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.footer {
+ position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color:black;
     color: white;
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none; 
+ }
+
+/* blocks */
+input[type=text], select {
+    clear: both;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-li a:hover {
-    background-color: black;
+/* input[type=submit] {
+    width: 50%; 
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+} */
+
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+
+.divBlock {
+    border-radius: 5px;
+    /* background-color: #f2f2f2;
+    padding: 1px; */
+}
+.newLine{
+    clear: both;
 }

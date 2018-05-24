@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,36 +8,50 @@
 </head>
 
 <body>
+<<<<<<< HEAD
     <form>
+=======
+    <div>
+        <input data-bind="text" name="">
+    </div>
+    <form data-bind="submit: save">
+>>>>>>> 0c44c890da1152801347e7d9e04f92dd152654c9
         <section class="heading">
-                <h1>SkyNetPortal</h1>
-            </section>
+            <h1>SkyNetPortal</h1>
+        </section>
 
+<<<<<<< HEAD
             <fieldset class="agent-action">
                     <button data-bind="click: addAgent">Add Agent</button>
                     <button data-bind="click: removeAgent" disabled>Remove Agent</button>
                 </fieldset>
+=======
+        <fieldset class="agent-action">
+            <input type="submit" name="add" value="Add Agent">
+        </fieldset>
+>>>>>>> 0c44c890da1152801347e7d9e04f92dd152654c9
 
         <fieldset class="agent-info">
             <label>
                 Agent Name
-                <input type="text" name="Agent Name"   data-bind="value: name">
+                <input type="text" name="name">
             </label>
             <label>
                 IP Address
-                <input type="text" name="IP Address" data-bind="value: ipAddress">
+                <input type="text" name="ipAddress">
             </label>
             <label>
                 Port
-                <input type="text" name="Port" data-bind="value: port">
+                <input type="text" name="port">
             </label>
         </fieldset>
 
         <fieldset class="agent-action">
-            <input type="button" name="cancel" value="Cancel" data-bind="click: save">
-            <input type="button" name="submit" value="Save"  data-bind="click: save">
+            <input type="button" name="cancel" value="Cancel">
+            <input type="submit" name="submit" value="Save">
         </fieldset>
     </form>
+<<<<<<< HEAD
  
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>  
     <script type="text/javascript" src="src/agentService.js"></script>  
@@ -45,7 +59,21 @@
     <script type="text/javascript" src="src/addViewModel.js"></script>  
      
 
+=======
+>>>>>>> 0c44c890da1152801347e7d9e04f92dd152654c9
 
+    <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
+    <script type="text/javascript" src="src/agentService.js"></script>
+    <script type="text/javascript" src="src/serviceStorage.js"></script>
+    <script type="text/javascript" src="src/agent.js"></script>
+    <script type="text/javascript" src="src/addViewModel.js"></script>
+
+    <script>
+        let persistence = new storageService();
+        let service = new agentService(persistence);
+        let viewModel = new addViewModel(service);
+        ko.applyBindings(viewModel);
+    </script>
 </body>
 
-</html>
+</html> -->

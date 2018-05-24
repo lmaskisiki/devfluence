@@ -1,39 +1,87 @@
+
 function agentService(storageService) {
-    let addViewModel = {
-        addAgent: function (agent) {
 
-        }
-    }
-
-    let addAgent = (agent) => {
+    function addAgent(agent) {
         storageService.addAgent(agent);
-        return "success";
+        return storageService.getAgents().includes(agent) ? "SUCCESS" : "ERROR";
     }
-    let updateViewModel = {
-        updateAgent: function (agent) {
 
-        }
+    function getAgents() {
+        return storageService.getAgents();
     }
-    let updateAgent = (agent) => {
-        storageService.updateAgent(agent);
-        return "Successfully updated";
-    }
-    let removeViewModel = {
-        removeAgent: function (agent) {
 
-        }
+    function ping(agent, onSuccess, onError) {
+        return doGet(agent.ipAddress, agent.port, "health")
+            .then(function (result) {
+                if (result.statusCode == 200) {
+                    console.log("executing success");
+                    return onSuccess();
+                }
+            }).catch(e => onError(e));
     }
-    let removeAgent = (agent) => {
-        storageService.removeAgent(agent);
-        return "Successfully removed";
+
+    function doGet(ip, port, endpoint) {
+        return handleHttp("GET", `http://${ip}:${port}/api/${endpoint}`);
+    }
+
+
+    function doGet2(ip, port, endpoint, doneFn) {
+
+        return handleHttp2("GET", `http://${ip}:${port}/api/${endpoint}`, doneFn);
+    }
+
+
+    function runCommand(command, agent, doneFn) {
+        doGet2(agent.ipAddress, agent.port, command, doneFn)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function handleHttp2(method, url, doneFn) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                doneFn(JSON.parse(xhttp.responseText))
+            } else if (this.readyState == 4) {
+                doneFn();
+            }
+        };
+        console.log(url);
+        xhttp.open("GET", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    }
+
+    function handleHttp(method, url) {
+        console.log(url);
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(method, url);
+            xhr.onload = () => resolve({ statusCode: xhr.status, data: xhr.responseText });
+            xhr.onerror = () => reject({ statusCode: xhr.status, data: xhr.responseText });
+            xhr.send();
+        });
     }
 
     return {
         addAgent: addAgent,
-        updateAgent: updateAgent,
-        removeAgent: removeAgent
+        ping: ping,
+        doGet, doGet,
+        getAgents: getAgents,
+        ping: ping,
+        runCommand: runCommand
     }
-
-    
-
 }

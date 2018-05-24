@@ -24,90 +24,111 @@ describe("addViewModel", () => {
 
         describe("Given agent name, ip address and port number", () => {
             describe("When agent is not reachable", () => {
+                beforeEach(() => {
+                    jasmine.Ajax.install();
+                });
+                afterEach(() => {
+                    jasmine.Ajax.uninstall();
+                });
                 it("Should return error message 'NOT_FOUND'", () => {
                     //Arrange
-                    let storage = new storageService();
-                    let service = new agentService(storage);
-                    let viewModel = new addViewModel();
+                    let service = new agentService();
+                    let viewModel = new addViewModel(service);
                     let agent = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
                         .withPort(8282)
                         .build();
 
-                    spyOn(viewModel, 'getAgentService').and.returnValue(service);
-                    spyOn(service, 'addAgent').and.returnValue('NOT_FOUND');
+                    jasmine.Ajax.stubRequest('http://192.168.11.101:8282/api/health').andReturn({
+                        "status": 400,
+                        "contentType": 'application/json',
+                        "responseText": 'Hello from the world'
+                    });
+
+                    spyOn(service, 'ping').and.callThrough();
+                    spyOn(viewModel, 'addAgentToList');
 
                     //Act
-                    const result = viewModel.addAgent(agent);
+                    let result = viewModel.addAgent(agent);
+
                     //Assert
-                    expect(service.addAgent).toHaveBeenCalledWith(agent);
-                    expect(result).toBe("NOT_FOUND");
+                    expect(service.ping).toHaveBeenCalled();
                 });
             });
 
             describe("When agent is reachable and healthy", () => {
-                it("Should save agent to using storage service", () => {
-                    //Arrange
-                    let storage = new storageService();
-                    let service = new agentService(storage);
-                    let viewModel = new addViewModel();
-                    let agent = new agentTestBuilder()
-                        .withName("Agent 1")
-                        .withIpAddress("192.168.11.101")
-                        .withPort(8282)
-                        .build();
+                describe("ShowAddAgentForm", function () {
+                    describe("If set to false", function () {
+                        xit("Should hide add agent form", function () {
+                            //Arrange
+                            let viewModel = new addViewModel();
 
-                    spyOn(viewModel, 'getAgentService').and.returnValue(service);
-                    spyOn(service, 'addAgent').and.callThrough();
-
-                    //Act
-                    viewModel.addAgent(agent);
-                    //Assert
-                    expect(storage.getAgents()).toContain(agent);
-                });
-            });
-            describe("When agent is changed details and healthy", () => {
-                it("Should save agent new details using storage service", () => {
-                    //Arrange
-                    let storage = new storageService();
-                    let service = new agentService(storage);
-                    let viewModel = new updateViewModel();
-                    let agent = new agentTestBuilder()
-                        .withName("Agent 2")
-                        .withIpAddress("192.168.11.102")
-                        .withPort(8281)
-                        .build();
-
-                    spyOn(viewModel, 'getAgentService').and.returnValue(service);
-                    spyOn(service, 'updateAgent').and.callThrough();
-
-                    //Act
-                    viewModel.updateAgent(agent);
-                    //Assert
-                    expect(storage.getAgents()).toContain(agent);
-                });
-            });
-        });
-    });
-            describe("removeViewModel", () => {
-                describe("removeAgent", () => {
-                    describe("When agent is no longer needed", () => {
-                        it("Should remove agent to using storage service", () => {
+                            //act
+                            viewModel.ShowAddAgentForm(false);
+ 
+                            //Act
+                            viewModel.addAgent(agent);
+                            //Assert
+                            expect(storage.getAgents()).toContain(agent);
+                        });
+                    });
+                    describe("When agent is changed details and healthy", () => {
+                        it("Should save agent new details using storage service", () => {
                             //Arrange
                             let storage = new storageService();
                             let service = new agentService(storage);
-                            let viewModel = new removeViewModel(service);
-                           
-                            spyOn(viewModel, 'removeAgent').and.returnValue(service);
-                          
+                            let viewModel = new updateViewModel();
+                            let agent = new agentTestBuilder()
+                                .withName("Agent 2")
+                                .withIpAddress("192.168.11.102")
+                                .withPort(8281)
+                                .build();
+
+                            spyOn(viewModel, 'getAgentService').and.returnValue(service);
+                            spyOn(service, 'updateAgent').and.callThrough();
+
                             //Act
-                            viewModel.removeAgent(agent);
+                            viewModel.updateAgent(agent);
                             //Assert
-                            expect(storage.removeAgent()).not.toContain(agent);
+                            expect(storage.getAgents()).toContain(agent);
+                            //assert
+                            expect(viewModel.ShowAddAgentForm()).toBe(false)
+                        });
+                    });
+
+                    describe("If set to true", function () {
+                        xit("should show agent form", function () {
+                            //Arrange
+                            let viewModel = new addViewModel();
+
+                            //Act
+                            viewModel.ShowAddAgentForm(true);
+
+                            //Assert
+                            expect(viewModel.ShowAddAgentForm()).toBe(true);
                         });
                     });
                 });
             });
         });
- 
+    });
+    describe("removeViewModel", () => {
+        describe("removeAgent", () => {
+            describe("When agent is no longer needed", () => {
+                it("Should remove agent to using storage service", () => {
+                    //Arrange
+                    let storage = new storageService();
+                    let service = new agentService(storage);
+                    let viewModel = new removeViewModel(service);
+
+                    spyOn(viewModel, 'removeAgent').and.returnValue(service);
+                    //Act
+                    viewModel.removeAgent(agent);
+                    //Assert
+                    expect(storage.removeAgent()).not.toContain(agent);
+                });
+            });
+        });
+    });
+});

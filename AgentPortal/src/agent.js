@@ -7,6 +7,7 @@ function agent(name, ipAddress, port) {
         name: _name,
         ipAddress: _ipAddress,
         port: _port,
-        active: _active
+        active: _active,
+        execution: []
     }
 }

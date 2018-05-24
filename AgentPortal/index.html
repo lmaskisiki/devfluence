@@ -15,16 +15,19 @@
         <h1>SkyNet Portal</h1>
 
         <ul>
-            <button class="btnExecuteCommand" data-bind="click: ShowExecuteAgentForm.bind(this, true)" >Execute Command</button>
+            <button class="btnExecuteCommand" data-bind="click: ShowExecuteAgentForm.bind(this, true)">Execute Command</button>
             <button class="buttonFloatRight" data-bind='enable: agents().length > 0'>Remove Agent</button>
-            <button class="buttonFloatRight"  data-bind="click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
+            <button class="buttonFloatRight" data-bind="click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
             <button class="buttonFloatRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
         </ul>
 
         <div data-bind="visible: agents.length > 0"></div>
         <div data-bind="foreach: agents" class="gridwrapper">
             <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
-                 <h6 data-bind="text: $data.name"></h6>
+                <h6 data-bind="text: $data.name"></h6>
+                <div>
+                    <h4 data-bind="text: $data.execution">hello</h4>
+                </div>
             </div>
         </div>
         </div>
@@ -84,44 +87,43 @@
     </form>
 
     <!-- Execute form -->
-    <form >
+    <form data-bind="submit: runCommand">
         <fieldset data-bind="visible: showExecuteAgent">
-        <label>Agent Name :
-            <select>
-                <!-- Needs to be static -->
-                <option value="test">Agent 1</option>
-                <option value="test">Agent 2</option>
-                <option value="test">Agent 3</option>
-                <option value="test">Agent 4</option>
-            </select>
-        </label>
-        <br>
-        <br>
-        <label>Command :
-            <select>
-                <option value="test">Get IP</option>
-                <option value="test">Get OS</option>
-                <option value="test">Get hostname</option>
-                <option value="test">Get Fully qualified hostname</option>
-                <option value="test">Execute powershell script</option>
-            </select>
-        </label>
-        <br>
-        <br>
-        <label>Script :
-            <textarea rows="4" cols="50"></textarea>
-        </label>
-        <br>
-        <br>
-        <input type="button" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false")>
-        <input type="submit" value="Execute">
+            <label>Agent Name :
+
+                <select data-bind="options: agents,
+                optionsText: 'name',
+                value: activeAgent,
+                optionsCaption: 'Choose...'"></select>
+            </label>
+            <br>
+            <br>
+            <label>Command :
+                <select>
+                    <option value="test">Get IP</option>
+                    <option value="test">Get OS</option>
+                    <option value="test">Get hostname</option>
+                    <option value="test">Get Fully qualified hostname</option>
+                    <option value="test">Execute powershell script</option>
+                </select>
+            </label>
+            <br>
+            <br>
+            <label>Script :
+                <textarea rows="4" cols="50"></textarea>
+            </label>
+            <br>
+            <br>
+            <input type="button" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false" )>
+            <input type="submit" value="Execute">
     </form>
-</fieldset>
+    </fieldset>
 
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="src/agentService.js"></script>
     <script type="text/javascript" src="src/serviceStorage.js"></script>
     <script type="text/javascript" src="src/agent.js"></script>
+    <script type="text/javascript" src="testDataBuilder/agentTestBuilder.js"></script>
     <script type="text/javascript" src="src/addViewModel.js"></script>
 
     <script>

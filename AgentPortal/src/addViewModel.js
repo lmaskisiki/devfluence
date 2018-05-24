@@ -1,43 +1,57 @@
 
 function addViewModel(service) {
-
-    self.ShowAddAgent  = ko.observable(false);
+    let self = this;
+    self.ShowAddAgent = ko.observable(false);
     self.ShowUpdateAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
-
-    self.ShowAddAgentForm = function(show){
+    self.histories = ko.observableArray([]);
+    self.activeAgent = ko.observable(new agent());
+ 
+    self.ShowAddAgentForm = function (show) {
         self.ShowAddAgent(show);
     }
-    self.ShowUpdateAgentForm = function(show){
+    self.ShowUpdateAgentForm = function (show) {
         self.ShowUpdateAgent(show);
     }
 
-    self.ShowExecuteAgentForm = function(show){
+    self.ShowExecuteAgentForm = function (show) {
         self.showExecuteAgent(show);
     }
 
-    self.agents = ko.observableArray();
+    self.agents = ko.observableArray([]);
 
     self.save = function (formElement) {
         let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
         this.addAgent(agentModel);
-        self.agents.removeAll();
         self.ShowAddAgentForm(false);
-        ko.utils.arrayPushAll(self.agents, service.getAgents());
     }
-    
+
+    self.runCommand = function (command, agent) {
+        let a = new agentTestBuilder()
+            .withName("Agent Meeee")
+            .withIpAddress("localhost")
+            .withPort(1234)
+            .build();
+        service.runCommand("ip", self.activeAgent(), function (resp) {
+            self.activeAgent.execution.push(resp.output);
+            alert(self.agents()[0].executionResult);
+        });
+    }
+
     this.addAgent = function (agent) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
-        service.ping(agent).then(function (result) {
-            if (result.statusCode === 200) {
-                agent.active = true;
-                service.addAgent(agent);
-            } 
-        }).catch(e => {
+        return service.ping(agent, function () {
+            agent.active = true;
+            self.addAgentToList(agent);
+        }, function (error) {
             agent.active = false;
-            service.addAgent(agent);
+            self.addAgentToList(agent);
         });
+    }
+
+    self.addAgentToList = function (agent) {
+        self.agents.push(agent);
     }
 
 
@@ -53,12 +67,13 @@ function agent(name, ipAddress, port) {
     let _name = name;
     let _ipAddress = ipAddress;
     let _port = port;
-    let _active=false;
+    let _active = false;
     return {
         name: _name,
         ipAddress: _ipAddress,
         port: _port,
-        active:_active
+        active: _active,
+        execution: []
     }
 }
 

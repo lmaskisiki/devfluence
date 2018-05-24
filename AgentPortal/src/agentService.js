@@ -10,15 +10,60 @@ function agentService(storageService) {
         return storageService.getAgents();
     }
 
-    function ping(agent) {
-        return doGet(agent.ipAddress, agent.port, "health");
+    function ping(agent, onSuccess, onError) {
+        return doGet(agent.ipAddress, agent.port, "health")
+            .then(function (result) {
+                if (result.statusCode == 200) {
+                    console.log("executing success");
+                    return onSuccess();
+                }
+            }).catch(e => onError(e));
     }
 
-    async function doGet(ip, port, endpoint) {
-        let resp = await handleHttp("GET", `http://${ip}:${port}/api/${endpoint}`);
-        return Promise.resolve(resp);
+    function doGet(ip, port, endpoint) {
+        return handleHttp("GET", `http://${ip}:${port}/api/${endpoint}`);
     }
 
+
+    function doGet2(ip, port, endpoint, doneFn) {
+
+        return handleHttp2("GET", `http://${ip}:${port}/api/${endpoint}`, doneFn);
+    }
+
+
+    function runCommand(command, agent, doneFn) {
+        doGet2(agent.ipAddress, agent.port, command, doneFn)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function handleHttp2(method, url, doneFn) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                doneFn(JSON.parse(xhttp.responseText))
+            } else if (this.readyState == 4) {
+                doneFn();
+            }
+        };
+        console.log(url);
+        xhttp.open("GET", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+    }
 
     function handleHttp(method, url) {
         console.log(url);
@@ -36,8 +81,7 @@ function agentService(storageService) {
         ping: ping,
         doGet, doGet,
         getAgents: getAgents,
-        ping: ping
+        ping: ping,
+        runCommand: runCommand
     }
-
-
 }

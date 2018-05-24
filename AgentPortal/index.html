@@ -10,113 +10,133 @@
 </head>
 
 <body>
+    <!-- Displays Dashboard -->
     <section>
-
-        <h1>SkyNet Portal</h1>
+        <div class="heading">
+            <span class="letter" data-letter="S">S</span>
+            <span class="letter" data-letter="K">K</span>
+            <span class="letter" data-letter="Y">Y</span>
+            <span class="letter" data-letter="N">N</span>
+            <span class="letter" data-letter="E">E</span>
+            <span class="letter" data-letter="T">T  </span>
+            <span class="letter" data-letter=""> </span>
+            <span class="letter" data-letter=""> </span>
+            <span class="letter" data-letter=""> </span>
+            <span class="letter" data-letter="P">P</span>
+            <span class="letter" data-letter="O">O</span>
+            <span class="letter" data-letter="R">R</span>
+            <span class="letter" data-letter="T">T</span>
+            <span class="letter" data-letter="A">A</span>
+            <span class="letter" data-letter="L">L</span>
+        </div>
 
         <ul>
-            <button class="btnExecuteCommand" data-bind="click: ShowExecuteAgentForm.bind(this, true)" >Execute Command</button>
-            <button class="buttonFloatRight" data-bind='enable: agents().length > 0'>Remove Agent</button>
-            <button class="buttonFloatRight"  data-bind="click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
-            <button class="buttonFloatRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
+            <button class="btnMenuLeft" data-bind="enable: agents().length > 0,click: ShowExecuteAgentForm.bind(this, true)">Execute Command</button>
+            <button class="btnMenuRight" data-bind='enable: agents().length > 0'>Remove Agent</button>
+            <button class="btnMenuRight" data-bind="enable: agents().length > 0,click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
+            <button class="btnMenuRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
         </ul>
 
-        <div data-bind="visible: agents.length > 0"></div>
+        <!-- Displays Agents -->
+        <!-- <div data-bind=> -->
         <div data-bind="foreach: agents" class="gridwrapper">
             <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
-                 <h6 data-bind="text: $data.name"></h6>
+                <h1 data-bind="text: $data.name"></h1>
             </div>
         </div>
-        </div>
+        <!-- </div> -->
     </section>
 
     <!-- Add Form -->
-
-    <form data-bind="submit: save" class="newagentform">
-        <fieldset class="agent-action" data-bind="visible: ShowAddAgent">
-            <label>
-                Agent Name :
-                <input type="text" name="name">
-            </label>
-            <br>
-            <br>
-            <label>
-                IP Address :
-                <input type="text" name="ipAddress">
-            </label>
-            <br>
-            <br>
-            <label>
-                Port :
-                <input type="text" name="port">
-            </label>
-            <br>
-            <br>
-            <input type="button" name="cancel" value="Cancel" data-bind="click: ShowAddAgentForm.bind(this,false)">
-            <input type="submit" name="submit" value="Save">
-        </fieldset>
-    </form>
-
+    <div class="divBlock">
+        <form data-bind="submit: save">
+            <section class="agent-action" data-bind="visible: ShowAddAgent">
+                <label class="newLine">
+                    Agent Name :
+                </label>
+                <input type="text" name="name" placeholder="Enter Agent Name">
+                <br>
+                <br>
+                <label>
+                    IP Address :
+                    <input type="text" name="ipAddress" placeholder="Enter Ip Address">
+                </label>
+                <br>
+                <br>
+                <label>
+                    Port :
+                    <input type="text" name="port" placeholder="Enter Port">
+                </label>
+                <br>
+                <br>
+                <input type="submit" name="cancel" value="Cancel" data-bind="click: ShowAddAgentForm.bind(this,false)" class="btnMenuLeft">
+                <input type="submit" name="submit" value="Save" class="btnMenuLeft">
+            </section>
+        </form>
+    </div>
     <!-- Update -->
-    <form>
-        <fieldset class="agent-action" data-bind="visible: ShowUpdateAgent">
-            <label>
-                Agent Name :
+    <div class="divBlock">
+        <form>
+            <section class="agent-action" data-bind="visible: ShowUpdateAgent">
+                <label>
+                    Agent Name :
+                </label>
                 <input type="text" name="name">
-            </label>
-            <br>
-            <br>
-            <label>
-                IP Address :
+                <br>
+                <br>
+                <label>
+                    IP Address :
+                </label>
                 <input type="text" name="ipAddress">
-            </label>
-            <br>
-            <br>
-            <label>
-                Port :
+                <br>
+                <br>
+                <label>
+                    Port :
+                </label>
                 <input type="text" name="port">
-            </label>
-            <br>
-            <br>
-            <input type="button" name="cancel" value="Cancel" data-bind="click: ShowUpdateAgentForm.bind(this,false)">
-            <input type="submit" name="submit" value="Update">
-        </fieldset>
-    </form>
-
+                <br>
+                <br>
+                <input type="button" name="cancel" value="Cancel" data-bind="click: ShowUpdateAgentForm.bind(this,false)" class="btnMenuLeft">
+                <input type="submit" name="submit" value="Update" class="btnMenuLeft">
+            </section>
+        </form>
+    </div>
     <!-- Execute form -->
-    <form >
-        <fieldset data-bind="visible: showExecuteAgent">
-        <label>Agent Name :
-            <select>
-                <!-- Needs to be static -->
-                <option value="test">Agent 1</option>
-                <option value="test">Agent 2</option>
-                <option value="test">Agent 3</option>
-                <option value="test">Agent 4</option>
-            </select>
-        </label>
-        <br>
-        <br>
-        <label>Command :
-            <select>
-                <option value="test">Get IP</option>
-                <option value="test">Get OS</option>
-                <option value="test">Get hostname</option>
-                <option value="test">Get Fully qualified hostname</option>
-                <option value="test">Execute powershell script</option>
-            </select>
-        </label>
-        <br>
-        <br>
-        <label>Script :
-            <textarea rows="4" cols="50"></textarea>
-        </label>
-        <br>
-        <br>
-        <input type="button" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false")>
-        <input type="submit" value="Execute">
-    </form>
-</fieldset>
+    <div class="divBlock">
+        <form>
+            <section data-bind="visible: showExecuteAgent">
+                <label>Agent Name :
+                </label>
+                <select>
+                    <!-- Needs to be static -->
+                    <option value="test">Agent 1</option>
+                    <option value="test">Agent 2</option>
+                    <option value="test">Agent 3</option>
+                    <option value="test">Agent 4</option>
+                </select>
+                <br>
+                <br>
+                <label>Command :
+                </label>
+                <select>
+                    <option value="test">Get IP</option>
+                    <option value="test">Get OS</option>
+                    <option value="test">Get hostname</option>
+                    <option value="test">Get Fully qualified hostname</option>
+                    <option value="test">Execute powershell script</option>
+                </select>
+                <br>
+                <br>
+                <label>Script :
+                </label>
+                <textarea rows="4" cols="50"></textarea>
+                <br>
+                <br>
+                <input type="button" name="cancel" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">
+                <input type="submit" value="Execute" class="btnMenuLeft">
+            </section>
+        </form>
+    </div>
 
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="src/agentService.js"></script>
@@ -130,6 +150,10 @@
         let viewModel = new addViewModel(service);
         ko.applyBindings(viewModel);
     </script>
+
+    <!-- <div class="footer">
+        <p>#DevLife</p>
+    </div> -->
 
 </body>
 

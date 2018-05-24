@@ -1,12 +1,16 @@
 
 function addViewModel(service) {
+
     let self = this;
+
+
+    self.ShowAgents = ko.observable(false);
     self.ShowAddAgent = ko.observable(false);
     self.ShowUpdateAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable(new agent());
- 
+
     self.ShowAddAgentForm = function (show) {
         self.ShowAddAgent(show);
     }
@@ -19,6 +23,11 @@ function addViewModel(service) {
     }
 
     self.agents = ko.observableArray([]);
+    self.ShowAgentForm = function (show) {
+        self.showAgents(show);
+    }
+
+
 
     self.save = function (formElement) {
         let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
@@ -53,7 +62,6 @@ function addViewModel(service) {
     self.addAgentToList = function (agent) {
         self.agents.push(agent);
     }
-
 
     let emptyObject = (agent) => {
         if (agent.name.length === 0 | agent.ipAddress.length == 0 | agent.port === undefined) {

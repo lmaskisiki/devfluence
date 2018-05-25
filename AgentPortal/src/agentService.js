@@ -1,4 +1,5 @@
 
+
 function agentService(storageService) {
 
     function addAgent(agent) {
@@ -19,9 +20,9 @@ function agentService(storageService) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                doneFn(xhttp.responseText)
+                doneFn(xhttp.responseText, xhttp.status)
             } else if (this.readyState == 4) {
-                doneFn();
+                doneFn(xhttp.responseText, xhttp.status);
             }
         };
 
@@ -30,7 +31,6 @@ function agentService(storageService) {
         xhttp.setRequestHeader("Accept", "application/json");
         xhttp.send(data);
     }
-
 
     return {
         addAgent: addAgent,

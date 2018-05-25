@@ -1,13 +1,11 @@
 function addViewModel(service) {
 
     let self = this;
-
     self.ShowAgent = ko.observable(true);
     self.ShowAddAgent = ko.observable(false);
     self.ShowUpdateAgent = ko.observable(false);
     self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
-
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
     self.commandToRun = ko.observable();
@@ -16,10 +14,10 @@ function addViewModel(service) {
     self.agentToRemove = ko.observable();
 
     self.ShowAddAgentForm = function (show) {
-       return self.ShowAddAgent(show)
-        // if (self.ShowAddAgent(show)) {
-        //     //self.ShowAgent(!show);
-        // }
+        // self.ShowAddAgent(show)
+        if (self.ShowAddAgent(show)) {
+            //self.ShowAgent(!show);
+        }
     }
 
     self.ShowUpdateAgentForm = function (show) {
@@ -34,7 +32,7 @@ function addViewModel(service) {
     }
 
     self.ShowExecuteAgentForm = function (show) {
-        self.showExecuteAgent(show);  
+        self.showExecuteAgent(show);
     }
 
     // self.ShowAgentForm = function (show) {
@@ -42,7 +40,6 @@ function addViewModel(service) {
     // }
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
-
     }
 
     self.save = function (formElement) {
@@ -68,17 +65,36 @@ function addViewModel(service) {
     }
 
     self.addAgent = function (agent) {
-        if (emptyObject(agent))
+        if (emptyObject(agent)){
             return "EMPTY_OBJECT";
+        }
+        // if (duplicatedAgent(agent)){
+        //     return "Duplicated_Agent";
+        // }
         service.ping(agent, function (text, statusCode) {
             agent.active = (statusCode == 200) ? true : false;
             self.addAgentToList(agent);
         });
     }
 
+    let duplicatedAgent = function (agent) {
+        var agentFound = agents.find((a) => a.name === agent.name);
+        // if (agentFound === undefined) {
+        //     return false;
+        // }
+        if (agent.name === agentFound.name && agent.ipAddress === agentFound.ipAddress && agent.port === agentFound.port ){
+            console.log(agent.name === agentFound.name && agent.ipAddress === agentFound.ipAddress && agent.port === agentFound.port );
+            return true;
+        }
+        return false;
+    }
+
     self.addAgentToList = function (agent) {
         self.agents().push(agent);
         self.agents(self.agents())
+    }
+    let agentNotAvailable = function (agent){
+
     }
 
     let emptyObject = (agent) => {

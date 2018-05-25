@@ -148,48 +148,17 @@
 
     <!-- Remove  -->
     <form data-bind="submit: removeAgent">
-        <fieldset data-bind="visible : ShowRemoveAgent">
-
+        <section data-bind="visible : ShowRemoveAgent">
             <select data-bind="options: agents,
             optionsText: 'name',
             value: activeAgent,
-            optionsCaption: 'Agent Name'"></select>
-            <section>
-                <button type="submit" data-bind="click: ShowRemoveAgentForm.bind(this,false)">Cancel</button>
-
-                </label>
-                <br>
-                <br>
-                <label>Command :
-
-
-                </label>
-                <br>
-                <!-- commandToRun -->
-                <select data-bind="options: ['ip','os','hostname','script'],
-                                         value: commandToRun,
-                                        optionsCaption: 'Choose...'"></select>
-                </label>
-                <br>
-                <br>
-                <label>Script :
-                </label>
-                <br>
-                <textarea rows="4" cols="50"></textarea>
-                <br>
-                <br>
-                <input type="button" name="cancel" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">
-                <input type="submit" value="Execute" class="btnMenuLeft">
-            </section>
+            optionsCaption: 'Agent Name'">
+            </select>
+            <br>
+            <input type="button" value="Cancel" data-bind="click: ShowRemoveAgentForm.bind(this,false)" class="btnMenuLeft">
+            <input type="submit" value="Remove" class="btnMenuLeft">
+        </section>
     </form>
-    </div>
-
-    <input type="submit" value="Remove">
-    </section>
-    </fieldset>
-    </form>
-
-    </div>
 
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="src/agentService.js"></script>

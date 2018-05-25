@@ -15,6 +15,7 @@ function addViewModel(service) {
 
     self.ShowAddAgentForm = function (show) {
         self.ShowAddAgent(show);
+     
     }
 
     self.ShowUpdateAgentForm = function (show) {
@@ -27,6 +28,7 @@ function addViewModel(service) {
 
     self.ShowExecuteAgentForm = function (show) {
         self.showExecuteAgent(show);
+        self.ShowAddAgent(!show);
     }
 
     self.ShowAgentForm = function (show) {

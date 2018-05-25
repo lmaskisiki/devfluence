@@ -1,20 +1,18 @@
-describe("ShowAddAgentForm", function () {
-    describe("If set to false", function () {
-        xit("Should hide add agent form", function () {
+fdescribe("ShowAddAgentForm", function () {
+    describe("If show add agent is set to false", function () {
+        it("Should hide add-agent form", function () {
             //Arrange
             let viewModel = new addViewModel();
 
             //act
             viewModel.ShowAddAgentForm(false);
 
-            //Act
-            viewModel.addAgent(agent);
             //Assert
-            expect(storage.getAgents()).toContain(agent);
+            expect(viewModel.ShowAddAgent()).toBe(false);
         });
     });
     describe("If set to true", function () {
-        xit("should show agent form", function () {
+        it("should show agent form", function () {
             //Arrange
             let viewModel = new addViewModel();
 
@@ -22,7 +20,7 @@ describe("ShowAddAgentForm", function () {
             viewModel.ShowAddAgentForm(true);
 
             //Assert
-            expect(viewModel.ShowAddAgentForm()).toBe(true);
+            expect(viewModel.ShowAddAgent()).toBe(true);
         });
     });
 });

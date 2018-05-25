@@ -56,8 +56,8 @@ function addViewModel(service) {
     self.addAgent = function (agent) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
-        service.ping(agent, function () {
-            agent.active = true;
+        service.ping(agent, function (text, statusCode) {
+            agent.active = (statusCode == 200) ? true : false;
             self.addAgentToList(agent);
         });
     }

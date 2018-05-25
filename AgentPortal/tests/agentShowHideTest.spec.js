@@ -1,4 +1,4 @@
-fdescribe("ShowAddAgentForm", function () {
+describe("ShowAddAgentForm", function () {
     describe("If show add agent is set to false", function () {
         it("Should hide add-agent form", function () {
             //Arrange
@@ -11,6 +11,7 @@ fdescribe("ShowAddAgentForm", function () {
             expect(viewModel.ShowAddAgent()).toBe(false);
         });
     });
+    
     describe("If set to true", function () {
         it("should show agent form", function () {
             //Arrange

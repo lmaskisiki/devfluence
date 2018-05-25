@@ -3,8 +3,7 @@ describe("addViewModel", () => {
         describe("When agent name, ip and port are empty", () => {
             it("Should return EMPTY_OBJECT, and not call agentService", () => {
                 //Arrange
-                let storage = new storageService();
-                let service = new agentService(storage);
+                let service = new agentService();
                 let viewModel = new addViewModel(service);
                 let agent = new agentTestBuilder()
                     .withName("")
@@ -12,12 +11,9 @@ describe("addViewModel", () => {
                     .withPort()
                     .build();
 
-                spyOn(service, 'addAgent').and.returnValue('***');
-
                 //Act
                 const result = viewModel.addAgent(agent);
                 //Assert
-                expect(service.addAgent).not.toHaveBeenCalled();
                 expect(result).toBe("EMPTY_OBJECT");
             });
         });
@@ -30,7 +26,7 @@ describe("addViewModel", () => {
                 afterEach(() => {
                     jasmine.Ajax.uninstall();
                 });
-                it("Should return error message 'NOT_FOUND'", () => {
+                it("Should not add agent to list", () => {
                     //Arrange
                     let service = new agentService();
                     let viewModel = new addViewModel(service);
@@ -41,7 +37,7 @@ describe("addViewModel", () => {
                         .build();
 
                     jasmine.Ajax.stubRequest('http://192.168.11.101:8282/api/health').andReturn({
-                        "status": 400,
+                        "status": 404,
                         "contentType": 'application/json',
                         "responseText": 'Hello from the world'
                     });
@@ -54,56 +50,49 @@ describe("addViewModel", () => {
 
                     //Assert
                     expect(service.ping).toHaveBeenCalled();
+                    expect(viewModel.addAgentToList).not.toHaveBeenCalled();
+                    expect(viewModel.agents()).toEqual([]);
                 });
             });
 
-            describe("When agent is reachable and healthy", () => {
-                describe("When agent is changed details and healthy", () => {
-                    it("Should save agent new details using storage service", () => {
-                        //Arrange
-                        let storage = new storageService();
-                        let service = new agentService(storage);
-                        let viewModel = new updateViewModel();
-                        let agent = new agentTestBuilder()
-                            .withName("Agent 2")
-                            .withIpAddress("192.168.11.102")
-                            .withPort(8281)
-                            .build();
+            describe("When agent is reachable", () => {
+                beforeEach(() => {
+                    jasmine.Ajax.install();
+                });
+                afterEach(() => {
+                    jasmine.Ajax.uninstall();
+                });
+                it("Should agent to list", () => {
+                    //Arrange
+                    let service = new agentService();
+                    let viewModel = new addViewModel(service);
+                    let agent = new agentTestBuilder()
+                        .withName("Agent 1")
+                        .withIpAddress("192.168.11.101")
+                        .withPort(8282)
+                        .build();
 
-                        spyOn(viewModel, 'getAgentService').and.returnValue(service);
-                        spyOn(service, 'updateAgent').and.callThrough();
-
-                        //Act
-                        viewModel.updateAgent(agent);
-                        //Assert
-                        expect(storage.getAgents()).toContain(agent);
-                        //assert
-                        expect(viewModel.ShowAddAgentForm()).toBe(false)
+                    jasmine.Ajax.stubRequest(`http://${agent.ipAddress}:${agent.port}/api/health`).andReturn({
+                        "status": 200,
+                        "contentType": 'application/json',
+                        "responseText": 'Hello from the world'
                     });
+
+                    spyOn(service, 'ping').and.callThrough();
+                    spyOn(viewModel, 'setAgentStatusTo').and.callThrough();
+                    spyOn(viewModel, 'addAgentToList');
+
+                    //Act
+                    let result = viewModel.addAgent(agent);
+
+                    //Assert
+                    expect(service.ping).toHaveBeenCalled();
+                    expect(viewModel.setAgentStatusTo).toHaveBeenCalledWith('ACTIVE', agent);
+                    expect(viewModel.addAgentToList).toHaveBeenCalledWith(agent);
                 });
             });
+
         });
-
-        describe("If Agent name exists", function () {
-            it("Should display error message", function () {
-                //Arrange 
-                let viewModel = new addViewModel();
-                const agent1 = "Agent 1";
-                let agent1 = new agentTestBuilder()
-                    .withName(agent1)
-                    .build();
-                let agent2 = new agentTestBuilder()
-                    .withName(agent1)
-                    .build();
-                viewModel.addAgent(agent1);
-                //Act
-                result = viewModel.addAgent(agent2);
-
-                //Assert
-                expect(result).toBe("Agent ")
-            });
-        });
-
     });
 });
 

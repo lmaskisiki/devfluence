@@ -14,9 +14,9 @@ function addViewModel(service) {
     self.agents = ko.observableArray([]);
     self.scriptData = ko.observable('');
     self.agentToRemove = ko.observable();
-
+    self.activeAgents = ko.observableArray([]);
     self.ShowAddAgentForm = function (show) {
-       return self.ShowAddAgent(show)
+        return self.ShowAddAgent(show)
         // if (self.ShowAddAgent(show)) {
         //     //self.ShowAgent(!show);
         // }
@@ -34,7 +34,7 @@ function addViewModel(service) {
     }
 
     self.ShowExecuteAgentForm = function (show) {
-        self.showExecuteAgent(show);  
+        self.showExecuteAgent(show);
     }
 
     // self.ShowAgentForm = function (show) {
@@ -52,13 +52,15 @@ function addViewModel(service) {
     }
 
     self.runCommand = function () {
-        service.runCommand(self.commandToRun(), self.activeAgent(), function (response) {
-            if (response.length > 0) {
-                let responsJson = JSON.parse(response);
-                self.activeAgent().execution.push(responsJson.output);
-            }
-            self.refereshAgents();
-        }, self.scriptData());
+        ko.utils.arrayForEach(self.activeAgents(), function (a) {
+            service.runCommand(self.commandToRun(), a, function (response) {
+                if (response.length > 0) {
+                    let responsJson = JSON.parse(response);
+                    a.execution.push(responsJson.output);
+                }
+                self.refereshAgents();
+            }, self.scriptData());
+        });
     }
 
     self.refereshAgents = function () {
@@ -71,9 +73,16 @@ function addViewModel(service) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
         service.ping(agent, function (text, statusCode) {
-            agent.active = (statusCode == 200) ? true : false;
-            self.addAgentToList(agent);
+            if (statusCode === 200) {
+                agent = self.setAgentStatusTo("ACTIVE", agent);
+                self.addAgentToList(agent);
+            }
         });
+    }
+
+    self.setAgentStatusTo = (status, agent) => {
+        agent.active = (status === "ACTIVE") ? true : false;
+        return agent;
     }
 
     self.addAgentToList = function (agent) {

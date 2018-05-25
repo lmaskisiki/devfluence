@@ -1,10 +1,9 @@
 describe("removeViewModel", () => {
     describe("removeAgent", () => {
         describe("When agent is no longer needed", () => {
-            it("Should remove agent to using storage service", () => {
+            xit("Should remove agent to using storage service", () => {
                 //Arrange
-                let storage = new storageService();
-                let service = new agentService(storage);
+                let service = new agentService();
                 let viewModel = new removeViewModel(service);
 
                 spyOn(viewModel, 'removeAgent').and.returnValue(service);

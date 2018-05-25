@@ -58,78 +58,46 @@ describe("addViewModel", () => {
             });
 
             describe("When agent is reachable and healthy", () => {
-                describe("ShowAddAgentForm", function () {
-                    describe("If set to false", function () {
-                        xit("Should hide add agent form", function () {
-                            //Arrange
-                            let viewModel = new addViewModel();
+                describe("When agent is changed details and healthy", () => {
+                    it("Should save agent new details using storage service", () => {
+                        //Arrange
+                        let storage = new storageService();
+                        let service = new agentService(storage);
+                        let viewModel = new updateViewModel();
+                        let agent = new agentTestBuilder()
+                            .withName("Agent 2")
+                            .withIpAddress("192.168.11.102")
+                            .withPort(8281)
+                            .build();
 
-                            //act
-                            viewModel.ShowAddAgentForm(false);
- 
-                            //Act
-                            viewModel.addAgent(agent);
-                            //Assert
-                            expect(storage.getAgents()).toContain(agent);
-                        });
-                    });
-                    describe("When agent is changed details and healthy", () => {
-                        it("Should save agent new details using storage service", () => {
-                            //Arrange
-                            let storage = new storageService();
-                            let service = new agentService(storage);
-                            let viewModel = new updateViewModel();
-                            let agent = new agentTestBuilder()
-                                .withName("Agent 2")
-                                .withIpAddress("192.168.11.102")
-                                .withPort(8281)
-                                .build();
+                        spyOn(viewModel, 'getAgentService').and.returnValue(service);
+                        spyOn(service, 'updateAgent').and.callThrough();
 
-                            spyOn(viewModel, 'getAgentService').and.returnValue(service);
-                            spyOn(service, 'updateAgent').and.callThrough();
-
-                            //Act
-                            viewModel.updateAgent(agent);
-                            //Assert
-                            expect(storage.getAgents()).toContain(agent);
-                            //assert
-                            expect(viewModel.ShowAddAgentForm()).toBe(false)
-                        });
-                    });
-
-                    describe("If set to true", function () {
-                        xit("should show agent form", function () {
-                            //Arrange
-                            let viewModel = new addViewModel();
-
-                            //Act
-                            viewModel.ShowAddAgentForm(true);
-
-                            //Assert
-                            expect(viewModel.ShowAddAgentForm()).toBe(true);
-                        });
+                        //Act
+                        viewModel.updateAgent(agent);
+                        //Assert
+                        expect(storage.getAgents()).toContain(agent);
+                        //assert
+                        expect(viewModel.ShowAddAgentForm()).toBe(false)
                     });
                 });
             });
         });
     });
-    describe("removeViewModel", () => {
-        describe("removeAgent", () => {
-            describe("When agent is no longer needed", () => {
-                it("Should remove agent to using storage service", () => {
-                    //Arrange
-                    let storage = new storageService();
-                    let service = new agentService(storage);
-                    let viewModel = new removeViewModel(service);
+});
 
-                    spyOn(viewModel, 'removeAgent').and.returnValue(service);
-                    //Act
-                    viewModel.removeAgent(agent);
-                    //Assert
-                    expect(storage.removeAgent()).not.toContain(agent);
-                });
-            });
+//working on 
+describe("ValidateAgentName", function () {
+    describe("If Agent name exists", function () {
+        it("Should display error message", function () {
+            //Arrange 
+            let viewModel = new addViewModel();
+
+            //Act
+            result = viewModel.ValidateAgentName(agent.name);
+
+            //Assert
+            expect(result).toBe("Error_Message")
         });
-        
     });
 });

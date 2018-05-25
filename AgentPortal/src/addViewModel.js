@@ -1,31 +1,39 @@
-
 function addViewModel(service) {
 
     let self = this;
-
-
     self.ShowAgents = ko.observable(false);
     self.ShowAddAgent = ko.observable(false);
     self.ShowUpdateAgent = ko.observable(false);
+    self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
     self.commandToRun = ko.observable();
+    self.agents = ko.observableArray([]);
+    self.scriptData = ko.observable('');
+    self.agentToRemove = ko.observable();
 
     self.ShowAddAgentForm = function (show) {
         self.ShowAddAgent(show);
     }
+
     self.ShowUpdateAgentForm = function (show) {
         self.ShowUpdateAgent(show);
+    }
+
+    self.ShowRemoveAgentForm = function (show) {
+        self.ShowRemoveAgent(show);
     }
 
     self.ShowExecuteAgentForm = function (show) {
         self.showExecuteAgent(show);
     }
 
-    self.agents = ko.observableArray([]);
     self.ShowAgentForm = function (show) {
         self.showAgents(show);
+    }
+    self.removeAgent = function (agent) {
+        self.agents.remove(self.activeAgent());
     }
 
     self.save = function (formElement) {
@@ -35,25 +43,21 @@ function addViewModel(service) {
     }
 
     self.runCommand = function () {
-        service.runCommand(self.commandToRun(), self.activeAgent(), function (resp) {
-            let selected = self.agents().find(a => a.name == self.activeAgent().name);
-            let index = self.agents().indexOf(selected);
-            self.activeAgent().execution.push(resp.output);
-            alert(JSON.stringify(self.activeAgent()));
-            self.agents()[index].execution.push(resp.output);
-            self.agents(self.agents())
-            //self.addAgentToList(self.activeAgent());
-        });
+        service.runCommand(self.commandToRun(), self.activeAgent(), function (response) {
+            if (response.length > 0) {
+                let responsJson = JSON.parse(response);
+                self.activeAgent().execution.push(responsJson.output);
+            }
+            self.addAgentToList(self.activeAgent());
+
+        }, self.scriptData());
     }
 
-    this.addAgent = function (agent) {
+    self.addAgent = function (agent) {
         if (emptyObject(agent))
             return "EMPTY_OBJECT";
-        return service.ping(agent, function () {
+        service.ping(agent, function () {
             agent.active = true;
-            self.addAgentToList(agent);
-        }, function (error) {
-            agent.active = false;
             self.addAgentToList(agent);
         });
     }
@@ -84,6 +88,3 @@ function agent(name, ipAddress, port) {
         execution: []
     }
 }
-
-
-

@@ -8,6 +8,6 @@ function agent(name, ipAddress, port) {
         ipAddress: _ipAddress,
         port: _port,
         active: _active,
-        execution: ko.abservableArray()
+        execution: []
     }
 }

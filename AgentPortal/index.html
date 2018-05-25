@@ -33,7 +33,7 @@
         <ul>
 
             <button class="btnMenuLeft" data-bind="enable: agents().length > 0,click: ShowExecuteAgentForm.bind(this, true)">Execute Command</button>
-            <button class="btnMenuRight" data-bind='enable: agents().length > 0'>Remove Agent</button>
+            <button class="btnMenuRight" data-bind="enable: agents().length > 0,click: ShowRemoveAgentForm.bind(this, true)">Remove Agent</button>
             <button class="btnMenuRight" data-bind="enable: agents().length > 0,click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
             <button class="btnMenuRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
         </ul>
@@ -127,6 +127,43 @@
                 <br>
                 <label>Command :
                 </label>
+                <select data-bind="options: ['ip','os','hostname','script'],
+                                         value: commandToRun,
+                                        optionsCaption: 'Choose...'"></select>
+                </label>
+                <br>
+                <br>
+                <label>Script :
+                </label>
+                <textarea rows="4" cols="50" data-bind="value: scriptData"></textarea>
+                <br>
+                <br>
+                <input type="button" name="cancel" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">
+                <input type="submit" value="Execute" class="btnMenuLeft">
+            </section>
+        </form>
+    </div>
+    </fieldset>
+    </form>
+
+    <!-- Remove  -->
+    <form data-bind="submit: removeAgent">
+        <fieldset data-bind="visible : ShowRemoveAgent">
+
+            <select data-bind="options: agents,
+            optionsText: 'name',
+            value: activeAgent,
+            optionsCaption: 'Agent Name'"></select>
+            <section>
+                <button type="submit" data-bind="click: ShowRemoveAgentForm.bind(this,false)">Cancel</button>
+
+                </label>
+                <br>
+                <br>
+                <label>Command :
+
+
+                </label>
                 <br>
                 <!-- commandToRun -->
                 <select data-bind="options: ['ip','os','hostname','script'],
@@ -144,27 +181,31 @@
                 <input type="button" name="cancel" value="Cancel" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">
                 <input type="submit" value="Execute" class="btnMenuLeft">
             </section>
-        </form>
+    </form>
+    </div>
+
+    <input type="submit" value="Remove">
+    </section>
+    </fieldset>
+    </form>
+
     </div>
 
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="src/agentService.js"></script>
-    <script type="text/javascript" src="src/serviceStorage.js"></script>
     <script type="text/javascript" src="src/agent.js"></script>
     <script type="text/javascript" src="testDataBuilder/agentTestBuilder.js"></script>
     <script type="text/javascript" src="src/addViewModel.js"></script>
 
     <script>
-        let persistence = new storageService();
-        let service = new agentService(persistence);
+        let service = new agentService();
         let viewModel = new addViewModel(service);
+
         ko.applyBindings(viewModel);
     </script>
-
-    <!-- <div class="footer">
+    <div class="footer">
         <p>#DevLife</p>
-    </div> -->
-
+    </div>
 </body>
 
 </html>

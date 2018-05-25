@@ -39,7 +39,8 @@
         </ul>
 
         <!-- Displays Agents -->
-        <!-- <div data-bind=> -->
+        <div data-bind ="visible: ShowAgent">  
+                  <span>Agents</span>
         <div data-bind="foreach: agents">
             <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
                 <h1 data-bind="text: $data.name"></h1>
@@ -48,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <!-- </div> -->
+        </div> 
     </section>
 
     <!-- Add Form -->

@@ -1,11 +1,13 @@
 function addViewModel(service) {
 
     let self = this;
-    self.ShowAgents = ko.observable(false);
+
+    self.ShowAgent = ko.observable(true);
     self.ShowAddAgent = ko.observable(false);
     self.ShowUpdateAgent = ko.observable(false);
     self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
+
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
     self.commandToRun = ko.observable();
@@ -14,28 +16,32 @@ function addViewModel(service) {
     self.agentToRemove = ko.observable();
 
     self.ShowAddAgentForm = function (show) {
-        self.ShowAddAgent(show);
-     
+        if (self.ShowAddAgent(show)) {
+            self.ShowAgent(!show);
+        }
     }
 
     self.ShowUpdateAgentForm = function (show) {
         self.ShowUpdateAgent(show);
+        self.ShowAgent(!show);
     }
 
     self.ShowRemoveAgentForm = function (show) {
-        self.ShowRemoveAgent(show);
+        if (self.ShowRemoveAgent(show)) {
+            self.ShowAgent(show);
+        }
     }
 
     self.ShowExecuteAgentForm = function (show) {
-        self.showExecuteAgent(show);
-        self.ShowAddAgent(!show);
+        self.showExecuteAgent(show);  
     }
 
-    self.ShowAgentForm = function (show) {
-        self.showAgents(show);
-    }
+    // self.ShowAgentForm = function (show) {
+    //     self.showAgents(show);
+    // }
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
+
     }
 
     self.save = function (formElement) {
@@ -50,9 +56,14 @@ function addViewModel(service) {
                 let responsJson = JSON.parse(response);
                 self.activeAgent().execution.push(responsJson.output);
             }
-            self.addAgentToList(self.activeAgent());
-
+            self.refereshAgents();
         }, self.scriptData());
+    }
+
+    self.refereshAgents = function () {
+        let allAgents = self.agents(); //hack
+        self.agents([]);
+        self.agents(allAgents);
     }
 
     self.addAgent = function (agent) {

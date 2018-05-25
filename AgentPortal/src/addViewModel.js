@@ -16,9 +16,10 @@ function addViewModel(service) {
     self.agentToRemove = ko.observable();
 
     self.ShowAddAgentForm = function (show) {
-        if (self.ShowAddAgent(show)) {
-            self.ShowAgent(!show);
-        }
+       return self.ShowAddAgent(show)
+        // if (self.ShowAddAgent(show)) {
+        //     //self.ShowAgent(!show);
+        // }
     }
 
     self.ShowUpdateAgentForm = function (show) {

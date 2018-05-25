@@ -83,21 +83,27 @@ describe("addViewModel", () => {
                 });
             });
         });
-    });
-});
 
-//working on 
-describe("ValidateAgentName", function () {
-    describe("If Agent name exists", function () {
-        it("Should display error message", function () {
-            //Arrange 
-            let viewModel = new addViewModel();
+        describe("If Agent name exists", function () {
+            it("Should display error message", function () {
+                //Arrange 
+                let viewModel = new addViewModel();
+                const agent1 = "Agent 1";
+                let agent1 = new agentTestBuilder()
+                    .withName(agent1)
+                    .build();
+                let agent2 = new agentTestBuilder()
+                    .withName(agent1)
+                    .build();
+                viewModel.addAgent(agent1);
+                //Act
+                result = viewModel.addAgent(agent2);
 
-            //Act
-            result = viewModel.ValidateAgentName(agent.name);
-
-            //Assert
-            expect(result).toBe("Error_Message")
+                //Assert
+                expect(result).toBe("Agent ")
+            });
         });
+
     });
 });
+

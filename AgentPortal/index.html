@@ -89,6 +89,7 @@
                 </label>
                 <br>
                 <br>
+            
                 <input type="submit" name="cancel" value="Cancel" data-bind="click: ShowAddAgentForm.bind(this,false)" class="btnMenuLeft">
                 <input type="submit" name="submit" value="Save" class="btnMenuLeft">
             </section>
@@ -138,16 +139,15 @@
                 </label>
                 <br>
                 <br>
-                <label>Command :
-                </label>
+                <label>Command : </label>
+                <br>
                 <select data-bind="options: ['ip','os','hostname','script'],
                                          value: commandToRun,
                                         optionsCaption: 'Choose...'"></select>
-                </label>
                 <br>
                 <br>
-                <label>Script :
-                </label>
+                <label>Script : </label>
+                <br>
                 <textarea rows="4" cols="50" data-bind="value: scriptData"></textarea>
                 <br>
                 <br>

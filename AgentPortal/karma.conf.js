@@ -15,13 +15,13 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'lib/mock-ajax.js',
       'lib/knockout-3.4.2.js',
+      'lib/mock-ajax.js',
+      'src/**/knockout/ajax.js',
       'testDataBuilder/*.js',
       'src/*/*.js',
       'src/*.js',
       'src/**/jasmine.js',
-      'src/**/knockout/ajax.js',
       'tests/*spec.js'
     ],
 

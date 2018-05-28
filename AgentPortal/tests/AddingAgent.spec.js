@@ -99,23 +99,22 @@ describe("addViewModel", () => {
                     let agent1 = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
+                        .withPort("1234")
                         .build();
                     let agent2 = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
+                        .withPort("1234")
                         .build();
 
                     viewModel.agents = [agent1];
-
-                    // let result2 = viewModel.agents = [agent2];
-                    // let final = result === result2;
-                    // console.log(final)
-
+                
                     //Act
                     result = viewModel.addAgent(agent2);
+                    console.log(viewModel.addAgent(agent2));
 
                     //Assert
-                    expect(result).toBe("Duplicated_Agent")
+                    expect(result).toBe("Duplicated_Agent");
                 });
             });
         });

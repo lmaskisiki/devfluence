@@ -15,28 +15,46 @@ function addViewModel(service) {
     self.scriptData = ko.observable('');
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
-
     self.errors = ko.observableArray([""]);
+
     self.ShowAddAgentForm = function (show) {
-        return self.ShowAddAgent(show)
-        // if (self.ShowAddAgent(show)) {
-        //     //self.ShowAgent(!show);
-        // }
+        if (self.ShowAddAgent(show)) {
+            self.ShowAgent(!show);
+            self.ShowUpdateAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+        }
     }
 
     self.ShowUpdateAgentForm = function (show) {
-        self.ShowUpdateAgent(show);
-        self.ShowAgent(!show);
+        if(self.ShowUpdateAgent(show)){
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+        }
     }
 
     self.ShowRemoveAgentForm = function (show) {
         if (self.ShowRemoveAgent(show)) {
-            self.ShowAgent(show);
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.showExecuteAgent(false);
+            self.ShowUpdateAgent(false);
         }
     }
 
     self.ShowExecuteAgentForm = function (show) {
-        self.showExecuteAgent(show);
+        if (self.showExecuteAgent(show)) {
+            self.ShowAgent(!show);
+            self.ShowUpdateAgent(false);
+            self.ShowRemoveAgent(false);
+            self.ShowAddAgent(false);
+        };
+    }
+
+    self.ShowAgentForm = function (show) {
+        self.ShowAgent(show);
     }
 
     self.removeAgent = function (agent) {
@@ -98,11 +116,11 @@ function addViewModel(service) {
 
     let isNotValid = (agent) => {
         if (emptyObject(agent)) {
-            self.errors.push("EMPTY_OBJECT");
+            self.errors.push("EMPTY OBJECT");
             return true;
         }
         if (duplicatedAgent(agent)) {
-            self.errors.push("DUPLICATE_AGENT");
+            self.errors.push("DUPLICATE AGENT");
             return true;
         }
         return false;

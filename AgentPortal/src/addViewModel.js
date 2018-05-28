@@ -70,7 +70,7 @@ function addViewModel(service) {
 
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
-            service.runCommand(self.commandToRun(), a, function (response) {
+            service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
                     let execution = {
@@ -81,7 +81,7 @@ function addViewModel(service) {
                     a.execution.push(execution);
                 }
                 self.refereshAgents();
-            }, self.scriptData());
+            }, () => { });
         });
     }
 
@@ -100,7 +100,7 @@ function addViewModel(service) {
             } else {
                 self.errors.push(`Could not contact agent ${agent.name} on ${agent.ipAddress}:${agent.port}`);
             }
-        });
+        }, (a) => { self.errors.push("Could not contact the agent") });
     }
 
     self.setAgentStatusTo = (status, agent) => {
@@ -145,9 +145,27 @@ function addViewModel(service) {
     window.setInterval(function () {
         self.errors.removeAll();
     }, 7000);
+
+    window.setInterval(function () {
+        // for each agent on the view model
+        ko.utils.arrayForEach(self.agents(), (agent) => {
+
+            let successFn = function () {
+                agent.active = true;
+            };
+
+            let errorFn = function () {
+                console.log("error function executed...");
+                agent.active = false;
+            };
+            self.refereshAgents();
+            agent.canContact(successFn, errorFn);
+        });
+    }, 10000);
 }
 
 function agent(name, ipAddress, port) {
+    let _service = new agentService();
     let _name = name;
     let _ipAddress = ipAddress;
     let _port = port;
@@ -157,7 +175,10 @@ function agent(name, ipAddress, port) {
         ipAddress: _ipAddress,
         port: _port,
         active: _active,
-        execution: []
+        execution: [],
+        canContact: function (doneFn, erroFn) {
+            _service.ping(this, doneFn, erroFn);
+        }
     }
 }
 

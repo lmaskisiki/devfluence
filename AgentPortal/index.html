@@ -44,9 +44,20 @@
                 <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
                     <h1 data-bind="text: $data.name"></h1>
                     <div data-bind="visible: $data.execution.length > 0" class="executions">
-                        <h5>Execution output :
-                            <span data-bind="text: $data.execution[0]"></span>
-                        </h5>
+                        <div data-bind="foreach: $data.execution">
+                            <li>
+                                Command: 
+                                <span data-bind="text: $data.command"></span>
+                            </li>
+                            <li>
+                                Execution Result: 
+                                <span data-bind="text: $data.output"></span>
+                            </li>
+                            <li>
+                                Time: 
+                                <span data-bind="text: $data.time"></span>
+                            </li>
+                        </div>
                     </div>
                 </div>
             </div>

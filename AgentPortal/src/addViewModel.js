@@ -56,7 +56,12 @@ function addViewModel(service) {
             service.runCommand(self.commandToRun(), a, function (response) {
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
-                    a.execution.push(responsJson.output);
+                    let execution = {
+                        command: self.commandToRun(),
+                        output: responsJson.output,
+                        time: new Date()
+                    };
+                    a.execution.push(execution);
                 }
                 self.refereshAgents();
             }, self.scriptData());

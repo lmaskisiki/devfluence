@@ -15,6 +15,7 @@ function addViewModel(service) {
     self.scriptData = ko.observable('');
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
+    self.errors = ko.observableArray([""]);
 
     self.ShowAddAgentForm = function (show) {
         if (self.ShowAddAgent(show)) {
@@ -62,7 +63,8 @@ function addViewModel(service) {
 
     self.save = function (formElement) {
         let agentModel = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
-        this.addAgent(agentModel);
+        let response = this.addAgent(agentModel);
+        if (response) self.errors.push(response);
         self.ShowAddAgentForm(false);
     }
 
@@ -90,19 +92,13 @@ function addViewModel(service) {
     }
 
     self.addAgent = function (agent) {
-
-        if (emptyObject(agent)){
-            return "EMPTY_OBJECT";
-        }
-        if (duplicatedAgent(agent)){
-            alert(" duplicated agent found..");
-        return "Duplicated_Agent";
-        }
-
+        if (isNotValid(agent) === true) return;
         service.ping(agent, function (text, statusCode) {
             if (statusCode === 200) {
                 agent = self.setAgentStatusTo("ACTIVE", agent);
                 self.addAgentToList(agent);
+            } else {
+                self.errors.push(`Could not contact agent ${agent.name} on ${agent.ipAddress}:${agent.port}`);
             }
         });
     }
@@ -117,12 +113,23 @@ function addViewModel(service) {
         self.agents(self.agents())
     }
 
+
+    let isNotValid = (agent) => {
+        if (emptyObject(agent)) {
+            self.errors.push("EMPTY OBJECT");
+            return true;
+        }
+        if (duplicatedAgent(agent)) {
+            self.errors.push("DUPLICATE AGENT");
+            return true;
+        }
+        return false;
+    }
+
     let duplicatedAgent = function (newAgent) {
         if (self.agents().length > 0) {
             var agentFound = self.agents().find((a) => a.name === newAgent.name | a.ipAddress == newAgent.ipAddress);
-            if (agentFound) {
-                return true;
-            }
+            if (agentFound) return true;
         }
         return false;
     }
@@ -133,6 +140,11 @@ function addViewModel(service) {
         }
         return false;
     }
+
+    //UI CONTROLS
+    window.setInterval(function () {
+        self.errors.removeAll();
+    }, 7000);
 }
 
 function agent(name, ipAddress, port) {
@@ -148,3 +160,5 @@ function agent(name, ipAddress, port) {
         execution: []
     }
 }
+
+

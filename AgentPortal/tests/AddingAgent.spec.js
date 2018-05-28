@@ -91,23 +91,25 @@ describe("addViewModel", () => {
                 });
 
             });
-            describe("If Agent name exists", function () {
-                xit("Should display error message", function () {
+            fdescribe("If Agent name or IP exists", function () {
+                it("Should display error message", function () {
                     //Arrange 
                     let viewModel = new addViewModel();
 
                     let agent1 = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
-                        .withPort(8282)
                         .build();
                     let agent2 = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
-                        .withPort(8282)
                         .build();
 
                     viewModel.agents = [agent1];
+
+                    // let result2 = viewModel.agents = [agent2];
+                    // let final = result === result2;
+                    // console.log(final)
 
                     //Act
                     result = viewModel.addAgent(agent2);
@@ -115,7 +117,6 @@ describe("addViewModel", () => {
                     //Assert
                     expect(result).toBe("Duplicated_Agent")
                 });
-
             });
         });
     });

@@ -1,23 +1,25 @@
 function addViewModel(service) {
 
     let self = this;
+
     self.ShowAgent = ko.observable(true);
     self.ShowAddAgent = ko.observable(false);
     self.ShowUpdateAgent = ko.observable(false);
     self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
+
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
     self.commandToRun = ko.observable();
     self.agents = ko.observableArray([]);
     self.scriptData = ko.observable('');
     self.agentToRemove = ko.observable();
-
+    self.activeAgents = ko.observableArray([]);
     self.ShowAddAgentForm = function (show) {
-        // self.ShowAddAgent(show)
-        if (self.ShowAddAgent(show)) {
-            //self.ShowAgent(!show);
-        }
+        return self.ShowAddAgent(show)
+        // if (self.ShowAddAgent(show)) {
+        //     //self.ShowAgent(!show);
+        // }
     }
 
     self.ShowUpdateAgentForm = function (show) {
@@ -40,6 +42,7 @@ function addViewModel(service) {
     // }
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
+
     }
 
     self.save = function (formElement) {
@@ -49,13 +52,20 @@ function addViewModel(service) {
     }
 
     self.runCommand = function () {
-        service.runCommand(self.commandToRun(), self.activeAgent(), function (response) {
-            if (response.length > 0) {
-                let responsJson = JSON.parse(response);
-                self.activeAgent().execution.push(responsJson.output);
-            }
-            self.refereshAgents();
-        }, self.scriptData());
+        ko.utils.arrayForEach(self.activeAgents(), function (a) {
+            service.runCommand(self.commandToRun(), a, function (response) {
+                if (response.length > 0) {
+                    let responsJson = JSON.parse(response);
+                    let execution = {
+                        command: self.commandToRun(),
+                        output: responsJson.output,
+                        time: new Date()
+                    };
+                    a.execution.push(execution);
+                }
+                self.refereshAgents();
+            }, self.scriptData());
+        });
     }
 
     self.refereshAgents = function () {
@@ -65,33 +75,38 @@ function addViewModel(service) {
     }
 
     self.addAgent = function (agent) {
-        if (emptyObject(agent)){
+        if (emptyObject(agent))
             return "EMPTY_OBJECT";
+        if (duplicatedAgent(newAgent)) {
+            alert(" duplicated agent found..");
+            return "Duplicated_Agent";
         }
-        // if (duplicatedAgent(agent)){
-        //     return "Duplicated_Agent";
-        // }
         service.ping(agent, function (text, statusCode) {
-            agent.active = (statusCode == 200) ? true : false;
-            self.addAgentToList(agent);
+            if (statusCode === 200) {
+                agent = self.setAgentStatusTo("ACTIVE", agent);
+                self.addAgentToList(agent);
+            }
         });
     }
 
-    let duplicatedAgent = function (agent) {
-        var agentFound = agents.find((a) => a.name === agent.name);
-        // if (agentFound === undefined) {
-        //     return false;
-        // }
-        if (agent.name === agentFound.name && agent.ipAddress === agentFound.ipAddress && agent.port === agentFound.port ){
-            console.log(agent.name === agentFound.name && agent.ipAddress === agentFound.ipAddress && agent.port === agentFound.port );
-            return true;
-        }
-        return false;
+    self.setAgentStatusTo = (status, agent) => {
+        agent.active = (status === "ACTIVE") ? true : false;
+        return agent;
     }
 
     self.addAgentToList = function (agent) {
         self.agents().push(agent);
         self.agents(self.agents())
+    }
+
+    let duplicatedAgent = function (newAgent) {
+        if (self.agents().length > 0) {
+            var agentFound = self.agents().find((a) => a.name === newAgent.name | a.ipAddress == newAgent.ipAddress);
+            if (agentFound) {
+                return true;
+            }
+        }
+        return false;
     }
 
     let emptyObject = (agent) => {

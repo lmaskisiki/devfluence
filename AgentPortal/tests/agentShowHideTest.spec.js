@@ -24,7 +24,7 @@ describe("ShowAddAgentForm", function () {
             expect(viewModel.ShowAddAgent()).toBe(true);
         });
     });
-    describe("If add agent is enabled", function () {
+    fdescribe("If add agent is enabled", function () {
         it("should hide other functions", function () {
             //Arrange
             let viewModel = new addViewModel();
@@ -35,6 +35,21 @@ describe("ShowAddAgentForm", function () {
             //Assert
             expect(viewModel.ShowAddAgent()).toBe(true);
             expect(viewModel.ShowUpdateAgent()).toBe(false);
+            expect(viewModel.ShowRemoveAgent()).toBe(false);
+            expect(viewModel.showExecuteAgent()).toBe(false);
+        });
+    });
+    describe("If update agent is enabled", function () {
+        xit("should hide other functions", function () {
+            //Arrange
+            let viewModel = new addViewModel();
+
+            //Act
+            viewModel.ShowUpdateAgentForm(true);
+
+            //Assert
+            expect(viewModel.ShowUpdateAgent()).toBe(true);
+            expect(viewModel.ShowAddAgent()).toBe(false);
             expect(viewModel.ShowRemoveAgent()).toBe(false);
             expect(viewModel.showExecuteAgent()).toBe(false);
         });

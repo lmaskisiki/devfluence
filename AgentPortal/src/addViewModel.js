@@ -15,34 +15,49 @@ function addViewModel(service) {
     self.scriptData = ko.observable('');
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
+
     self.ShowAddAgentForm = function (show) {
-        return self.ShowAddAgent(show)
-        // if (self.ShowAddAgent(show)) {
-        //     //self.ShowAgent(!show);
-        // }
+        if (self.ShowAddAgent(show)) {
+            self.ShowAgent(!show);
+            self.ShowUpdateAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+        }
     }
 
     self.ShowUpdateAgentForm = function (show) {
-        self.ShowUpdateAgent(show);
-        self.ShowAgent(!show);
+        if(self.ShowUpdateAgent(show)){
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+        }
     }
 
     self.ShowRemoveAgentForm = function (show) {
         if (self.ShowRemoveAgent(show)) {
-            self.ShowAgent(show);
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.showExecuteAgent(false);
+            self.ShowUpdateAgent(false);
         }
     }
 
     self.ShowExecuteAgentForm = function (show) {
-        self.showExecuteAgent(show);
+        if (self.showExecuteAgent(show)) {
+            self.ShowAgent(!show);
+            self.ShowUpdateAgent(false);
+            self.ShowRemoveAgent(false);
+            self.ShowAddAgent(false);
+        };
     }
 
-    // self.ShowAgentForm = function (show) {
-    //     self.showAgents(show);
-    // }
+    self.ShowAgentForm = function (show) {
+        self.ShowAgent(show);
+    }
+
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
-
     }
 
     self.save = function (formElement) {
@@ -75,12 +90,15 @@ function addViewModel(service) {
     }
 
     self.addAgent = function (agent) {
-        if (emptyObject(agent))
+
+        if (emptyObject(agent)){
             return "EMPTY_OBJECT";
-        if (duplicatedAgent(newAgent)) {
-            alert(" duplicated agent found..");
-            return "Duplicated_Agent";
         }
+        if (duplicatedAgent(agent)){
+            alert(" duplicated agent found..");
+        return "Duplicated_Agent";
+        }
+
         service.ping(agent, function (text, statusCode) {
             if (statusCode === 200) {
                 agent = self.setAgentStatusTo("ACTIVE", agent);

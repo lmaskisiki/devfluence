@@ -27,7 +27,7 @@ namespace TerminatorWebApi.Tests.Tests
                 with.Module<IpendpointModule>();
             });
 
-            ipAddressGenerator.GetIpAddress().Returns(new ExecutionOutput { Output = hostIpAddress });
+            ipAddressGenerator.GetIpAddress().Returns(new ExecutionOutput { result = hostIpAddress });
 
             // ---- Act ----
             var result = browser.Get("/api/ip", with =>
@@ -40,7 +40,7 @@ namespace TerminatorWebApi.Tests.Tests
             var actualResponseBody = GetResponseBody(result);
             ipAddressGenerator.Received(1).GetIpAddress();
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.AreEqual(hostIpAddress, actualResponseBody.Output);
+            Assert.AreEqual(hostIpAddress, actualResponseBody.result);
         }
         
         [Test]

@@ -46,15 +46,15 @@
                     <div data-bind="visible: $data.execution.length > 0" class="executions">
                         <div data-bind="foreach: $data.execution">
                             <li>
-                                Command: 
+                                Command:
                                 <span data-bind="text: $data.command"></span>
                             </li>
                             <li>
-                                Execution Result: 
+                                Execution Result:
                                 <span data-bind="text: $data.output"></span>
                             </li>
                             <li>
-                                Time: 
+                                Time:
                                 <span data-bind="text: $data.time"></span>
                             </li>
                         </div>
@@ -89,7 +89,7 @@
                 </label>
                 <br>
                 <br>
-            
+
                 <input type="submit" name="cancel" value="Cancel" data-bind="click: ShowAddAgentForm.bind(this,false)" class="btnMenuLeft">
                 <input type="submit" name="submit" value="Save" class="btnMenuLeft">
             </section>
@@ -141,7 +141,7 @@
                 <br>
                 <label>Command : </label>
                 <br>
-                <select data-bind="options: ['ip','os','hostname','script'],
+                <select data-bind="options: ['ip','os','hostname','fully-qualified hostname','script'],
                                          value: commandToRun,
                                         optionsCaption: 'Choose...'"></select>
                 <br>
@@ -172,9 +172,9 @@
             <input type="submit" value="Remove" class="btnMenuLeft">
         </section>
     </form>
-     <div class="messages">
-            <span data-bind="text: errors"></span>
-     </div>
+    <div class="messages">
+        <span data-bind="text: errors"></span>
+    </div>
 
 
     <script type="text/javascript" src="lib/knockout-3.4.2.js"></script>

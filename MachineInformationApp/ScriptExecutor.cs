@@ -27,15 +27,15 @@ namespace MachineInformationApp
                             errorMessage += errorRecord;
                         }
                         executionOutput = errorMessage;
-                        return new ScriptOutput { Message = executionOutput, ExitCode = 1 };
+                        return new ScriptOutput { Output = executionOutput, ExitCode = 1 };
                     }
                     executionOutput = GetListOfFileContents(results, PSOutput);
-                    return new ScriptOutput { Message = executionOutput, ExitCode = 0 };
+                    return new ScriptOutput { Output = executionOutput, ExitCode = 0 };
 
                 }
                 catch (Exception e)
                 {
-                    return new ScriptOutput { Message = e.Message, ExitCode = 1 };
+                    return new ScriptOutput { Output = e.Message, ExitCode = 1 };
                 }
             }
         }

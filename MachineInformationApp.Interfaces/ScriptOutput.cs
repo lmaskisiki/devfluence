@@ -2,7 +2,7 @@
 {
     public class ScriptOutput
     {
-        public string Message { get; set; }
+        public string Output { get; set; }
         public int ExitCode { get; set; }
     }
 }

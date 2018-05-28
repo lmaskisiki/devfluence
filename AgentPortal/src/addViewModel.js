@@ -27,7 +27,7 @@ function addViewModel(service) {
     }
 
     self.ShowUpdateAgentForm = function (show) {
-        if(self.ShowUpdateAgent(show)){
+        if (self.ShowUpdateAgent(show)) {
             self.ShowAgent(!show);
             self.ShowAddAgent(false);
             self.ShowRemoveAgent(false);
@@ -75,7 +75,7 @@ function addViewModel(service) {
                     let responsJson = JSON.parse(response);
                     let execution = {
                         command: self.commandToRun(),
-                        output: responsJson.output,
+                        output: (self.commandToRun() == "script" )? responsJson.output : responsJson.result,
                         time: new Date()
                     };
                     a.execution.push(execution);

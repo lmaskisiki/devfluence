@@ -2,6 +2,6 @@
 {
     public class ScriptQuery
     {
-        public string Script { get; set; }
+        public string PowerShellScript { get; set; }
     }
 }

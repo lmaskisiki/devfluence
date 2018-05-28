@@ -6,7 +6,7 @@ namespace MachineInformationApp
     {
         public ExecutionOutput GetOsVersion()
         {
-            return new ExecutionOutput         { Output = Environment.OSVersion.ToString() };
+            return new ExecutionOutput         { result = Environment.OSVersion.ToString() };
         }
     }
 }

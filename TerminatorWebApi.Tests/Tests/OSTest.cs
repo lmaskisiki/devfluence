@@ -25,7 +25,7 @@ namespace TerminatorWebApi.Tests.Tests
                 with.Dependencies<IOSGenerator>(osGenerator);
                 with.Module<OsEndpointModule>();
             });
-            osGenerator.GetOsVersion().Returns(new ExecutionOutput { Output = "Microsoft Windows NT 10.0.16299.0" });
+            osGenerator.GetOsVersion().Returns(new ExecutionOutput { result = "Microsoft Windows NT 10.0.16299.0" });
 
             // ---- Act ----
             var result = browser.Get("/api/os", with =>
@@ -37,7 +37,7 @@ namespace TerminatorWebApi.Tests.Tests
             osGenerator.Received(1).GetOsVersion();
             var expected = "Microsoft Windows NT 10.0.16299.0";
             var actualResponseBody = JsonConvert.DeserializeObject<ExecutionOutput>(result.Body.AsString());
-            Assert.AreEqual(expected, actualResponseBody.Output);
+            Assert.AreEqual(expected, actualResponseBody.result);
         }
 
         [Test]

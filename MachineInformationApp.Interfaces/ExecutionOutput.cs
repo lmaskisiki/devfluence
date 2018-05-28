@@ -2,6 +2,6 @@
 {
     public class ExecutionOutput
     {
-        public string Output { get; set; }
+        public string result { get; set; }
     }
 }

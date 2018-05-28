@@ -10,7 +10,7 @@ namespace MachineInformationApp
         public ExecutionOutput GetIpAddress()
         {
             var ipAddress = Dns.GetHostByName(Dns.GetHostName()).AddressList[0];
-            return new ExecutionOutput {Output = ipAddress.ToString()};
+            return new ExecutionOutput {result = ipAddress.ToString()};
         }
     }
 }

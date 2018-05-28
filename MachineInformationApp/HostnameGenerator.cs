@@ -7,13 +7,13 @@ namespace MachineInformationApp
     {
         public ExecutionOutput GetHostName()
         {
-            return new ExecutionOutput {Output = Dns.GetHostName()};
+            return new ExecutionOutput {result = Dns.GetHostName()};
         }
 
         public ExecutionOutput GetFullQualifiedHostName()
         {
             var hostEntry = Dns.GetHostEntry(Dns.GetHostName());
-            return new ExecutionOutput { Output = hostEntry.HostName };
+            return new ExecutionOutput { result = hostEntry.HostName };
         }
     }
 }

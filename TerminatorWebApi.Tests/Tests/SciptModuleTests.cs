@@ -26,20 +26,20 @@ namespace TerminatorWebApi.Tests.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expectedOutput, ExitCode = 0 });
+            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Output = expectedOutput, ExitCode = 0 });
 
             //Act
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new ScriptQuery { Script = scriptText });
+                with.JsonBody(new ScriptQuery { PowerShellScript = scriptText });
                 with.HttpRequest();
             });
 
             //Assert 
             scriptExecutor.Received(1).ExecutePowershell(scriptText);
             var actual = JsonConvert.DeserializeObject<ScriptOutput>(result.Body.AsString());
-            Assert.AreEqual(expectedOutput, actual.Message);
+            Assert.AreEqual(expectedOutput, actual.Output);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
@@ -61,7 +61,7 @@ namespace TerminatorWebApi.Tests.Tests
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new ScriptQuery { Script = scriptText });
+                with.JsonBody(new ScriptQuery { PowerShellScript = scriptText });
                 with.HttpRequest();
             });
 
@@ -113,19 +113,19 @@ namespace TerminatorWebApi.Tests.Tests
                 with.Module<ScriptExecutorModule>();
             });
 
-            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expected, ExitCode = 1 });
+            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Output = expected, ExitCode = 1 });
             //Act
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new { Script = scriptText });
+                with.JsonBody(new  {PowerShellScript = scriptText });
                 with.HttpRequest();
             });
 
             //Assert  
             var executionOutput = GetResponseBody(result);
             scriptExecutor.Received().ExecutePowershell(Arg.Any<string>());
-            Assert.AreEqual(expected, executionOutput.Message);
+            Assert.AreEqual(expected, executionOutput.Output);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
         [Test]
@@ -140,20 +140,20 @@ namespace TerminatorWebApi.Tests.Tests
                 with.Dependencies<IScriptExecutor>(scriptExecutor);
                 with.Module<ScriptExecutorModule>();
             });
-            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Message = expected, ExitCode = 1 });
+            scriptExecutor.ExecutePowershell(scriptText).Returns(new ScriptOutput { Output = expected, ExitCode = 1 });
 
             //Act
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new { Script = scriptText });
+                with.JsonBody(new { PowerShellScript = scriptText });
                 with.HttpRequest();
             });
 
             //Assert  
             var executionOutput = GetResponseBody(result);
             scriptExecutor.Received().ExecutePowershell(Arg.Any<string>());
-            Assert.AreEqual(expected, executionOutput.Message);
+            Assert.AreEqual(expected, executionOutput.Output);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 

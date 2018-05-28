@@ -9,6 +9,9 @@ function agentService() {
 
     function runCommand(command, agent, data, doneFn, erroFn) {
         let method = (command === "script") ? "POST" : "GET";
+        if (command=== "fully-qualified hostname"){
+            command = "hostname?fully-qualified=true";
+        }
         return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`,method, data, doneFn, erroFn);
     }
 

@@ -27,7 +27,7 @@ namespace TerminatorWebApi.Tests.Tests
                with.Module<HostnameModule>();
            });
 
-            hostnameGenerator.GetHostName().Returns(new ExecutionOutput { Output = givenHostName });
+            hostnameGenerator.GetHostName().Returns(new ExecutionOutput { result = givenHostName });
 
             // ---- Act ----
             var result = browser.Get("/api/hostname", with =>
@@ -41,7 +41,7 @@ namespace TerminatorWebApi.Tests.Tests
             var actualResponseBody = GetResponseBody(result);
             hostnameGenerator.Received(1).GetHostName();
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.AreEqual(expectedResponseBody, actualResponseBody.Output);
+            Assert.AreEqual(expectedResponseBody, actualResponseBody.result);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace TerminatorWebApi.Tests.Tests
 
                 with.Module<HostnameModule>();
             });
-            hostnameGenerator.GetFullQualifiedHostName().Returns(new ExecutionOutput { Output = machineFullyQualifiedHostName });
+            hostnameGenerator.GetFullQualifiedHostName().Returns(new ExecutionOutput { result = machineFullyQualifiedHostName });
 
             // ---- Act ----
             var result = browser.Get("/api/hostname", with =>
@@ -100,7 +100,7 @@ namespace TerminatorWebApi.Tests.Tests
             var actualResponseBody = GetResponseBody(result);
             hostnameGenerator.Received(1).GetFullQualifiedHostName();
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
-            Assert.AreEqual(expectedResponseBody, actualResponseBody.Output);
+            Assert.AreEqual(expectedResponseBody, actualResponseBody.result);
         }
 
         private static ExecutionOutput GetResponseBody(BrowserResponse result)

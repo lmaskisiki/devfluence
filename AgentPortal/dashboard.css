@@ -28,7 +28,7 @@ body {
     margin: 15px;
     padding: 10px;
     overflow: hidden;
-    background-color: grey;
+    background-color: black;
 }
 
 /* ============Main Heading ================== */
@@ -94,24 +94,37 @@ div.heading{
       rotateZ(0deg)
       skew(0deg,22deg);
   }
+/* menu button formating */
 
-.btnMenuRight{
-    background-color:#4CAF50;/* Green */
-    border: none;
-    float: right;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 8px;
+.buttonDisabledRight {
+  /* opacity: 0.65;  */
+  background-color: green;
+  cursor: auto;
+  float: right;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 8px;
 }
 
-.btnMenuLeft{
-     background-color: #4CAF50; 
+.buttonDisabledLeft {
+  background-color: green;
+  cursor: auto;
+  float: left;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  border-radius: 8px;
+}
+
+ .btnMenuLeft{
+     background-color:green; 
     border: none;
     float: left;
     color: white;
@@ -121,9 +134,9 @@ div.heading{
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    cursor: pointer;
+    cursor: auto;
     border-radius: 8px;
-}
+} 
 
 .footer {
  position: fixed;

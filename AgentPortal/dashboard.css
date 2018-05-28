@@ -185,3 +185,13 @@ input[type=submit]:hover {
 .executions li{
   list-style: none;
 }
+
+.messages{
+  height: 50px;
+  border: navy;
+  width: 50%;
+  margin: auto;
+  font-size: 26pt;
+  text-align: center;
+  color:  red;
+}

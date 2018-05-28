@@ -11,6 +11,7 @@ describe("ShowAddAgentForm", function () {
             expect(viewModel.ShowAddAgent()).toBe(false);
         });
     });
+    
     describe("If set to true", function () {
         it("should show agent form", function () {
             //Arrange

@@ -1,11 +1,6 @@
 
 
-function agentService(storageService) {
-
-    function addAgent(agent) {
-        storageService.addAgent(agent);
-        return storageService.getAgents().includes(agent) ? "SUCCESS" : "ERROR";
-    }
+function agentService() {
 
     function ping(agent, onSuccess) {
         return runCommand("health", agent, onSuccess, null);
@@ -20,9 +15,10 @@ function agentService(storageService) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
+                console.log("script "+xhttp.responseText);
                 doneFn(xhttp.responseText, xhttp.status)
             } else if (this.readyState == 4) {
-                doneFn(xhttp.responseText, xhttp.status);
+                doneFn(xhttp.responseText, xhttp.status); // error function
             }
         };
 
@@ -33,7 +29,6 @@ function agentService(storageService) {
     }
 
     return {
-        addAgent: addAgent,
         ping: ping,
         runCommand: runCommand
     }

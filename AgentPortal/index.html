@@ -38,17 +38,19 @@
         </ul>
 
         <!-- Displays Agents -->
-        <div data-bind ="visible: ShowAgent">  
-                  <span>Agents</span>
-        <div data-bind="foreach: agents">
-            <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
-                <h1 data-bind="text: $data.name"></h1>
-                <div>
-                    <h4 data-bind="text: $data.execution[0]"></h4>
+        <div data-bind="visible: ShowAgent">
+            <span>Agents</span>
+            <div data-bind="foreach: agents">
+                <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
+                    <h1 data-bind="text: $data.name"></h1>
+                    <div data-bind="visible: $data.execution.length > 0" class="executions">
+                        <h5>Execution output :
+                            <span data-bind="text: $data.execution[0]"></span>
+                        </h5>
+                    </div>
                 </div>
             </div>
         </div>
-        </div> 
     </section>
 
     <!-- Add Form -->
@@ -120,8 +122,8 @@
                     <br>
                     <select data-bind="options: agents,
                                         optionsText: 'name',
-                                        value: activeAgent,
-                                        optionsCaption: 'Choose...'"></select>
+                                        selectedOptions: activeAgents,
+                                         optionsCaption: 'Choose...'" multiple="true"></select>
                 </label>
                 <br>
                 <br>

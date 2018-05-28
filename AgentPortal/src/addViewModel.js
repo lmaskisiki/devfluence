@@ -93,9 +93,6 @@ function addViewModel(service) {
         self.agents().push(agent);
         self.agents(self.agents())
     }
-    let agentNotAvailable = function (agent){
-
-    }
 
     let emptyObject = (agent) => {
         if (agent.name.length === 0 | agent.ipAddress.length == 0 | agent.port === undefined) {

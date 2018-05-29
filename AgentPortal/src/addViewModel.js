@@ -7,6 +7,7 @@ function addViewModel(service) {
     self.ShowUpdateAgent = ko.observable(false);
     self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
+    self.ShowScript = ko.observable(false);
 
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
@@ -16,6 +17,7 @@ function addViewModel(service) {
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
     self.errors = ko.observableArray([""]);
+
 
     self.ShowAddAgentForm = function (show) {
         if (self.ShowAddAgent(show)) {
@@ -71,6 +73,7 @@ function addViewModel(service) {
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
             service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
+               
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
                     let execution = {
@@ -80,10 +83,22 @@ function addViewModel(service) {
                     };
                     a.execution.push(execution);
                 }
+                
+
                 self.refereshAgents();
             }, () => { });
         });
     }
+
+    var vm = {
+        myItems: [
+            {  commandToRun: 'script', disable: ko.observable(true)}
+        ],
+        setOptionDisable: function(option, item) {
+            ko.applyBindingsToNode(option, {disable: item.disable}, item);
+        }
+    };
+    //ko.applyBindings(vm);
 
     self.refereshAgents = function () {
         let allAgents = self.agents(); //hack
@@ -112,7 +127,6 @@ function addViewModel(service) {
         self.agents().push(agent);
         self.agents(self.agents())
     }
-
 
     let isNotValid = (agent) => {
         if (emptyObject(agent)) {

@@ -142,13 +142,14 @@
                 <label>Command : </label>
                 <br>
                 <select data-bind="options: ['ip','os','hostname','fully-qualified hostname','script'],
-                                         value: commandToRun,
-                                        optionsCaption: 'Choose...'"></select>
+                                            value: commandToRun,
+                                            optionsCaption: 'Choose...'"></select>
                 <br>
                 <br>
-                <label>Script : </label>
+
+                <label >Script : </label>
                 <br>
-                <textarea rows="4" cols="50" data-bind="value: scriptData"></textarea>
+                <textarea rows="4" cols="50"  ></textarea>
                 <br>
                 <br>
                 <input type="button" name="cancel" value="Back" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">

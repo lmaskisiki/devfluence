@@ -3,19 +3,18 @@
 function agentService() {
 
     function ping(agent, onSuccess, erroFn) {
-        console.log("now pinging " + JSON.stringify(agent));
         return runCommand("health", agent, null, onSuccess, erroFn);
     }
 
     function runCommand(command, agent, data, doneFn, erroFn) {
         let method = (command === "script") ? "POST" : "GET";
-        if (command=== "fully-qualified hostname"){
+        if (command === "fully-qualified hostname") {
             command = "hostname?fully-qualified=true";
         }
-        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`,method, data, doneFn, erroFn);
+        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`, method, data, doneFn, erroFn);
     }
 
-    function handleRequest(url,method,data, doneFn, erroFn) {
+    function handleRequest(url, method, data, doneFn, erroFn) {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {

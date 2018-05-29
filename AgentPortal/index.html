@@ -97,8 +97,14 @@
     </div>
     <!-- Update -->
     <div class="newLine">
-        <form>
+        <form data-bind="submit: update">
             <section class="agent-action" data-bind="visible: ShowUpdateAgent">
+                <select data-bind="options: agents,
+                    optionsText: 'name',
+                    selectedOptions: activeAgents,
+                     optionsCaption: 'Choose...'">
+                </select>
+                <br>
                 <label>
                     Agent Name :
                 </label>
@@ -142,14 +148,15 @@
                 <label>Command : </label>
                 <br>
                 <select data-bind="options: ['ip','os','hostname','fully-qualified hostname','script'],
-                                            value: commandToRun,
-                                            optionsCaption: 'Choose...'"></select>
+                                         value: commandToRun,
+                                        optionsCaption: 'Choose...', event: { change: selectionChanged }"></select>
                 <br>
-                <br>
-
-                <label >Script : </label>
-                <br>
-                <textarea rows="4" cols="50"  ></textarea>
+                <br> 
+                <div data-bind="visible: showScriptTextArea">
+                        <label>Script : </label>
+                        <br>
+                        <textarea rows="4" cols="50" data-bind="value: scriptData"></textarea>
+                </div>
                 <br>
                 <br>
                 <input type="button" name="cancel" value="Back" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">
@@ -185,10 +192,10 @@
     <script type="text/javascript" src="src/addViewModel.js"></script>
 
     <script>
-        let service = new agentService();
-        let viewModel = new addViewModel(service);
+        //let service = new agentService();
+       // let viewModel = new addViewModel(service);
 
-        ko.applyBindings(viewModel);
+     //   ko.applyBindings(viewModel);
     </script>
     <div class="footer">
         <p>#DevLife</p>

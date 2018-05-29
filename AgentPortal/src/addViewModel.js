@@ -90,15 +90,6 @@ function addViewModel(service) {
         });
     }
 
-    var vm = {
-        myItems: [
-            {  commandToRun: 'script', disable: ko.observable(true)}
-        ],
-        setOptionDisable: function(option, item) {
-            ko.applyBindingsToNode(option, {disable: item.disable}, item);
-        }
-    };
-    //ko.applyBindings(vm);
 
     self.refereshAgents = function () {
         let allAgents = self.agents(); //hack

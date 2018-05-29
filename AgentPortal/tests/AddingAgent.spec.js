@@ -1,7 +1,7 @@
 describe("addViewModel", () => {
     describe("addAgent", () => {
         describe("When agent name, ip and port are empty", () => {
-            xit("Should return EMPTY_OBJECT, and not call agentService", () => {
+            it("Should push 'EMPTY_OBJECT' to erros to be displayed on the screen, and not ping the agent", () => {
                 //Arrange
                 let service = new agentService();
                 let viewModel = new addViewModel(service);
@@ -10,23 +10,24 @@ describe("addViewModel", () => {
                     .withIpAddress("")
                     .withPort()
                     .build();
-
+                spyOn(service, 'ping');
                 //Act
                 const result = viewModel.addAgent(agent);
                 //Assert
-                expect(result).toBe("EMPTY_OBJECT");
+                expect(viewModel.errors()).toContain("EMPTY OBJECT");
+                expect(service.ping).not.toHaveBeenCalled();
             });
         });
 
         describe("Given agent name, ip address and port number", () => {
+            beforeEach(() => {
+                jasmine.Ajax.install();
+            });
+            afterEach(() => {
+                jasmine.Ajax.uninstall();
+            });
             describe("When agent is not reachable", () => {
-                beforeEach(() => {
-                    jasmine.Ajax.install();
-                });
-                afterEach(() => {
-                    jasmine.Ajax.uninstall();
-                });
-                xit("Should not add agent to list", () => {
+                it("Should not add agent to list", () => {
                     //Arrange
                     let service = new agentService();
                     let viewModel = new addViewModel(service);
@@ -56,13 +57,7 @@ describe("addViewModel", () => {
             });
 
             describe("When agent is reachable", () => {
-                beforeEach(() => {
-                    jasmine.Ajax.install();
-                });
-                afterEach(() => {
-                    jasmine.Ajax.uninstall();
-                });
-                xit("Should agent to list", () => {
+                it("Should agent to list", () => {
                     //Arrange
                     let service = new agentService();
                     let viewModel = new addViewModel(service);
@@ -89,45 +84,40 @@ describe("addViewModel", () => {
                     expect(viewModel.setAgentStatusTo).toHaveBeenCalledWith('ACTIVE', agent);
                     expect(viewModel.addAgentToList).toHaveBeenCalledWith(agent);
                 });
-
             });
             describe("If Agent name or IP exists", function () {
-                xit("Should display error message", function () {
-                    //Arrange 
-                    let viewModel = new addViewModel();
-
+                it("Should display error message 'DUPLICATE AGENT'", function () {
+                    //Arrange
+                    let service = new agentService();
+                    let viewModel = new addViewModel(service);
                     let agent1 = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
-                        //.withPort("1234")
+                        .withPort(8282)
                         .build();
+
                     let agent2 = new agentTestBuilder()
                         .withName("Agent 1")
                         .withIpAddress("192.168.11.101")
-                        //.withPort("1234")
+                        .withPort(8282)
                         .build();
 
-                    viewModel.agents = [agent1];
-                
-                    //Act
-                    result = viewModel.addAgent(agent2);
-                    console.log(viewModel.addAgent(agent2));
+                    jasmine.Ajax.stubRequest(`http://${agent1.ipAddress}:${agent1.port}/api/health`).andReturn({
+                        "status": 200,
+                        "contentType": 'application/json',
+                        "responseText": 'Hello from the world'
+                    });
 
-                    //Assert
-                    expect(result).toBe("Duplicated Agent");
-                });
-            });
-
-            describe("If selected command is script", function () {
-                xit("Should show textbox for script", function () {
-                    //Arrange 
-                    let viewModel = new addViewModel();
+                    spyOn(service, 'ping').and.callThrough();
 
                     //Act
-                    viewModel.runCommand(true)
+                    viewModel.agents()[0] = agent1;
+                    viewModel.addAgent(agent2);
 
                     //Assert
-                    expect(viewModel.ShowScript()).toBe(true);
+
+                    expect(viewModel.errors).toContain('DUPLICATE AGENT');
+                    expect(service.ping).not.toHaveBeenCalled();
                 });
             });
         });

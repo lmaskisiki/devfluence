@@ -39,4 +39,20 @@ describe("ShowAddAgentForm", function () {
             expect(viewModel.showExecuteAgent()).toBe(false);
         });
     });
+
+    describe("If update agent is enabled", function () {
+        it("should hide other functions", function () {
+            //Arrange
+            let viewModel = new addViewModel();
+
+            //Act
+            viewModel.ShowUpdateAgentForm(true);
+
+            //Assert
+            expect(viewModel.ShowUpdateAgent()).toBe(true);
+            expect(viewModel.ShowAddAgent()).toBe(false);
+            expect(viewModel.ShowRemoveAgent()).toBe(false);
+            expect(viewModel.showExecuteAgent()).toBe(false);
+        });
+    });
 });

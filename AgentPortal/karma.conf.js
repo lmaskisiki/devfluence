@@ -19,7 +19,7 @@ module.exports = function(config) {
       'lib/mock-ajax.js',
       'src/**/knockout/ajax.js',
       'testDataBuilder/*.js',
-      'src/*/*.js',
+      'src/agentService.js',
       'src/*.js',
       'src/**/jasmine.js',
       'tests/*spec.js'

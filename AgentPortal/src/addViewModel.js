@@ -16,7 +16,7 @@ function addViewModel(service) {
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
     self.errors = ko.observableArray([""]);
-
+    self.showScriptTextArea = ko.observable(false);
     self.ShowAddAgentForm = function (show) {
         if (self.ShowAddAgent(show)) {
             self.ShowAgent(!show);
@@ -57,6 +57,14 @@ function addViewModel(service) {
         self.ShowAgent(show);
     }
 
+    self.selectionChanged = function () {
+        if (self.commandToRun() == 'script') {
+            self.showScriptTextArea(true);
+        } else {
+            self.showScriptTextArea(false);
+        }
+    }
+
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
     }
@@ -68,6 +76,12 @@ function addViewModel(service) {
         self.ShowAddAgentForm(false);
     }
 
+    self.update = function (formElement) {
+        let availableAgents = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
+        let response = this.updateAgent(availableAgents);
+        self.ShowUpdateAgentForm(false);
+    }
+
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
             service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
@@ -75,7 +89,7 @@ function addViewModel(service) {
                     let responsJson = JSON.parse(response);
                     let execution = {
                         command: self.commandToRun(),
-                        output: (self.commandToRun() == "script" )? responsJson.output : responsJson.result,
+                        output: (self.commandToRun() == "script") ? responsJson.output : responsJson.result,
                         time: new Date()
                     };
                     a.execution.push(execution);
@@ -103,6 +117,13 @@ function addViewModel(service) {
         }, (a) => { self.errors.push("Could not contact the agent") });
     }
 
+    self.updateAgent = function (agent) {
+
+    }
+
+    self.getAgents = function () {
+        return self.agents();
+    }
     self.setAgentStatusTo = (status, agent) => {
         agent.active = (status === "ACTIVE") ? true : false;
         return agent;
@@ -182,4 +203,9 @@ function agent(name, ipAddress, port) {
     }
 }
 
+
+let service = agentService();
+let viewModel = new addViewModel(service);
+
+ko.applyBindings(viewModel);
 

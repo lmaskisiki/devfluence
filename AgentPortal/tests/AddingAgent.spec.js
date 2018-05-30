@@ -124,7 +124,7 @@ describe("addViewModel", () => {
             });
 
             describe("If script is inputed", function(){
-                it("Should reformat the scrit", function(){
+                xit("Should reformat the scrit", function(){
                     //Arrange
                     let viewModel = new addViewModel();
 
@@ -132,6 +132,7 @@ describe("addViewModel", () => {
 
                     viewModel.runCommand(scriptData);
                     //Assert
+
                 });
             });
         });

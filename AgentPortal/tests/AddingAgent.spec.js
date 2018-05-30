@@ -122,6 +122,18 @@ describe("addViewModel", () => {
                     expect(service.ping).not.toHaveBeenCalled();
                 });
             });
+
+            describe("If script is inputed", function(){
+                it("Should reformat the scrit", function(){
+                    //Arrange
+                    let viewModel = new addViewModel();
+
+                    //Act
+
+                    viewModel.runCommand(scriptData);
+                    //Assert
+                });
+            });
         });
     });
 });

@@ -124,7 +124,7 @@ describe("addViewModel", () => {
             });
 
             describe("If script is inputed", function(){
-                xit("Should reformat the scrit", function(){
+                it("Should reformat the scrit", function(){
                     //Arrange
                     let viewModel = new addViewModel();
 

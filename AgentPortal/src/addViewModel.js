@@ -7,6 +7,7 @@ function addViewModel(service) {
     self.ShowUpdateAgent = ko.observable(false);
     self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
+    self.ShowScript = ko.observable(false);
 
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
@@ -16,7 +17,8 @@ function addViewModel(service) {
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
     self.errors = ko.observableArray([""]);
-    self.showScriptTextArea = ko.observable(false);
+
+
     self.ShowAddAgentForm = function (show) {
         if (self.ShowAddAgent(show)) {
             self.ShowAgent(!show);
@@ -57,14 +59,6 @@ function addViewModel(service) {
         self.ShowAgent(show);
     }
 
-    self.selectionChanged = function () {
-        if (self.commandToRun() == 'script') {
-            self.showScriptTextArea(true);
-        } else {
-            self.showScriptTextArea(false);
-        }
-    }
-
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
     }
@@ -74,12 +68,6 @@ function addViewModel(service) {
         let response = this.addAgent(agentModel);
         if (response) self.errors.push(response);
         self.ShowAddAgentForm(false);
-    }
-
-    self.update = function (formElement) {
-        let availableAgents = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
-        let response = this.updateAgent(availableAgents);
-        self.ShowUpdateAgentForm(false);
     }
 
     self.runCommand = function () {
@@ -95,10 +83,13 @@ function addViewModel(service) {
                     };
                     a.execution.push(execution);
                 }
+
+
                 self.refereshAgents();
             }, () => { });
         });
     }
+
 
     self.refereshAgents = function () {
         let allAgents = self.agents(); //hack
@@ -118,13 +109,6 @@ function addViewModel(service) {
         }, (a) => { self.errors.push("Could not contact the agent") });
     }
 
-    self.updateAgent = function (agent) {
-
-    }
-
-    self.getAgents = function () {
-        return self.agents();
-    }
     self.setAgentStatusTo = (status, agent) => {
         agent.active = (status === "ACTIVE") ? true : false;
         return agent;
@@ -134,7 +118,6 @@ function addViewModel(service) {
         self.agents().push(agent);
         self.agents(self.agents())
     }
-
 
     let isNotValid = (agent) => {
         if (emptyObject(agent)) {
@@ -204,9 +187,4 @@ function agent(name, ipAddress, port) {
     }
 }
 
-
-let service = agentService();
-let viewModel = new addViewModel(service);
-
-ko.applyBindings(viewModel);
 

@@ -39,6 +39,7 @@ describe("ShowAddAgentForm", function () {
             expect(viewModel.showExecuteAgent()).toBe(false);
         });
     });
+
     describe("If update agent is enabled", function () {
         it("should hide other functions", function () {
             //Arrange

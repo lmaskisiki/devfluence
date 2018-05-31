@@ -1,7 +1,9 @@
 ﻿using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
+using Nancy.Extensions;
 using Nancy.ModelBinding;
+using Newtonsoft.Json;
 using System;
 
 namespace TerminatorWebApi.Modules
@@ -13,9 +15,12 @@ namespace TerminatorWebApi.Modules
         public AgentHistoryModule(IAgentDataService agentDataService)
         {
             this._agentDataService = agentDataService;
-            Post["/api/agentHistory"] = p =>
+            Post["/api/agentHistory"] = _ =>
             {
-                AgentExecution agentExecution = this.Bind<AgentExecution>();
+                var x = this.Request.Body.AsString();
+                var agentExecution = JsonConvert.DeserializeObject<AgentExecution>(x);
+                var scriptQuery = this.Bind<ScriptQuery>();
+
                 if (agentExecution == null) return HttpStatusCode.BadRequest;
                 agentExecution.ExecutionTime = DateTime.UtcNow;
                 _agentDataService.GetInsertedData(agentExecution);

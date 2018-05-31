@@ -11,15 +11,19 @@ function agentService() {
         if (command === "fully-qualified hostname") {
             command = "hostname?fully-qualified=true";
         }
-        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`, method, data, doneFn, erroFn);
+        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`, method, JSON.stringify(data), doneFn, erroFn);
+    }
+
+    function executionLogger(agent, cmd, output) {
+        let data = ` {\n         \"command\": \"${cmd}\",\n        \"result\": \"${output}\"\n  }`;
+        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/agentHistory`, "POST", data, () => { }, () => { })
     }
 
     function getExecutions(agent, doneFn, erroFn) {
-        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/agentHistory`, "GET", null,doneFn, erroFn)
+        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/agentHistory`, "GET", null, doneFn, erroFn)
     }
 
     function handleRequest(url, method, data, doneFn, erroFn) {
-         console.log(url);
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -37,7 +41,8 @@ function agentService() {
 
     return {
         ping: ping,
-        getExecutions:getExecutions,
-        runCommand: runCommand
+        getExecutions: getExecutions,
+        runCommand: runCommand,
+        executionLogger: executionLogger
     }
 }

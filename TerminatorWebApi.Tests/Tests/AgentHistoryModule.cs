@@ -7,7 +7,6 @@ namespace TerminatorWebApi.Tests.Tests
 {
     public class AgentHistoryModule : NancyModule
     {
-
         public AgentHistoryModule(IAgentDataService agentDataService)
         {
             Post["/api/agentHistory"] = p =>

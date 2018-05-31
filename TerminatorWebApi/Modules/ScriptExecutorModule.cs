@@ -8,6 +8,7 @@ namespace TerminatorWebApi.Modules
     {
         public ScriptExecutorModule(IScriptExecutor scriptExecutor)
         {
+
             Post["/api/script"] = _ =>
             {
                 var scriptQuery = this.Bind<ScriptQuery>();

@@ -84,7 +84,8 @@ function addViewModel(service) {
 
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
-            service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
+            let scriptBody = `{"PowerShellScript":"${self.scriptData()}"}`;
+            service.runCommand(self.commandToRun(), a, scriptBody, function (response) {
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
                     let execution = {

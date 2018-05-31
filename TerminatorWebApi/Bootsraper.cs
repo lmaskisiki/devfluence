@@ -14,6 +14,7 @@ namespace TerminatorWebApi
              container.Register<IHostnameGenerator, HostnameGenerator>();
             container.Register<IOSGenerator, OSGenerator>();
             container.Register<IScriptExecutor, ScriptExecutor>();
+            container.Register<IAgentDataService, AgentDataService>();
         }
     }
 }

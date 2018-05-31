@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MachineInformationApp;
 using MachineInformationApp.Interfaces;
 using Nancy;
@@ -8,6 +9,7 @@ using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using TerminatorWebApi.Modules;
+using FluentAssertions;
 
 namespace TerminatorWebApi.Tests.Tests
 {
@@ -118,7 +120,7 @@ namespace TerminatorWebApi.Tests.Tests
             var result = browser.Post("/api/script", with =>
             {
                 with.Header("Accept", "application/json");
-                with.JsonBody(new  {PowerShellScript = scriptText });
+                with.JsonBody(new { PowerShellScript = scriptText });
                 with.HttpRequest();
             });
 
@@ -156,6 +158,115 @@ namespace TerminatorWebApi.Tests.Tests
             Assert.AreEqual(expected, executionOutput.Output);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
+
+
+
+
+
+
+
+
+        [Test, Ignore("check binding")]
+        public void SaveExecution_GivenNullAgentExecution_ShouldNotSave()
+        {
+            //Arrange
+            var agentDataService = Substitute.For<IAgentDataService>();
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IAgentDataService>(agentDataService);
+                with.Module<AgentHistoryModule>();
+            });
+
+            //  AgentExecution agentExecution = null;
+            //Act
+            var result = browser.Post("/api/agentHistory", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.JsonBody("");
+                with.HttpRequest();
+            });
+
+            //Assert  
+            agentDataService.DidNotReceiveWithAnyArgs().GetInsertedData(Arg.Any<AgentExecution>());
+            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+
+        [Test]
+        public void SaveExecution_GivenValidAgentExecution_ShouldSaveAndReturn1()
+        {
+            //Arrange
+            var agentDataService = Substitute.For<IAgentDataService>();
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IAgentDataService>(agentDataService);
+                with.Module<AgentHistoryModule>();
+            });
+
+            agentDataService.GetInsertedData(Arg.Any<AgentExecution>()).Returns(1);
+
+            //Act
+            var result = browser.Post("/api/agentHistory", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.JsonBody(new AgentExecution { Command = "Ip", Result = "", ExecutionTime = DateTime.UtcNow });
+                with.HttpRequest();
+            });
+
+            //Assert  
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            agentDataService.Received(1).GetInsertedData(Arg.Any<AgentExecution>());
+        }
+
+
+        [Test]
+        public void GetExecutions_ShouldReturnStatusCode200AndExisitingExecution()
+        {
+            //Arrange
+            var agentDataService = Substitute.For<IAgentDataService>();
+            var browser = new Browser(with =>
+            {
+                with.Dependencies<IAgentDataService>(agentDataService);
+                with.Module<AgentHistoryModule>();
+            });
+
+            var agentExecutions = new List<AgentExecution>()
+            {
+              new AgentExecution
+                {
+                    ExecutionId =1,
+                    Command="ip",
+                    Result="193.192.2.194",
+                    ExecutionTime=DateTime.Parse("2018-12-31 23:59:59")
+                },
+                 new AgentExecution
+                {
+                    ExecutionId = 2,
+                    Command="hostname",
+                    Result="DevFluence7",
+                    ExecutionTime=DateTime.Parse("2018-01-01 21:59:59")
+                }
+            };
+
+            agentDataService.GetExecutedListAgentDetails().Returns(agentExecutions);
+
+            //Act
+            var result = browser.Get("/api/agentHistory", with =>
+            {
+                with.Header("Accept", "application/json");
+                with.HttpRequest();
+            });
+
+            //Assert  
+            Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
+            IEnumerable<AgentExecution> executionsFound = JsonConvert.DeserializeObject<List<AgentExecution>>(result.Body.AsString());
+            agentDataService.Received(1).GetExecutedListAgentDetails();
+            executionsFound.Should().BeEquivalentTo(agentExecutions);
+
+        }
+
+
+
 
         private static ScriptOutput GetResponseBody(BrowserResponse result)
         {

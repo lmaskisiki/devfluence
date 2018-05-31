@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgentExecution.cs" />
     <Compile Include="ExecutionOutput.cs" />
+    <Compile Include="IAgentDataService.cs" />
     <Compile Include="IHostnameGenerator.cs" />
     <Compile Include="IIpAddressGenerator.cs" />
     <Compile Include="IOSGenerator.cs" />

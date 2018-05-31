@@ -9,9 +9,12 @@ function agent(name, ipAddress, port) {
         ipAddress: _ipAddress,
         port: _port,
         active: _active,
-        execution: [],
-        canContact: function(doneFn, erroFn){
-            _service.ping(this,doneFn, erroFn);
+        executions: [],
+        getExecutions: function (doneFn, erroFn) {
+            return _service.getExecutions(this,doneFn, erroFn);
+        },
+        canContact: function (doneFn, erroFn) {
+            _service.ping(this, doneFn, erroFn);
         }
     }
 }

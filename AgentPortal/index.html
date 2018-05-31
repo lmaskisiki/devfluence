@@ -32,6 +32,8 @@
 
         <ul>
             <button class="buttonDisabledLeft" data-bind="enable: agents().length > 0,click: ShowExecuteAgentForm.bind(this, true)">Execute Command</button>
+            <button class="buttonDisabledLeft" data-bind="click: showDashboardHistory.bind(this, true)">View Dashboard History</button>
+
             <button class="buttonDisabledRight" data-bind="enable: agents().length > 0,click: ShowRemoveAgentForm.bind(this, true)">Remove Agent</button>
             <button class="buttonDisabledRight" data-bind="enable: agents().length > 0,click: ShowUpdateAgentForm.bind(this, true)">Edit Agent</button>
             <button class="buttonDisabledRight" data-bind="click: ShowAddAgentForm.bind(this, true)">Add Agent</button>
@@ -43,8 +45,8 @@
             <div data-bind="foreach: agents">
                 <div data-bind="style: { background: $data.active ? 'green' : 'red' }" class="grid">
                     <h1 data-bind="text: $data.name"></h1>
-                    <div data-bind="visible: $data.execution.length > 0" class="executions">
-                        <div data-bind="foreach: $data.execution">
+                    <div data-bind="visible: $data.executions.length > 0" class="executions">
+                        <div data-bind="foreach: $data.executions">
                             <li>
                                 Command:
                                 <span data-bind="text: $data.command"></span>
@@ -58,7 +60,11 @@
                                 <span data-bind="text: $data.time"></span>
                             </li>
                         </div>
+                        <div class="history_btn">
+                            <input type="button" value="Show History" data-bind="click: $parent.showHistory.bind(this, true)">
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -151,11 +157,11 @@
                                          value: commandToRun,
                                         optionsCaption: 'Choose...', event: { change: selectionChanged }"></select>
                 <br>
-                <br> 
+                <br>
                 <div data-bind="visible: showScriptTextArea">
-                        <label>Script : </label>
-                        <br>
-                        <textarea rows="4" cols="50" data-bind="value: scriptData"></textarea>
+                    <label>Script : </label>
+                    <br>
+                    <textarea rows="4" cols="50" data-bind="value: scriptData"></textarea>
                 </div>
                 <br>
                 <br>
@@ -180,6 +186,48 @@
             <input type="submit" value="Remove" class="btnMenuLeft">
         </section>
     </form>
+
+
+    <section class="history" data-bind="visible: historyShown">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Result</th>
+                    <th>UTC Time</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: executions">
+                <tr>
+                    <td data-bind="text: $data.command"></td>
+                    <td data-bind="text: $data.result"></td>
+                    <td data-bind="text: $data.utcTime"></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="button" value="Back" data-bind="click: showHistory.bind(this, false)">
+    </section>
+
+    <section class="dashboard_history" data-bind="visible: dashboardHistoryShown">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Result</th>
+                        <th>UTC Time</th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: executions">
+                    <tr>
+                        <td data-bind="text: $data.command"></td>
+                        <td data-bind="text: $data.result"></td>
+                        <td data-bind="text: $data.utcTime"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="button" value="Back" data-bind="click: showDashboardHistory.bind(this, false)">
+        </section>
+
     <div class="messages">
         <span data-bind="text: errors"></span>
     </div>

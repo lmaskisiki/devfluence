@@ -19,21 +19,22 @@ describe("getExecutionHistory", () => {
 
             let currentTestAgentExecututions =
                 [
-                    { command: 'ip', result: '172.168.11.2', utcTime: '2018/05/30 15:47:11 0000' },
-                    { command: 'hostname', result: 'lizo-pc', utcTime: '2018/05/30 15:47:11 0000' }
+                    { command: 'ip', result: '172.168.11.2', executionTime: '2018/05/30 15:47:11 0000' },
+                    { command: 'hostname', result: 'lizo-pc', executionTime: '2018/05/30 15:47:11 0000' }
                 ];
 
             jasmine.Ajax.stubRequest(`http://${agent.ipAddress}:${agent.port}/api/agentHistory`).andReturn({
                 "status": 200,
                 "contentType": 'application/json',
-                "responseText": currentTestAgentExecututions
+                "responseText": JSON.stringify(currentTestAgentExecututions)
             });
 
-            //Act
-            viewModel.getAgentExecutions(agent);
+            viewModel.agents()[0] = agent;
+            //Act 
+            viewModel.getAgentExecutions("Agent 1");
 
             //Assert
-            expect(agent.executions).toEqual(currentTestAgentExecututions);
+            expect(viewModel.executions()).toEqual(currentTestAgentExecututions);
         });
     });
 
@@ -53,7 +54,7 @@ describe("getExecutionHistory", () => {
                 "contentType": 'application/json',
                 "responseText": ""
             });
-           
+
             //Act
             viewModel.getAgentExecutions(agent);
 

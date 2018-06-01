@@ -109,7 +109,7 @@ function addViewModel(service) {
     }
 
     self.removeAgent = function () {
-         let agentName= self.activeAgent().name;
+        let agentName = self.activeAgent().name;
         self.agents.remove(self.activeAgent());
         self.refereshAgents();
         service.activityLogger("Dashboard", "Remove Agent", agentName + " Removed");
@@ -157,7 +157,7 @@ function addViewModel(service) {
                     jsonResponse = JSON.parse(response);
                     addResultToExecutions(jsonResponse);
                 }
-            }, (msg)=>{
+            }, (msg) => {
                 console.log(msg);
             });
         }
@@ -169,7 +169,7 @@ function addViewModel(service) {
                 jsonResponse = JSON.parse(response);
                 addResultToDashboardHistory(jsonResponse);
             }
-        }, (msg)=>{
+        }, (msg) => {
             console.log(msg);
         });
     }
@@ -187,7 +187,7 @@ function addViewModel(service) {
     let addResultToExecutions = function (jsonResponse) {
         self.executions([]);
         jsonResponse.forEach(e => {
-            self.executions.push({ command: e.command, result: e.result, utcTime: e.executionTime })
+            self.executions.push({ command: e.command, result: e.result, executionTime: e.executionTime })
         });
     }
 
@@ -205,22 +205,23 @@ function addViewModel(service) {
                 self.addAgentToList(agent);
                 service.activityLogger("Dashboard", "Add Agent", agent.name + " added");
             } else {
-                service.activityLogger("Dashboard", "Add Agent", " Could Contact " + agent.name);
                 self.errors.push(`Could not contact agent ${agent.name} on ${agent.ipAddress}:${agent.port}`);
+                service.activityLogger("Dashboard", "Add Agent", " Could Contact " + agent.name);
             }
         }, (a) => {
             self.errors.push("Could not contact the agent");
             service.activityLogger("Dashboard", "Add Agent", "Could Contact " + agent.name);
-
         });
     }
 
     self.updateAgent = function (updatedAgent) {
+        let selectedAgent = self.activeAgents()[0];
         updatedAgent.canContact(() => {
-            self.activeAgents()[0].name = updatedAgent.name;
-            self.activeAgents()[0].ipAddress = updatedAgent.ipAddress;
-            self.activeAgents()[0].port = updatedAgent.port;
+            selectedAgent.name = updatedAgent.name;
+            selectedAgent.ipAddress = updatedAgent.ipAddress;
+            selectedAgent.port = updatedAgent.port;
             self.refereshAgents();
+            service.activityLogger("Dashboard", "Updated Agent", selectedAgent.name + " Updated");
         }, () => {
             self.errors().push("Not updated");
         });
@@ -292,34 +293,6 @@ function addViewModel(service) {
         });
     }, 10000);
 }
-
-// function agent(name, ipAddress, port) {
-//     let _service = new agentService();
-//     let _name = name;
-//     let _ipAddress = ipAddress;
-//     let _port = port;
-//     let _active = false;
-//     return {
-//         name: _name,
-//         ipAddress: _ipAddress,
-//         port: _port,
-//         active: _active,
-//         executions: [],
-//         getExecutions: function () {
-//             return _service.getExecutions(this, (response) => {
-//                     JSON.parse(response).array.forEach(element => {
-//                        // this.executions.push(element);
-//                     });
-//             }, () => {
-
-//             });
-//         },
-//         canContact: function (doneFn, erroFn) {
-//             _service.ping(this, doneFn, erroFn);
-//         }
-//     }
-// }git
-
 
 let service = agentService();
 let viewModel = new addViewModel(service);

@@ -1,5 +1,4 @@
 
-
 function agentService() {
 
     function ping(agent, onSuccess, erroFn) {
@@ -19,7 +18,7 @@ function agentService() {
     }
 
     function activityLogger(target, action, result) {
-        let data = ` {\n         \"target\": \"${target}\",\n        \"action\": \"${action}\"\n,   \"result\": \"${result}\"\n  }`;
+        let data = ` {\n         \"target\": \"${target}\",\n        \"action\": \"${action}\"\n,   \"actionResult\": \"${result}\"\n  }`;
         return handleRequest(`http://localhost:1234/api/dashboardActivity`, "POST", data, () => { }, () => { })
     }
 
@@ -34,7 +33,6 @@ function agentService() {
     }
 
     function handleRequest(url, method, data, doneFn, erroFn) {
-        console.log(url);
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -56,6 +54,6 @@ function agentService() {
         runCommand: runCommand,
         executionLogger: executionLogger,
         activityLogger: activityLogger,
-        getDashboardActivities :getDashboardActivities 
+        getDashboardActivities: getDashboardActivities
     }
 }

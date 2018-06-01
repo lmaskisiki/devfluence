@@ -2,6 +2,9 @@
 using Nancy;
 using MachineInformationApp.Interfaces;
 using Nancy.ModelBinding;
+using Nancy.Extensions;
+using Newtonsoft.Json;
+
 namespace TerminatorWebApi
 {
     public class DashboardHistoryModule : NancyModule
@@ -11,9 +14,13 @@ namespace TerminatorWebApi
         public DashboardHistoryModule(IDashboardDataService dashboardDataService)
         {
             this._dashboardDataService = dashboardDataService;
-            Post["/api/dashboardActivity"] = p =>
+            Post["/api/dashboardActivity"] = _ =>
             {
-                DashboardExecution dashboardExecution = this.Bind<DashboardExecution>();
+                var x = this.Request.Body.AsString();
+                var dashboardExecution = JsonConvert.DeserializeObject<DashboardExecution>(x);
+                var scriptQuery = this.Bind<ScriptQuery>();
+
+
                 if (dashboardExecution == null)
                 {
                     return HttpStatusCode.BadRequest;

@@ -19,8 +19,7 @@ namespace TerminatorWebApi.Modules
             {
                 var x = this.Request.Body.AsString();
                 var agentExecution = JsonConvert.DeserializeObject<AgentExecution>(x);
-                var scriptQuery = this.Bind<ScriptQuery>();
-
+ 
                 if (agentExecution == null) return HttpStatusCode.BadRequest;
                 agentExecution.ExecutionTime = DateTime.UtcNow;
                 _agentDataService.GetInsertedData(agentExecution);

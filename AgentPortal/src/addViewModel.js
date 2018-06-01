@@ -23,6 +23,10 @@ function addViewModel(service) {
     self.dashboardHistoryShown = ko.observable(false);
 
     self.executions = ko.observableArray([]);
+    self.dashboardHistory = ko.observableArray([
+        { target: "dashboad", action: "ip", result: "localhost", time: "2017-05-12" },
+        { target: "Agent Smith", action: "os", result: "Windows 10", time: "2017-05-12" }
+    ]);
 
     self.showDashboardHistory = function (show) {
         self.ShowAgent(false);
@@ -90,8 +94,9 @@ function addViewModel(service) {
         }
     }
 
-    self.removeAgent = function (agent) {
+    self.removeAgent = function () {
         self.agents.remove(self.activeAgent());
+        self.refereshAgents();
     }
 
     self.save = function (formElement) {
@@ -109,8 +114,8 @@ function addViewModel(service) {
 
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
-            console.log('running for agent', a.name);
-            service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
+            let scriptData = `{"PowerShellScript":"${self.scriptData()}"}`;
+            service.runCommand(self.commandToRun(), a, scriptData, function (response) {
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
                     let execution = {
@@ -163,7 +168,17 @@ function addViewModel(service) {
         }, (a) => { self.errors.push("Could not contact the agent") });
     }
 
-    self.updateAgent = function (agent) {
+    self.updateAgent = function (updatedAgent) {
+        updatedAgent.canContact(() => {
+            self.activeAgents()[0].name = updatedAgent.name;
+            self.activeAgents()[0].ipAddress = updatedAgent.ipAddress;
+            self.activeAgents()[0].port = updatedAgent.port;
+            self.refereshAgents();
+        }, () => {
+            self.errors().push("Not updated");
+        });
+
+        self.refereshAgents();
 
     }
 

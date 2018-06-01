@@ -14,7 +14,7 @@ function agent(name, ipAddress, port) {
             return _service.getExecutions(this,doneFn, erroFn);
         },
         canContact: function (doneFn, erroFn) {
-            _service.ping(this, doneFn, erroFn);
+             _service.ping(this, doneFn, erroFn);
         }
     }
 }

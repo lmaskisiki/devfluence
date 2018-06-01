@@ -11,7 +11,7 @@ function agentService() {
         if (command === "fully-qualified hostname") {
             command = "hostname?fully-qualified=true";
         }
-        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`, method, JSON.stringify(data), doneFn, erroFn);
+        return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`, method, data, doneFn, erroFn);
     }
 
     function executionLogger(agent, cmd, output) {

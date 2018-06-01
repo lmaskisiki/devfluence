@@ -17,7 +17,7 @@ namespace TerminatorWebApi.Tests.Tests
     [TestFixture]
     public class ExecutionAgentTests
     {
-        [Test]
+       // [Test]
         public void GetExecutionAgentDetails_WhenExecuted_ShouldReturnAgentExecutionResult()
         {
             //Arrange
@@ -46,7 +46,7 @@ namespace TerminatorWebApi.Tests.Tests
             actualFirst.Should().BeEquivalentTo(expectedFirst);
         }
 
-        [Test]
+       // [Test]
         public void GetExecutionListAgentsDetails_WhenExecuted_ShouldReturnAgentsExecutionResult()
         {
             //Arrange
@@ -82,7 +82,7 @@ namespace TerminatorWebApi.Tests.Tests
             actualFirstAndLast.Should().BeEquivalentTo(expectedFirst);
         }
 
-        [Test]
+       // [Test]
         public void GetExecutionListAgentsDetails_WhenExecuted_ShouldReturnAllAgentsExecutionResult()
         {
             //Arrange

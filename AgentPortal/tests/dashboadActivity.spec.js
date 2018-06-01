@@ -107,7 +107,7 @@ describe("DashboadActivity", () => {
         });
     });
     describe("Execute script ", () => {
-        fit("should save dashboard activity ", () => {
+        it("should save dashboard activity ", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);

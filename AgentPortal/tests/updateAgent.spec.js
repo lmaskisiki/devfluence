@@ -7,7 +7,7 @@ describe("addViewModel", function () {
     });
     describe("updateAgent", () => {
         describe("When new deatials are valid and reachable", () => {
-            fit("Should update agent details ", () => {
+            it("Should update agent details ", () => {
                 //Arrange
                 let service = new agentService();
                 let viewModel = new addViewModel(service);
@@ -44,7 +44,7 @@ describe("addViewModel", function () {
         });
 
         describe("When new deatials are not reachable", () => {
-            fit("Should not update agent details ", () => {
+            it("Should not update agent details ", () => {
                 //Arrange
                 let service = new agentService();
                 let viewModel = new addViewModel(service);

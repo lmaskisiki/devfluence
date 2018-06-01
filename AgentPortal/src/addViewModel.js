@@ -34,6 +34,7 @@ function addViewModel(service) {
         self.ShowRemoveAgent(false);
         self.showExecuteAgent(false);
         self.dashboardHistoryShown(show);
+        self.getDashboardActivities();
     }
 
     self.showHistory = function (show, agentName) {
@@ -95,8 +96,10 @@ function addViewModel(service) {
     }
 
     self.removeAgent = function () {
+         let agentName= self.activeAgent().name;
         self.agents.remove(self.activeAgent());
         self.refereshAgents();
+        service.activityLogger("Dashboard", "Remove Agent", agentName + " Removed");
     }
 
     self.save = function (formElement) {
@@ -123,8 +126,10 @@ function addViewModel(service) {
                         output: (self.commandToRun() == "script") ? responsJson.output : responsJson.result,
                         time: new Date()
                     };
+
                     a.executions.push(execution);
                     service.executionLogger(a, execution.command, execution.output)
+                    service.activityLogger(a.name, execution.command, execution.output)
                 }
                 self.refereshAgents();
             }, () => { });
@@ -139,10 +144,33 @@ function addViewModel(service) {
                     jsonResponse = JSON.parse(response);
                     addResultToExecutions(jsonResponse);
                 }
-            }, null);
+            }, (msg)=>{
+                console.log(msg);
+            });
         }
     }
 
+    self.getDashboardActivities = function () {
+        service.getDashboardActivities((response, statusCode) => {
+            if (statusCode == 200 && response.length > 0) {
+                jsonResponse = JSON.parse(response);
+                addResultToDashboardHistory(jsonResponse);
+            }
+        }, (msg)=>{
+            console.log(msg);
+        });
+    }
+    let addResultToDashboardHistory = function (jsonResponse) {
+        self.dashboardHistory([]);
+        jsonResponse.forEach(e => {
+            self.dashboardHistory.push({
+                target: e.target,
+                action: e.action,
+                result: e.actionResult,
+                time: e.executionTime
+            })
+        });
+    }
     let addResultToExecutions = function (jsonResponse) {
         self.executions([]);
         jsonResponse.forEach(e => {
@@ -162,10 +190,16 @@ function addViewModel(service) {
             if (statusCode === 200) {
                 agent = self.setAgentStatusTo("ACTIVE", agent);
                 self.addAgentToList(agent);
+                service.activityLogger("Dashboard", "Add Agent", agent.name + " added");
             } else {
+                service.activityLogger("Dashboard", "Add Agent", " Could Contact " + agent.name);
                 self.errors.push(`Could not contact agent ${agent.name} on ${agent.ipAddress}:${agent.port}`);
             }
-        }, (a) => { self.errors.push("Could not contact the agent") });
+        }, (a) => {
+            self.errors.push("Could not contact the agent");
+            service.activityLogger("Dashboard", "Add Agent", "Could Contact " + agent.name);
+
+        });
     }
 
     self.updateAgent = function (updatedAgent) {

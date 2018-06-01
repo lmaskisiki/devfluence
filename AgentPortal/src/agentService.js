@@ -14,6 +14,16 @@ function agentService() {
         return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/${command}`, method, data, doneFn, erroFn);
     }
 
+    function getDashboardActivities(doneFn, erroFn) {
+        return handleRequest(`http://localhost:1234/api/dashboardActivity`, "GET", null, doneFn, erroFn)
+    }
+
+    function activityLogger(target, action, result) {
+        let data = ` {\n         \"target\": \"${target}\",\n        \"action\": \"${action}\"\n,   \"result\": \"${result}\"\n  }`;
+        return handleRequest(`http://localhost:1234/api/dashboardActivity`, "POST", data, () => { }, () => { })
+    }
+
+
     function executionLogger(agent, cmd, output) {
         let data = ` {\n         \"command\": \"${cmd}\",\n        \"result\": \"${output}\"\n  }`;
         return handleRequest(`http://${agent.ipAddress}:${agent.port}/api/agentHistory`, "POST", data, () => { }, () => { })
@@ -24,6 +34,7 @@ function agentService() {
     }
 
     function handleRequest(url, method, data, doneFn, erroFn) {
+        console.log(url);
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -43,6 +54,8 @@ function agentService() {
         ping: ping,
         getExecutions: getExecutions,
         runCommand: runCommand,
-        executionLogger: executionLogger
+        executionLogger: executionLogger,
+        activityLogger: activityLogger,
+        getDashboardActivities :getDashboardActivities 
     }
 }

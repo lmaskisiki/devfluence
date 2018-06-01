@@ -6,7 +6,7 @@ describe("removeAgent", () => {
         jasmine.Ajax.uninstall();
     });
     describe("When agent is removed", () => {
-        fit("Should not exist in the list of available agents", () => {
+        it("Should not exist in the list of available agents", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);

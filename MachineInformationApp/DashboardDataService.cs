@@ -20,18 +20,18 @@ namespace MachineInformationApp
             _connectionString = "Server=(localdb)\\MSSQLLocalDB;Integrated Security=true;Initial Catalog=SkyNetPortalDB";
         }
 
+        //public IEnumerable<DashboardExecution> GetDashboardDetails()
+        //{
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        var sql = "SELECT * FROM dbo.Dashboard WHERE ID = 1 ";
+        //        var agents = connection.Query<DashboardExecution>(sql);
+        //        return agents;
+        //    }
+
+        //}
+
         public IEnumerable<DashboardExecution> GetDashboardDetails()
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                var sql = "SELECT * FROM dbo.Dashboard WHERE ID = 1 ";
-                var agents = connection.Query<DashboardExecution>(sql);
-                return agents;
-            }
-
-        }
-
-        public IEnumerable<DashboardExecution> GetNumberOfDashboardDetails()
         {
             using (var connection = new SqlConnection(_connectionString))
             {

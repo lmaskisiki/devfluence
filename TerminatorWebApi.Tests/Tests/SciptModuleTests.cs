@@ -159,39 +159,6 @@ namespace TerminatorWebApi.Tests.Tests
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
 
-
-
-
-
-
-
-
-        [Test, Ignore("check binding")]
-        public void SaveExecution_GivenNullAgentExecution_ShouldNotSave()
-        {
-            //Arrange
-            var agentDataService = Substitute.For<IAgentDataService>();
-            var browser = new Browser(with =>
-            {
-                with.Dependencies<IAgentDataService>(agentDataService);
-                with.Module<AgentHistoryModule>();
-            });
-
-            //  AgentExecution agentExecution = null;
-            //Act
-            var result = browser.Post("/api/agentHistory", with =>
-            {
-                with.Header("Accept", "application/json");
-                with.JsonBody("");
-                with.HttpRequest();
-            });
-
-            //Assert  
-            agentDataService.DidNotReceiveWithAnyArgs().GetInsertedData(Arg.Any<AgentExecution>());
-            Assert.AreEqual(HttpStatusCode.BadRequest, result.StatusCode);
-        }
-
-
         [Test]
         public void SaveExecution_GivenValidAgentExecution_ShouldSaveAndReturn1()
         {

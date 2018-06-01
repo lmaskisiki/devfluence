@@ -12,7 +12,7 @@ describe("ShowAddAgentForm", function () {
         });
     });
     
-    describe("If set to true", function () {
+    describe("If agent form is set to true", function () {
         it("should show agent form", function () {
             //Arrange
             let viewModel = new addViewModel();

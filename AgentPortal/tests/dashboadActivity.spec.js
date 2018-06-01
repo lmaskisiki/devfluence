@@ -6,7 +6,7 @@ describe("DashboadActivity", () => {
         jasmine.Ajax.uninstall();
     });
      describe("Add Agent", () => {
-        it("Should save the activity", () => {
+        it("Should show the history of added agents to the dashboard", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);
@@ -39,8 +39,8 @@ describe("DashboadActivity", () => {
             expect(service.activityLogger).toHaveBeenCalledWith("Dashboard", "Add Agent", "Agent 1 added");
         });
     });
-    describe("Add Agent", () => {
-        it("Should save the activity", () => {
+    describe("Add duplicated agent", () => {
+        it("Should show the history of previous agents to the dashboard", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);
@@ -75,7 +75,7 @@ describe("DashboadActivity", () => {
     });
 
     describe("Remove Agent", () => {
-        it("Should save the activity", () => {
+        it("Should show the history of removed agents to the dashboard", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);
@@ -107,7 +107,7 @@ describe("DashboadActivity", () => {
         });
     });
     describe("Execute script ", () => {
-        it("should save dashboard activity ", () => {
+        it("Should show the history of executed scripts to the dashboard", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);

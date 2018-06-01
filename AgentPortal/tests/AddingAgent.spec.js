@@ -57,7 +57,7 @@ describe("addViewModel", () => {
             });
 
             describe("When agent is reachable", () => {
-                it("Should agent to list", () => {
+                it("Should add agent to list", () => {
                     //Arrange
                     let service = new agentService();
                     let viewModel = new addViewModel(service);
@@ -118,19 +118,6 @@ describe("addViewModel", () => {
 
                     expect(viewModel.errors).toContain('DUPLICATE AGENT');
                     expect(service.ping).not.toHaveBeenCalled();
-                });
-            });
-
-            describe("If script is inputed", function(){
-                xit("Should reformat the scrit", function(){
-                    //Arrange
-                    let viewModel = new addViewModel();
-
-                    //Act
-
-                    viewModel.runCommand(scriptData);
-                    //Assert
-
                 });
             });
         });

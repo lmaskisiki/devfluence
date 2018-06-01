@@ -272,7 +272,6 @@ function addViewModel(service) {
             };
 
             let errorFn = function () {
-                console.log("error function executed...");
                 agent.active = false;
             };
             self.refereshAgents();

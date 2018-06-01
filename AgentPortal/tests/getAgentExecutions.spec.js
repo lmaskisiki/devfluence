@@ -7,7 +7,7 @@ describe("getExecutionHistory", () => {
     });
 
     describe("when history is avalable", () => {
-        it("should push to agent exection array", () => {
+        it("should save to agent exection array", () => {
             //Arrange
             let service = new agentService();
             let viewModel = new addViewModel(service);

@@ -53,7 +53,7 @@ namespace TerminatorWebApi.Tests.Tests
         //-----------------Test For Dash board ------------------
 
         [Test]
-        public void SaveExecution_GivenValidAgentExecution_ShouldSaveAndReturn1()
+        public void InsertDetails_GivenValidAgentExecution_ShouldSaveAndReturnExecutionAgentOfAnId1()
         {
             //Arrange
             var dashBoardDataService = Substitute.For<IDashboardDataService>();
@@ -79,7 +79,7 @@ namespace TerminatorWebApi.Tests.Tests
         }
 
         [Test]
-        public void GetExecutions_ShouldReturnStatusCode200AndExisitingExecution()
+        public void GetDashboardExecutions_ShouldReturnStatusCode200AndExisitingExecution()
         {
             //Arrange
             var dashBoardDataService = Substitute.For<IDashboardDataService>();

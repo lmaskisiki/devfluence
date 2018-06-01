@@ -29,24 +29,26 @@ function addViewModel(service) {
     ]);
 
     self.showDashboardHistory = function (show) {
-        self.ShowAgent(false);
-        self.ShowAddAgent(false);
-        self.ShowRemoveAgent(false);
-        self.showExecuteAgent(false);
-        self.ShowUpdateAgent(false);
-        self.historyShown(false);
-        self.dashboardHistoryShown(show);
-        self.getDashboardActivities();
+        if(self.dashboardHistoryShown(show)){
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+            self.ShowUpdateAgent(false);
+            self.historyShown(false);
+            self.getDashboardActivities();
+        }
     }
 
     self.showHistory = function (show, agentName) {
-        self.ShowAgent(false);
-        self.ShowAddAgent(false);
-        self.ShowRemoveAgent(false);
-        self.showExecuteAgent(false);
-        self.historyShown(show);
-        self.getAgentExecutions(agentName);
-
+        if (self.historyShown(show))
+        {
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+            self.getAgentExecutions(agentName);
+        }
     }
 
     self.ShowAddAgentForm = function (show) {

@@ -86,13 +86,13 @@ function addViewModel(service) {
 
     self.ShowExecuteAgentForm = function (show) {
         if (self.showExecuteAgent(show)) {
-            self.ShowAgent(!show);
             self.ShowUpdateAgent(false);
             self.ShowRemoveAgent(false);
             self.ShowAddAgent(false);
             self.dashboardHistoryShown(false);
             self.historyShown(false);
         };
+        self.ShowAgent(true);
     }
 
     self.ShowAgentForm = function (show) {

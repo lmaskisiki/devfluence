@@ -1,4 +1,6 @@
-﻿CREATE TABLE [dbo].[AgentExecution]
+﻿
+drop table [dbo].[AgentExecution]
+ CREATE TABLE [dbo].[AgentExecution]
 (
 	[ExecutionId] INT NOT NULL IDENTITY(1,1),  
     [Command] NVARCHAR(50) NULL, 
@@ -12,4 +14,4 @@ insert into AgentExecution
 
 insert into AgentExecution
 (Command,Result,ExecutionTime) Values('hostname','DevFluence7','2018-01-01 21:59:59');
-
+ 

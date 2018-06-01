@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentDataService.cs" />
+    <Compile Include="DashboardDataService.cs" />
     <Compile Include="HostnameGenerator.cs" />
     <Compile Include="IpAddressGenerator.cs" />
     <Compile Include="OSGenerator.cs" />

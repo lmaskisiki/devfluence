@@ -41,8 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentExecution.cs" />
+    <Compile Include="DashboardExecution.cs" />
     <Compile Include="ExecutionOutput.cs" />
     <Compile Include="IAgentDataService.cs" />
+    <Compile Include="IDashboardDataService.cs" />
     <Compile Include="IHostnameGenerator.cs" />
     <Compile Include="IIpAddressGenerator.cs" />
     <Compile Include="IOSGenerator.cs" />

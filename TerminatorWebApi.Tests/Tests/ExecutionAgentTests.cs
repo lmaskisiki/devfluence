@@ -1,14 +1,8 @@
 ﻿using FluentAssertions;
-using Nancy.Testing;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using TerminatorWebApi.Modules;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
-using Dapper;
 using MachineInformationApp.Interfaces;
 using MachineInformationApp;
 

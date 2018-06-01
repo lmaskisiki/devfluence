@@ -7,7 +7,6 @@ function addViewModel(service) {
     self.ShowUpdateAgent = ko.observable(false);
     self.ShowRemoveAgent = ko.observable(false);
     self.showExecuteAgent = ko.observable(false);
-    self.ShowScript = ko.observable(false);
 
     self.histories = ko.observableArray([]);
     self.activeAgent = ko.observable();
@@ -16,8 +15,33 @@ function addViewModel(service) {
     self.scriptData = ko.observable('');
     self.agentToRemove = ko.observable();
     self.activeAgents = ko.observableArray([]);
-    self.errors = ko.observableArray([""]);
+    self.errors = ko.observableArray([]);
+    self.showScriptTextArea = ko.observable(false);
 
+
+    self.historyShown = ko.observable(false);
+    self.dashboardHistoryShown = ko.observable(false);
+
+    self.executions = ko.observableArray([
+        { command: 'ip', result: '172.168.11.2', utcTime: '2018/05/30 15:47:11 0000' },
+        { command: 'hostname', result: 'lizo-pc', utcTime: '2018/05/30 15:47:11 0000' }
+    ]);
+
+    self.showDashboardHistory = function (show) {
+        self.ShowAgent(false);
+        self.ShowAddAgent(false);
+        self.ShowRemoveAgent(false);
+        self.showExecuteAgent(false);
+        self.dashboardHistoryShown(show);
+    }
+
+    self.showHistory = function (show) {
+        self.ShowAgent(false);
+        self.ShowAddAgent(false);
+        self.ShowRemoveAgent(false);
+        self.showExecuteAgent(false);
+        self.historyShown(show);
+    }
 
     self.ShowAddAgentForm = function (show) {
         if (self.ShowAddAgent(show)) {
@@ -59,6 +83,14 @@ function addViewModel(service) {
         self.ShowAgent(show);
     }
 
+    self.selectionChanged = function () {
+        if (self.commandToRun() == 'script') {
+            self.showScriptTextArea(true);
+        } else {
+            self.showScriptTextArea(false);
+        }
+    }
+
     self.removeAgent = function (agent) {
         self.agents.remove(self.activeAgent());
     }
@@ -70,10 +102,15 @@ function addViewModel(service) {
         self.ShowAddAgentForm(false);
     }
 
+    self.update = function (formElement) {
+        let availableAgents = new agent(formElement.name.value, formElement.ipAddress.value, formElement.port.value);
+        let response = this.updateAgent(availableAgents);
+        self.ShowUpdateAgentForm(false);
+    }
+
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
-            let scriptBody = `{"PowerShellScript":"${self.scriptData()}"}`;
-            service.runCommand(self.commandToRun(), a, scriptBody, function (response) {
+            service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
                     let execution = {
@@ -81,18 +118,24 @@ function addViewModel(service) {
                         output: (self.commandToRun() == "script") ? responsJson.output : responsJson.result,
                         time: new Date()
                     };
-                    a.execution.push(execution);
+                    a.executions.push(execution);
                 }
-
-
                 self.refereshAgents();
             }, () => { });
         });
     }
 
+    self.getAgentExecutions = function (agent) {
+        agent.getExecutions((response, statusCode) => {
+            if (statusCode == 200 && response.length > 0) {
+                jsonResponse = response// JSON.parse(response);
+                jsonResponse.forEach(e => agent.executions.push(e));
+            }
+        }, null);
+    }
 
     self.refereshAgents = function () {
-        let allAgents = self.agents(); //hack
+        let allAgents = self.agents();
         self.agents([]);
         self.agents(allAgents);
     }
@@ -109,6 +152,13 @@ function addViewModel(service) {
         }, (a) => { self.errors.push("Could not contact the agent") });
     }
 
+    self.updateAgent = function (agent) {
+
+    }
+
+    self.getAgents = function () {
+        return self.agents();
+    }
     self.setAgentStatusTo = (status, agent) => {
         agent.active = (status === "ACTIVE") ? true : false;
         return agent;
@@ -118,6 +168,7 @@ function addViewModel(service) {
         self.agents().push(agent);
         self.agents(self.agents())
     }
+
 
     let isNotValid = (agent) => {
         if (emptyObject(agent)) {
@@ -169,22 +220,36 @@ function addViewModel(service) {
     }, 10000);
 }
 
-function agent(name, ipAddress, port) {
-    let _service = new agentService();
-    let _name = name;
-    let _ipAddress = ipAddress;
-    let _port = port;
-    let _active = false;
-    return {
-        name: _name,
-        ipAddress: _ipAddress,
-        port: _port,
-        active: _active,
-        execution: [],
-        canContact: function (doneFn, erroFn) {
-            _service.ping(this, doneFn, erroFn);
-        }
-    }
-}
+// function agent(name, ipAddress, port) {
+//     let _service = new agentService();
+//     let _name = name;
+//     let _ipAddress = ipAddress;
+//     let _port = port;
+//     let _active = false;
+//     return {
+//         name: _name,
+//         ipAddress: _ipAddress,
+//         port: _port,
+//         active: _active,
+//         executions: [],
+//         getExecutions: function () {
+//             return _service.getExecutions(this, (response) => {
+//                     JSON.parse(response).array.forEach(element => {
+//                        // this.executions.push(element);
+//                     });
+//             }, () => {
 
+//             });
+//         },
+//         canContact: function (doneFn, erroFn) {
+//             _service.ping(this, doneFn, erroFn);
+//         }
+//     }
+// }
+
+
+let service = agentService();
+let viewModel = new addViewModel(service);
+
+ko.applyBindings(viewModel);
 

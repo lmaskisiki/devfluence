@@ -187,7 +187,23 @@ input[type=submit]:hover {
 .executions li{
   list-style: none;
 }
+.history_btn{
 
+}
+.history_btn input{
+  border-radius: 5px;
+  color: blue;
+  background-color: gold;
+  border: 1px solid green;
+  border-style:outset;
+  position: absolute;
+  right: 0;
+ }
+
+.history_btn input:hover{
+  background-color: goldenrod;
+  color:black;
+}
 .messages{
   height: 50px;
   border: navy;

@@ -10,12 +10,15 @@ namespace MachineInformationApp
     public class AgentDataService : IAgentDataService
     {
         private readonly string _connectionString;
-        private IDbConnection _connection;
 
-        public AgentDataService(string dbName, IDbConnection connection = null)
+        public AgentDataService(string dbName)
         {
             _connectionString = $"Server=(localdb)\\MSSQLLocalDB;Integrated Security=true;Initial Catalog={dbName}";
-            this._connection = connection;
+        }
+
+        public AgentDataService()
+        {
+            _connectionString = "Server=(localdb)\\MSSQLLocalDB;Integrated Security=true;Initial Catalog=SkyNetPortalDB";
         }
 
         public IEnumerable<AgentExecution> GetExecutedAgentDetails()
@@ -44,10 +47,10 @@ namespace MachineInformationApp
 
         public int GetInsertedData(AgentExecution agent)
         {
-            using (_connection)
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var sql = "insert into AgentExecution(Command, Result, ExecutionTime) Values(@Command, @Result, @ExecutionTime)";
-                return _connection.Execute(sql, agent);
+                return connection.Execute(sql, agent);
             }
         }
     }

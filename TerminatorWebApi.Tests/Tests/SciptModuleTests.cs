@@ -265,12 +265,11 @@ namespace TerminatorWebApi.Tests.Tests
 
         }
 
-
-
-
         private static ScriptOutput GetResponseBody(BrowserResponse result)
         {
             return JsonConvert.DeserializeObject<ScriptOutput>(result.Body.AsString());
         }
     }
+
+
 }

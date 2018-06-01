@@ -78,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tests\AgentHistoryModule.cs" />
+    <Compile Include="Tests\DashboardTests.cs" />
     <Compile Include="Tests\ExecutionAgentTests.cs" />
     <Compile Include="Tests\HealthTests.cs" />
     <Compile Include="Tests\HostnameTests.cs" />

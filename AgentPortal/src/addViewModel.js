@@ -29,22 +29,26 @@ function addViewModel(service) {
     ]);
 
     self.showDashboardHistory = function (show) {
-        self.ShowAgent(false);
-        self.ShowAddAgent(false);
-        self.ShowRemoveAgent(false);
-        self.showExecuteAgent(false);
-        self.dashboardHistoryShown(show);
-        self.getDashboardActivities();
+        if(self.dashboardHistoryShown(show)){
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+            self.ShowUpdateAgent(false);
+            self.historyShown(false);
+            self.getDashboardActivities();
+        }
     }
 
     self.showHistory = function (show, agentName) {
-        self.ShowAgent(false);
-        self.ShowAddAgent(false);
-        self.ShowRemoveAgent(false);
-        self.showExecuteAgent(false);
-        self.historyShown(show);
-        self.getAgentExecutions(agentName);
-
+        if (self.historyShown(show))
+        {
+            self.ShowAgent(!show);
+            self.ShowAddAgent(false);
+            self.ShowRemoveAgent(false);
+            self.showExecuteAgent(false);
+            self.getAgentExecutions(agentName);
+        }
     }
 
     self.ShowAddAgentForm = function (show) {
@@ -53,6 +57,8 @@ function addViewModel(service) {
             self.ShowUpdateAgent(false);
             self.ShowRemoveAgent(false);
             self.showExecuteAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         }
     }
 
@@ -62,6 +68,8 @@ function addViewModel(service) {
             self.ShowAddAgent(false);
             self.ShowRemoveAgent(false);
             self.showExecuteAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         }
     }
 
@@ -71,20 +79,25 @@ function addViewModel(service) {
             self.ShowAddAgent(false);
             self.showExecuteAgent(false);
             self.ShowUpdateAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         }
     }
 
     self.ShowExecuteAgentForm = function (show) {
         if (self.showExecuteAgent(show)) {
-            self.ShowAgent(!show);
             self.ShowUpdateAgent(false);
             self.ShowRemoveAgent(false);
             self.ShowAddAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         };
+        self.ShowAgent(true);
     }
 
     self.ShowAgentForm = function (show) {
         self.ShowAgent(show);
+       
     }
 
     self.selectionChanged = function () {

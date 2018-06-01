@@ -166,7 +166,7 @@
                 <br>
                 <br>
                 <input type="button" name="cancel" value="Back" data-bind="click: ShowExecuteAgentForm.bind(this,false)" class="btnMenuLeft">
-                <input type="submit" value="Execute" class="btnMenuLeft">
+                <input type="submit" value="Execute" class="btnMenuLeft" >
             </section>
         </form>
     </div>
@@ -189,7 +189,7 @@
 
 
     <section class="history" data-bind="visible: historyShown">
-        <table border="1">
+        <table id="myTable" border="1">
             <thead>
                 <tr>
                     <th>Command</th>
@@ -205,11 +205,11 @@
                 </tr>
             </tbody>
         </table>
-        <input type="button" value="Back" data-bind="click: showHistory.bind(this, false)">
+        <input type="button" class="btnMenuLeft" value="Back" data-bind="click: showHistory.bind(this, false)">
     </section>
 
     <section class="dashboard_history" data-bind="visible: dashboardHistoryShown">
-            <table border="1">
+            <table id="myTable" border="1">
                 <thead>
                     <tr>
                         <th>Target</th>
@@ -227,7 +227,7 @@
                     </tr>
                 </tbody>
             </table>
-            <input type="button" value="Back" data-bind="click: showDashboardHistory.bind(this, false)">
+            <input type="button" class="btnMenuLeft" value="Back" data-bind="click: showDashboardHistory.bind(this, false)">
         </section>
 
     <div class="messages">

@@ -33,6 +33,8 @@ function addViewModel(service) {
         self.ShowAddAgent(false);
         self.ShowRemoveAgent(false);
         self.showExecuteAgent(false);
+        self.ShowUpdateAgent(false);
+        self.historyShown(false);
         self.dashboardHistoryShown(show);
         self.getDashboardActivities();
     }
@@ -53,6 +55,8 @@ function addViewModel(service) {
             self.ShowUpdateAgent(false);
             self.ShowRemoveAgent(false);
             self.showExecuteAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         }
     }
 
@@ -62,6 +66,8 @@ function addViewModel(service) {
             self.ShowAddAgent(false);
             self.ShowRemoveAgent(false);
             self.showExecuteAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         }
     }
 
@@ -71,6 +77,8 @@ function addViewModel(service) {
             self.ShowAddAgent(false);
             self.showExecuteAgent(false);
             self.ShowUpdateAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         }
     }
 
@@ -80,11 +88,14 @@ function addViewModel(service) {
             self.ShowUpdateAgent(false);
             self.ShowRemoveAgent(false);
             self.ShowAddAgent(false);
+            self.dashboardHistoryShown(false);
+            self.historyShown(false);
         };
     }
 
     self.ShowAgentForm = function (show) {
         self.ShowAgent(show);
+       
     }
 
     self.selectionChanged = function () {

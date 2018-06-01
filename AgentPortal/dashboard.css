@@ -213,3 +213,26 @@ input[type=submit]:hover {
   text-align: center;
   color:  red;
 }
+
+/* table styling */
+#myTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  border: #45a049;
+}
+
+#myTable td, #myTable th {
+  border: 2px solid black;
+  padding: 8px;
+}
+
+#myTable tr:hover {background-color: #ddd;}
+
+#myTable th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}

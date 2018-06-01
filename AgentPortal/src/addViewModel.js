@@ -22,10 +22,7 @@ function addViewModel(service) {
     self.historyShown = ko.observable(false);
     self.dashboardHistoryShown = ko.observable(false);
 
-    self.executions = ko.observableArray([
-        { command: 'ip', result: '172.168.11.2', utcTime: '2018/05/30 15:47:11 0000' },
-        { command: 'hostname', result: 'lizo-pc', utcTime: '2018/05/30 15:47:11 0000' }
-    ]);
+    self.executions = ko.observableArray([]);
 
     self.showDashboardHistory = function (show) {
         self.ShowAgent(false);
@@ -35,12 +32,14 @@ function addViewModel(service) {
         self.dashboardHistoryShown(show);
     }
 
-    self.showHistory = function (show) {
+    self.showHistory = function (show, agentName) {
         self.ShowAgent(false);
         self.ShowAddAgent(false);
         self.ShowRemoveAgent(false);
         self.showExecuteAgent(false);
         self.historyShown(show);
+        self.getAgentExecutions(agentName);
+
     }
 
     self.ShowAddAgentForm = function (show) {
@@ -110,6 +109,7 @@ function addViewModel(service) {
 
     self.runCommand = function () {
         ko.utils.arrayForEach(self.activeAgents(), function (a) {
+            console.log('running for agent', a.name);
             service.runCommand(self.commandToRun(), a, self.scriptData(), function (response) {
                 if (response.length > 0) {
                     let responsJson = JSON.parse(response);
@@ -119,19 +119,30 @@ function addViewModel(service) {
                         time: new Date()
                     };
                     a.executions.push(execution);
+                    service.executionLogger(a, execution.command, execution.output)
                 }
                 self.refereshAgents();
             }, () => { });
         });
     }
 
-    self.getAgentExecutions = function (agent) {
-        agent.getExecutions((response, statusCode) => {
-            if (statusCode == 200 && response.length > 0) {
-                jsonResponse = response// JSON.parse(response);
-                jsonResponse.forEach(e => agent.executions.push(e));
-            }
-        }, null);
+    self.getAgentExecutions = function (agentName) {
+        let agent = self.agents().find(a => a.name == agentName);
+        if (agent) {
+            agent.getExecutions((response, statusCode) => {
+                if (statusCode == 200 && response.length > 0) {
+                    jsonResponse = JSON.parse(response);
+                    addResultToExecutions(jsonResponse);
+                }
+            }, null);
+        }
+    }
+
+    let addResultToExecutions = function (jsonResponse) {
+        self.executions([]);
+        jsonResponse.forEach(e => {
+            self.executions.push({ command: e.command, result: e.result, utcTime: e.executionTime })
+        });
     }
 
     self.refereshAgents = function () {
@@ -245,7 +256,7 @@ function addViewModel(service) {
 //             _service.ping(this, doneFn, erroFn);
 //         }
 //     }
-// }
+// }git
 
 
 let service = agentService();

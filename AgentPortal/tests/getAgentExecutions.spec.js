@@ -53,8 +53,7 @@ describe("getExecutionHistory", () => {
                 "contentType": 'application/json',
                 "responseText": ""
             });
-            ;
-
+           
             //Act
             viewModel.getAgentExecutions(agent);
 

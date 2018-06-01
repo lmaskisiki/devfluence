@@ -1,5 +1,6 @@
 ﻿using MachineInformationApp.Interfaces;
 using Nancy;
+using Nancy.Extensions;
 using Nancy.ModelBinding;
 
 namespace TerminatorWebApi.Modules
@@ -11,6 +12,7 @@ namespace TerminatorWebApi.Modules
 
             Post["/api/script"] = _ =>
             {
+                var x = Request.Body.AsString();
                 var scriptQuery = this.Bind<ScriptQuery>();
                 if (EmptyScript(scriptQuery))
                     return Negotiate

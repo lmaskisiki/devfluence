@@ -7,7 +7,7 @@ describe("runCommand", () => {
     });
     describe("when command executed", () => {
         [{cmd:"ip",result:"192.168.11.101"},{cmd:"os",result:"192.168.11.101"}].forEach(command=>{
-            fit("should save the command and execution results", () => {
+            it("should save the command and execution results", () => {
                 //Arrange
                 let service = new agentService();
                 let viewModel = new addViewModel(service);

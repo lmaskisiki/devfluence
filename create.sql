@@ -15,3 +15,5 @@ insert into AgentExecution
 insert into AgentExecution
 (Command,Result,ExecutionTime) Values('hostname','DevFluence7','2018-01-01 21:59:59');
  
+
+select * FROM dbo.AgentExecution;
